@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "effects": [
+    {
+      "id": "orbit-loop",
+      "file": "examples/fx/orbit-loop.js",
+      "category": null,
+      "loop": true,
+      "sim": false
+    },
+    {
+      "id": "pulse-dot",
+      "file": "examples/fx/pulse-dot.js",
+      "category": null,
+      "loop": false,
+      "sim": false
+    }
+  ]
+}

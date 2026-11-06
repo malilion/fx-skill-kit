@@ -46,8 +46,8 @@
         <output id="status" aria-live="off">Loading effect…</output>
       </aside>
     </div>
-    <p class="note">For frame-by-frame review, <a id="sheet" href="../examples/out/pulse-dot/contact.png">open the contact sheet</a>. Learn to write your own in <a href="../docs/AUTHORING.md">the authoring contract</a>.</p>
-    <noscript>This gallery needs JavaScript modules. You can also view the rendered PNG contact sheets in examples/out.</noscript>
+    <p class="note">For frame-by-frame review, <a id="sheet" href="../records/pulse-dot/contact.png">open the contact sheet</a>. Learn to write your own in <a href="../docs/AUTHORING.md">the authoring contract</a>.</p>
+    <noscript>This gallery needs JavaScript modules. You can also view the rendered PNG contact sheets in records/.</noscript>
   </main>
   <script type="module">
     import * as pulse from '../examples/fx/pulse-dot.js';
@@ -85,7 +85,7 @@
       image = new ImageData(frame.data, frame.w, frame.h);
       ticks = Math.ceil(module.meta.duration * 60); dt = module.meta.duration / ticks;
       tick = 0; accumulator = 0; previous = 0;
-      $('sheet').href = `../examples/out/${module.meta.id}/contact.png`;
+      $('sheet').href = `../records/${module.meta.id}/contact.png`;
       paint();
     }
     function animate(now) {

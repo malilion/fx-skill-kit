@@ -4,7 +4,8 @@ import { createFrame, setPixel } from '../src/core/frame.js';
 import { encodePNG } from '../src/core/png.js';
 import { drawText } from '../src/core/text.js';
 import { loadFX, sampleFX, withoutMathRandom } from '../src/core/run.js';
-import { examples, isMain, parseArgs, numberOption } from './cli.mjs';
+import { actTimeline } from '../src/core/act.js';
+import { examples, isMain, parseArgs, numberOption, resolveFXFile } from './cli.mjs';
 
 const ink = [43, 61, 67, 255];
 const muted = [96, 111, 112, 255];
@@ -24,9 +25,16 @@ function rect(frame, x, y, w, h, color) {
 
 export async function renderFX(file, { seed = 1, fps = 30, count = 16, columns = 4, outDir } = {}) {
   if (!Number.isInteger(count) || count < 2 || count > 256) throw new Error('frames must be an integer from 2 to 256');
+  const run = await withoutMathRandom(async () => {
+    const fx = await loadFX(file);
+    return { ...sampleFX(fx, { seed, fps, ...actTimeline(fx) }), act: fx.act ?? fx.meta.act };
+  });
+  return renderRun(run, { count, columns, outDir });
+}
+
+export async function renderRun(run, { count = run.frames.length, columns = 4, outDir, basename = 'contact' } = {}) {
   if (!Number.isInteger(columns) || columns < 1 || columns > 16) throw new Error('columns must be an integer from 1 to 16');
-  const run = await withoutMathRandom(async () => sampleFX(await loadFX(file), { seed, fps }));
-  const { meta, frames } = run;
+  const { meta, frames, seed, fps } = run;
   const selectedCount = Math.min(count, frames.length);
   const selected = Array.from({ length: selectedCount }, (_, i) =>
     Math.round(i * (frames.length - 1) / (selectedCount - 1)));
@@ -59,12 +67,12 @@ export async function renderFX(file, { seed = 1, fps = 30, count = 16, columns =
     drawText(sheet, `FILL=${(sample.fillRatio * 100).toFixed(2)}%`, x + 16, fy + meta.h + 10, ink);
     drawText(sheet, `OX=${meta.ox} OY=${meta.oy}`, x + 16, fy + meta.h + 24, muted);
   });
-  const output = resolve(outDir ?? join('examples/out', meta.id));
+  const output = resolve(outDir ?? join('records', meta.id));
   await mkdir(output, { recursive: true });
-  const png = join(output, 'contact.png');
-  const json = join(output, 'contact.json');
+  const png = join(output, `${basename}.png`);
+  const json = join(output, `${basename}.json`);
   const stats = {
-    schemaVersion: 1, meta, seed, requestedFps: fps, dt: run.dt, hash: run.hash,
+    schemaVersion: 1, meta, act: run.act, timeline: run.timeline, seed, requestedFps: fps, dt: run.dt, hash: run.hash,
     frameCount: frames.length,
     sheet: { w: sheet.w, h: sheet.h, columns, cellW, cellH, headerH, selected },
     frames: frames.map(({ data, ...frame }) => ({ ...frame,
@@ -76,21 +84,21 @@ export async function renderFX(file, { seed = 1, fps = 30, count = 16, columns =
   return { png, json, stats };
 }
 
-export async function main(args = process.argv.slice(2)) {
+export async function main(args = process.argv.slice(2), { log = console.log } = {}) {
   const { files, options } = parseArgs(args, ['seed', 'fps', 'frames', 'columns', 'out']);
   if (options.help) {
-    console.log('Usage: npm run render -- [file.js ...] [--seed 1] [--fps 30] [--frames 16] [--columns 4] [--out directory]');
+    log('Usage: npm run render -- [file.js ...] [--seed 1] [--fps 30] [--frames 16] [--columns 4] [--out directory]');
     return;
   }
   const targets = files.length ? files : examples;
   for (const file of targets) {
     // With multiple inputs, --out is a parent directory; never overwrite another sheet.
     const outDir = options.out && (targets.length === 1 ? options.out : join(options.out, String(targets.indexOf(file))));
-    const result = await renderFX(file, {
+    const result = await renderFX(await resolveFXFile(file), {
       seed: numberOption(options, 'seed', 1), fps: numberOption(options, 'fps', 30),
       count: numberOption(options, 'frames', 16), columns: numberOption(options, 'columns', 4), outDir,
     });
-    console.log(`Rendered ${file}\n  ${result.png}\n  ${result.json}`);
+    log(`Rendered ${file}\n  ${result.png}\n  ${result.json}`);
   }
 }
 

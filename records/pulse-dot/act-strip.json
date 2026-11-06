@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "pulse-dot",
+    "duration": 1,
+    "loop": false,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80
+  },
+  "timeline": {
+    "start": 0,
+    "end": 1,
+    "fixedFps": true
+  },
+  "seed": 42,
+  "requestedFps": 12,
+  "dt": 0.08333333333333333,
+  "hash": "90561b5d1fead78bfafdf20585bfb5bef1657de9eae7d5e7ab13502bdf4d7983",
+  "frameCount": 13,
+  "sheet": {
+    "w": 1184,
+    "h": 788,
+    "columns": 6,
+    "cellW": 192,
+    "cellH": 236,
+    "headerH": 64,
+    "selected": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": 0,
+      "fillRatio": 0,
+      "edgeRatio": 0,
+      "fillPercent": 0,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": 0.08333333333333333,
+      "fillRatio": 0.05578125,
+      "edgeRatio": 0,
+      "fillPercent": 5.578125,
+      "contactCell": 1
+    },
+    {
+      "index": 2,
+      "time": 0.16666666666666666,
+      "fillRatio": 0.094375,
+      "edgeRatio": 0,
+      "fillPercent": 9.4375,
+      "contactCell": 2
+    },
+    {
+      "index": 3,
+      "time": 0.25,
+      "fillRatio": 0.1359375,
+      "edgeRatio": 0,
+      "fillPercent": 13.593749999999998,
+      "contactCell": 3
+    },
+    {
+      "index": 4,
+      "time": 0.3333333333333333,
+      "fillRatio": 0.17796875,
+      "edgeRatio": 0,
+      "fillPercent": 17.796875,
+      "contactCell": 4
+    },
+    {
+      "index": 5,
+      "time": 0.41666666666666663,
+      "fillRatio": 0.21296875,
+      "edgeRatio": 0,
+      "fillPercent": 21.296875,
+      "contactCell": 5
+    },
+    {
+      "index": 6,
+      "time": 0.5,
+      "fillRatio": 0.23671875,
+      "edgeRatio": 0,
+      "fillPercent": 23.671875,
+      "contactCell": 6
+    },
+    {
+      "index": 7,
+      "time": 0.5833333333333333,
+      "fillRatio": 0.2465625,
+      "edgeRatio": 0,
+      "fillPercent": 24.65625,
+      "contactCell": 7
+    },
+    {
+      "index": 8,
+      "time": 0.6666666666666666,
+      "fillRatio": 0.23859375,
+      "edgeRatio": 0,
+      "fillPercent": 23.859375,
+      "contactCell": 8
+    },
+    {
+      "index": 9,
+      "time": 0.75,
+      "fillRatio": 0.2165625,
+      "edgeRatio": 0,
+      "fillPercent": 21.65625,
+      "contactCell": 9
+    },
+    {
+      "index": 10,
+      "time": 0.8333333333333333,
+      "fillRatio": 0.181796875,
+      "edgeRatio": 0,
+      "fillPercent": 18.1796875,
+      "contactCell": 10
+    },
+    {
+      "index": 11,
+      "time": 0.9166666666666666,
+      "fillRatio": 0.1456640625,
+      "edgeRatio": 0,
+      "fillPercent": 14.56640625,
+      "contactCell": 11
+    },
+    {
+      "index": 12,
+      "time": 1,
+      "fillRatio": 0,
+      "edgeRatio": 0,
+      "fillPercent": 0,
+      "contactCell": 12
+    }
+  ]
+}

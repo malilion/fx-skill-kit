@@ -1,12 +1,13 @@
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
+import { readFile } from 'node:fs/promises';
 
 export const examples = ['examples/fx/pulse-dot.js', 'examples/fx/orbit-loop.js'];
 export function isMain(url) {
   return Boolean(process.argv[1]) && url === pathToFileURL(resolve(process.argv[1])).href;
 }
 
-export function parseArgs(args, allowed) {
+export function parseArgs(args, allowed, flags = []) {
   const files = [];
   const options = {};
   for (let i = 0; i < args.length; i++) {
@@ -14,11 +15,23 @@ export function parseArgs(args, allowed) {
     if (arg === '--help' || arg === '-h') { options.help = true; continue; }
     if (!arg.startsWith('--')) { files.push(arg); continue; }
     const key = arg.slice(2);
+    if (flags.includes(key)) { options[key] = true; continue; }
     if (!allowed.includes(key)) throw new Error(`Unknown option: ${arg}`);
     if (args[i + 1] === undefined || args[i + 1].startsWith('--')) throw new Error(`Missing value for ${arg}`);
     options[key] = args[++i];
   }
   return { files, options };
+}
+
+export async function resolveFXFile(input) {
+  if (input.endsWith('.js') || input.endsWith('.mjs')) return input;
+  try {
+    const catalog = JSON.parse(await readFile('src/catalog.json', 'utf8'));
+    return catalog.effects.find(effect => effect.id === input)?.file ?? input;
+  } catch (error) {
+    if (error.code === 'ENOENT') return input;
+    throw error;
+  }
 }
 
 export function numberOption(options, key, fallback) {

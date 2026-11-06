@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, writeFile, access, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, access, rm, mkdir, copyFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { inflateSync } from 'node:zlib';
-import { checkFX, main as checkMain } from '../tools/check.mjs';
+import { checkFX, frameBudget, main as checkMain } from '../tools/check.mjs';
 import { renderFX, main as renderMain } from '../tools/render.mjs';
 import { main as newMain } from '../tools/new.mjs';
+import { actFX, main as actMain } from '../tools/act.mjs';
 import { createFrame, fillCircle, setPixel, clear } from '../src/core/frame.js';
 import { loadFX, sampleFX, withoutMathRandom, mse } from '../src/core/run.js';
 import { encodePNG, crc32 } from '../src/core/png.js';
@@ -16,15 +17,12 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const example = id => join(root, 'examples/fx', `${id}.js`);
 // Exercise the real CLI entrypoints in process: no shell, subprocess, or test dependency.
 async function cli(tool, args = []) {
-  const originalLog = console.log;
   const originalExit = process.exitCode;
   const lines = [];
-  console.log = (...parts) => lines.push(parts.join(' '));
   process.exitCode = 0;
   let stderr = '';
-  try { await ({ new: newMain, check: checkMain, render: renderMain }[tool])(args); }
+  try { await ({ new: newMain, check: checkMain, render: renderMain, act: actMain }[tool])(args, { log: (...parts) => lines.push(parts.join(' ')) }); }
   catch (error) { stderr = error.message; process.exitCode = 1; }
-  finally { console.log = originalLog; }
   const status = process.exitCode ?? 0;
   process.exitCode = originalExit;
   return { status, stdout: lines.join('\n'), stderr };
@@ -35,9 +33,9 @@ async function temporary(t) {
   return dir;
 }
 
-async function fixture(t, body, { loop = false, prelude = '' } = {}) {
+async function fixture(t, body, { loop = false, prelude = '', meta = {} } = {}) {
   const file = join(await temporary(t), 'fixture.js');
-  await writeFile(file, `${prelude}\nexport const meta = { id:'fixture', duration:1, loop:${loop}, w:32, h:32, ox:16, oy:16 };
+  await writeFile(file, `${prelude}\nexport const meta = ${JSON.stringify({ id: 'fixture', duration: 1, loop, w: 32, h: 32, ox: 16, oy: 16, ...meta })};
 export function create({seed}) { return { t:0, step(dt) { this.t += dt; }, draw(frame) { ${body} } }; }`);
   return file;
 }
@@ -68,7 +66,8 @@ function decodePNG(buffer) {
 
 test('new CLI scaffolds a working seedable module and refuses overwrite / traversal', async t => {
   const dir = await temporary(t);
-  const result = await cli('new', ['sample-fx', '--out', dir]);
+  const catalog = join(dir, 'catalog.json');
+  const result = await cli('new', ['sample-fx', '--out', dir, '--catalog', catalog]);
   assert.equal(result.status, 0, result.stderr);
   const file = join(dir, 'sample-fx.js');
   await access(file);
@@ -82,9 +81,9 @@ test('new CLI scaffolds a working seedable module and refuses overwrite / traver
   const a = sampleFX(fx, { seed: 7 }).hash;
   assert.notEqual(a, sampleFX(fx, { seed: 8 }).hash);
   const before = await readFile(file);
-  assert.notEqual((await cli('new', ['sample-fx', '--out', dir])).status, 0);
+  assert.notEqual((await cli('new', ['sample-fx', '--out', dir, '--catalog', catalog])).status, 0);
   assert.deepEqual(await readFile(file), before);
-  assert.notEqual((await cli('new', ['../escape', '--out', dir])).status, 0);
+  assert.notEqual((await cli('new', ['../escape', '--out', dir, '--catalog', catalog])).status, 0);
 });
 
 test('check CLI passes both examples; loop seam is tested only for looping FX', async () => {
@@ -257,4 +256,301 @@ test('invalid CLI values, missing inputs, and invalid metadata fail clearly', as
   const checked = await checkFX(file);
   assert.equal(checked.pass, false);
   assert.match(checked.checks[0].detail, /valid meta/);
+});
+
+const solidCenter = 'for(let y=14;y<18;y++) for(let x=14;x<18;x++) frame.data.set([50,80,100,255],(y*frame.w+x)*4);';
+const checkById = (result, id) => result.checks.find(check => check.id === id);
+
+test('CHK-01 blocks Date.now and performance.now throughout the lifecycle and restores both', async t => {
+  const originalDate = Date.now;
+  const originalPerformance = performance.now;
+  const descriptor = Object.getOwnPropertyDescriptor(performance, 'now');
+  for (const clock of ['Date.now', 'performance.now']) {
+    for (const site of ['import', 'create', 'step', 'draw']) {
+      const file = join(await temporary(t), 'clock.js');
+      await writeFile(file, `
+        ${site === 'import' ? `${clock}();` : ''}
+        export const meta={id:'clock-fixture',duration:1,loop:false,w:32,h:32,ox:16,oy:16};
+        export function create() {
+          ${site === 'create' ? `${clock}();` : ''}
+          return {t:0,step(dt){this.t+=dt;${site === 'step' ? `${clock}();` : ''}},draw(frame){${site === 'draw' ? `${clock}();` : solidCenter}}};
+        }`);
+      const result = await checkFX(file);
+      assert.equal(result.pass, false, `${clock} at ${site}`);
+      assert.ok(result.checks[0].detail.includes(`${clock} is forbidden`));
+      assert.equal(Date.now, originalDate);
+      assert.equal(performance.now, originalPerformance);
+      assert.deepEqual(Object.getOwnPropertyDescriptor(performance, 'now'), descriptor);
+    }
+  }
+});
+
+test('check defaults to seed 42 and preserves explicit seed zero', async () => {
+  const file = example('pulse-dot');
+  const result = await checkFX(file);
+  assert.equal(result.hash, sampleFX(await loadFX(file), { seed: 42 }).hash);
+  assert.notEqual(result.hash, (await checkFX(file, { seed: 0 })).hash);
+  const cliResult = await cli('check', ['pulse-dot']);
+  assert.equal(cliResult.status, 0, cliResult.stdout);
+  assert.match(cliResult.stdout, /seed=42/);
+});
+
+test('CHK-02 defaults to 1.5% and exempts transition id, path, or category only', async t => {
+  const oneEdgePixel = await fixture(t, `${solidCenter} frame.data.set([1,2,3,255],0);`);
+  const result = await checkFX(oneEdgePixel);
+  assert.equal(checkById(result, 'CHK-02').pass, true); // 1 / 124 = 0.806%, above the old 0.5%.
+  assert.match(checkById(result, 'CHK-02').detail, /1.500%/);
+  assert.equal(checkById(await checkFX(oneEdgePixel, { edgeThreshold: 0.005 }), 'CHK-02').pass, false);
+  const spill = 'for(let x=0;x<frame.w;x++) frame.data.set([1,2,3,255],x*4);';
+  for (const meta of [{ id: 'transitions/wipe' }, { category: 'transitions' }]) {
+    const exempt = checkById(await checkFX(await fixture(t, spill, { meta })), 'CHK-02');
+    assert.equal(exempt.pass, true);
+    assert.equal(exempt.skip, true);
+  }
+  const source = await fixture(t, spill);
+  const pathDir = join(await temporary(t), 'transitions');
+  await mkdir(pathDir);
+  const file = join(pathDir, 'wipe.js');
+  await copyFile(source, file);
+  assert.equal(checkById(await checkFX(file), 'CHK-02').skip, true);
+  const ordinary = await fixture(t, spill, { meta: { id: 'not-transitions/wipe', category: 'sword' } });
+  assert.equal(checkById(await checkFX(ordinary), 'CHK-02').pass, false);
+});
+
+test('CHK-03 uses median adjacent MSE times 1.5 and an absolute fallback for static loops', async t => {
+  const moving = await fixture(t, `const value=Math.round(this.t*31)%2*255;
+    for(let y=12;y<20;y++) for(let x=12;x<20;x++) frame.data.set([value,30,40,255],(y*frame.w+x)*4);`, { loop: true });
+  const relative = checkById(await checkFX(moving, { fps: 31 }), 'CHK-03');
+  assert.equal(relative.pass, true);
+  assert.ok(relative.runs[0].seam > 0.5);
+  assert.equal(relative.runs[0].limit, relative.runs[0].medianAdjacent * 1.5);
+  const almostStatic = await fixture(t, `${solidCenter} if(this.t>0.99) frame.data[(14*frame.w+14)*4]++;`, { loop: true });
+  const fallback = checkById(await checkFX(almostStatic), 'CHK-03');
+  assert.equal(fallback.pass, true);
+  assert.equal(fallback.runs[0].medianAdjacent, 0);
+  assert.equal(fallback.runs[0].limit, 0.5);
+  assert.ok(fallback.runs[0].seam > 0);
+});
+
+test('CHK-04 rejects invisible and overfilled FX, with inclusive peak-fill bounds', async t => {
+  for (const [body, meta, expected] of [
+    ['', {}, false],
+    ['frame.data.set([1,2,3,255],(16*frame.w+16)*4);', {}, false],
+    ['frame.data.fill(255);', {}, false],
+    ['for(let i=0;i<8500;i++) frame.data.set([1,2,3,255],i*4);', { w: 100, h: 100 }, true],
+    ['for(let i=0;i<8501;i++) frame.data.set([1,2,3,255],i*4);', { w: 100, h: 100 }, false],
+    ['for(let i=0;i<20;i++) frame.data.set([1,2,3,255],i*4);', { w: 100, h: 100 }, true],
+    ['for(let i=0;i<19;i++) frame.data.set([1,2,3,255],i*4);', { w: 100, h: 100 }, false],
+  ]) {
+    const result = await checkFX(await fixture(t, body, { meta }));
+    assert.equal(checkById(result, 'CHK-04').pass, expected, body || 'blank');
+  }
+});
+
+test('CHK-04 measures trailing blank duration, ignores windup and permits a short fade', async t => {
+  for (const [cutoff, expected] of [[0.7, false], [0.9, true], [0.86, true], [0.84, false]]) {
+    const file = await fixture(t, `if(this.t<${cutoff}) { ${solidCenter} }`, { meta: { act: { windup: 10 } } });
+    const checked = await checkFX(file, { fps: 100 });
+    assert.equal(checkById(checked, 'CHK-04').pass, expected, String(cutoff));
+  }
+  const windup = await fixture(t, `if(this.t>0.8) { ${solidCenter} }`, { prelude: 'export const act={windup:0.5};' });
+  assert.equal(checkById(await checkFX(windup), 'CHK-04').pass, true);
+  const tail = await fixture(t, `if(this.t<0.5) { ${solidCenter} }`);
+  const result = await cli('check', [tail]);
+  assert.equal(result.status, 1);
+  assert.match(result.stdout, /FAIL CHK-04/);
+});
+
+test('CHK-05 warms up, measures exactly 300 step+draw calls at 120Hz, and enforces strict budgets', () => {
+  let steps = 0, draws = 0, creates = 0;
+  const fx = { meta: { duration: 1, w: 2, h: 2, ox: 1, oy: 1 }, create({ seed }) {
+    assert.equal(seed, 42);
+    creates++;
+    return { t: 0, step(dt) { assert.equal(dt, 1 / 120); this.t += dt; steps++; }, draw() { draws++; } };
+  } };
+  let ticks = 0;
+  const budget = frameBudget(fx, { clock: () => ticks++ });
+  assert.equal(budget.pass, true);
+  assert.equal(budget.p95, 1);
+  assert.equal(budget.max, 1);
+  assert.equal(budget.steps, 300);
+  assert.equal(steps, 660);
+  assert.equal(draws, steps);
+  assert.ok(creates >= 5, 'replays animation instead of measuring beyond its lifetime');
+  ticks = 0;
+  assert.equal(frameBudget(fx, { clock: () => ticks++ * 1.5 }).pass, false, 'p95 limit is strict');
+  ticks = 0;
+  const spike = frameBudget(fx, { clock: () => {
+    const call = ticks++;
+    return Math.floor(call / 2) * 10 + (call % 2 ? (call === 599 ? 3 : 1) : 0);
+  } });
+  assert.equal(spike.p95, 1);
+  assert.equal(spike.max, 3);
+  assert.equal(spike.pass, false, 'max limit is strict');
+});
+
+test('CHK-05 hard fails by default, supports --perf-soft, and FX_CHECK_PERF=0 skips it', async t => {
+  const originalEnv = process.env.FX_CHECK_PERF;
+  t.after(() => { if (originalEnv === undefined) delete process.env.FX_CHECK_PERF; else process.env.FX_CHECK_PERF = originalEnv; });
+  delete process.env.FX_CHECK_PERF;
+  const file = await fixture(t, solidCenter, { prelude: '' });
+  let source = await readFile(file, 'utf8');
+  source = source.replace('this.t += dt;', `this.t += dt;
+    if(Math.abs(dt-1/120)<1e-12 && Math.round(this.t*120)%40===0) {
+      const start=process.hrtime.bigint(); while(process.hrtime.bigint()-start<5000000n) {}
+    }`);
+  await writeFile(file, source);
+  const hard = await checkFX(file);
+  assert.equal(hard.pass, false);
+  assert.equal(checkById(hard, 'CHK-05').pass, false);
+  assert.ok(checkById(hard, 'CHK-05').max >= 5);
+  const soft = await cli('check', [file, '--perf-soft']);
+  assert.equal(soft.status, 0, soft.stdout);
+  assert.match(soft.stdout, /WARN CHK-05/);
+  process.env.FX_CHECK_PERF = '0';
+  const skipped = await checkFX(file);
+  assert.equal(skipped.pass, true);
+  assert.equal(checkById(skipped, 'CHK-05').skip, true);
+  const otherFailure = await fixture(t, '');
+  assert.equal((await checkFX(otherFailure, { perfSoft: true })).pass, false, 'perf options do not mask dead frames');
+});
+
+test('CHK-06 loads optional named/default configs and passes context to async domain checks', async t => {
+  const dir = await temporary(t);
+  const file = await fixture(t, solidCenter);
+  const configFile = join(dir, 'fx.config.js');
+  const absent = await checkFX(file, { configFile });
+  assert.equal(checkById(absent, 'CHK-06').skip, true);
+  await writeFile(configFile, `export const domainChecks=[{id:'custom/context', async run(ctx){
+    return {pass:ctx.seed===42 && ctx.meta.id==='fixture' && ctx.frames.length===31 && ctx.runs.length===2 && ctx.fx.create instanceof Function,detail:'context checked'};
+  }}];`);
+  assert.equal(checkById(await checkFX(file, { configFile }), 'CHK-06').pass, true);
+  await writeFile(configFile, `export default {domainChecks:[{id:'custom/fail',run(){return {pass:false,detail:'domain failure'};}},
+    {id:'custom/throw',run(){throw new Error('broken plugin');}}, {id:'custom/next',run(){return true;}}]};`);
+  const failed = await checkFX(file, { configFile });
+  const plugins = checkById(failed, 'CHK-06');
+  assert.equal(failed.pass, false);
+  assert.deepEqual(plugins.plugins.map(plugin => plugin.pass), [false, false, true]);
+  assert.match(plugins.detail, /broken plugin/);
+  const cliResult = await cli('check', [file, '--config', configFile]);
+  assert.equal(cliResult.status, 1);
+  assert.match(cliResult.stdout, /FAIL CHK-06/);
+  for (const source of [
+    'export const domainChecks={};',
+    'export const domainChecks=[{id:"invalid"}];',
+    'export const domainChecks=[{id:"invalid",run(){}}];',
+    'export const domainChecks=[{id:"duplicate",run(){return true;}},{id:"duplicate",run(){return true;}}];',
+    'throw new Error("config import failed");',
+  ]) {
+    await writeFile(configFile, source);
+    assert.equal(checkById(await checkFX(file, { configFile }), 'CHK-06').pass, false, source);
+  }
+  const exampleConfig = await checkFX(file, { configFile: join(root, 'fx.config.example.js') });
+  const registered = checkById(exampleConfig, 'CHK-06');
+  assert.equal(registered.pass, true);
+  assert.deepEqual(registered.plugins.map(plugin => plugin.id), ['example/no-op', 'inkfx/entropy', 'oledfx/shimmer']);
+  assert.equal(registered.plugins[1].skip, true);
+});
+
+test('new supports category/name, --loop/--sim and creates then updates a catalog without duplicates', async t => {
+  const dir = await temporary(t);
+  const outDir = join(dir, 'fx');
+  const catalogFile = join(dir, 'src/catalog.json');
+  for (const id of ['sword/new-slash', 'ui/new-pulse']) {
+    const result = await cli('new', [id, '--loop', '--sim', '--out', outDir, '--catalog', catalogFile]);
+    assert.equal(result.status, 0, result.stderr);
+    const file = join(outDir, `${id}.js`);
+    const fx = await loadFX(file);
+    assert.equal(fx.meta.id, id);
+    assert.equal(fx.meta.category, id.split('/')[0]);
+    assert.equal(fx.meta.loop, true);
+    assert.equal(fx.meta.sim, true);
+    assert.equal((await checkFX(file)).pass, true);
+  }
+  const catalog = JSON.parse(await readFile(catalogFile, 'utf8'));
+  assert.equal(catalog.schemaVersion, 1);
+  assert.deepEqual(catalog.effects.map(effect => effect.id), ['sword/new-slash', 'ui/new-pulse']);
+  for (const effect of catalog.effects) {
+    await access(join(root, effect.file));
+    assert.equal(effect.loop, true);
+    assert.equal(effect.sim, true);
+  }
+  const before = await readFile(catalogFile, 'utf8');
+  assert.equal((await cli('new', ['ui/new-pulse', '--out', outDir, '--catalog', catalogFile])).status, 1);
+  assert.equal(await readFile(catalogFile, 'utf8'), before);
+  for (const id of ['../escape', 'sword/../../escape', '/absolute', 'sword//name', 'sword/Bad', 'sword/name.js']) {
+    assert.equal((await cli('new', [id, '--out', outDir, '--catalog', catalogFile])).status, 1, id);
+  }
+  await writeFile(catalogFile, '{}');
+  assert.equal((await cli('new', ['valid/new-fx', '--out', outDir, '--catalog', catalogFile])).status, 1);
+  await assert.rejects(access(join(outDir, 'valid/new-fx.js')));
+});
+
+test('act emits every frame at fixed 12fps including windup, hit freeze and recovery', async t => {
+  const dir = await temporary(t);
+  for (const placement of ['export', 'meta']) {
+    const act = { windup: 0.2, poses: [[-0.2, 'WINDUP'], [0.5, 'RECOVER']], hits: [{ t: 0.5, freeze: 0.25 }], recovery: 0.1 };
+    const file = await fixture(t, `if(this.t<0) frame.data.set([255,0,0,255],(16*frame.w+16)*4); else { ${solidCenter} }`, {
+      prelude: placement === 'export' ? `export const act=${JSON.stringify(act)};` : '',
+      meta: { duration: 0.6, ...(placement === 'meta' ? { act } : {}) },
+    });
+    const output = await actFX(file, { outDir: join(dir, placement) });
+    assert.ok(output.png.endsWith('act-strip.png'));
+    assert.ok(output.json.endsWith('act-strip.json'));
+    const stats = JSON.parse(await readFile(output.json, 'utf8'));
+    const png = decodePNG(await readFile(output.png));
+    assert.equal(png.w, stats.sheet.w);
+    assert.equal(png.h, stats.sheet.h);
+    assert.deepEqual(stats.act, act);
+    assert.equal(stats.requestedFps, 12);
+    assert.equal(stats.frames[0].time, -0.2);
+    assert.equal(stats.frames.at(-1).time, 0.85);
+    assert.equal(stats.sheet.selected.length, stats.frameCount);
+    for (let i = 1; i < stats.frames.length - 1; i++) {
+      assert.ok(Math.abs(stats.frames[i].time - stats.frames[i - 1].time - 1 / 12) < 1e-10);
+    }
+    assert.ok(stats.frames.at(-1).time - stats.frames.at(-2).time <= 1 / 12 + 1e-10);
+    assert.equal(stats.frames[0].fillRatio, 1 / 1024, 'windup actually draws at negative t');
+    const contact = await renderFX(file, { outDir: join(dir, `${placement}-contact`) });
+    assert.equal(contact.stats.frames[0].time, -0.2, 'contact sheet includes act windup too');
+  }
+});
+
+test('act without act metadata remains dense and CLI keeps --out compatibility', async t => {
+  const dir = await temporary(t);
+  const result = await cli('act', ['pulse-dot', '--out', dir]);
+  assert.equal(result.status, 0, result.stderr);
+  const stats = JSON.parse(await readFile(join(dir, 'act-strip.json'), 'utf8'));
+  assert.equal(stats.frameCount, 13);
+  assert.equal(stats.sheet.selected.length, 13);
+  assert.equal(stats.frames[0].time, 0);
+  assert.equal(stats.frames.at(-1).time, 1);
+  const long = await fixture(t, solidCenter, { meta: { duration: 22 } });
+  const dense = await actFX(long, { outDir: join(dir, 'long') });
+  assert.equal(dense.stats.frameCount, 265);
+  assert.equal(dense.stats.sheet.selected.length, 265, 'does not truncate to 256 frames');
+  const invalid = await fixture(t, solidCenter, { meta: { act: { windup: -1 } } });
+  assert.equal((await cli('act', [invalid, '--out', dir])).status, 1);
+  assert.equal((await cli('act', ['--fps', '30'])).status, 1, 'act fps is fixed');
+});
+
+test('render and act default to records/<category/name> and catalog lists real examples', async t => {
+  const id = `test-output/pulse-${process.pid}`;
+  const outputDir = join(root, 'records', id);
+  t.after(async () => {
+    await rm(outputDir, { recursive: true, force: true });
+    // Remove the empty test category only when no other test left artifacts.
+    const { rmdir } = await import('node:fs/promises');
+    await rmdir(dirname(outputDir)).catch(error => { if (!['ENOENT', 'ENOTEMPTY'].includes(error.code)) throw error; });
+  });
+  const file = await fixture(t, solidCenter, { meta: { id } });
+  const contact = await renderFX(file);
+  const strip = await actFX(file);
+  assert.equal(contact.png, join(outputDir, 'contact.png'));
+  assert.equal(strip.png, join(outputDir, 'act-strip.png'));
+  await access(contact.json);
+  await access(strip.json);
+  const catalog = JSON.parse(await readFile(join(root, 'src/catalog.json'), 'utf8'));
+  assert.deepEqual(catalog.effects.map(effect => effect.id).sort(), ['orbit-loop', 'pulse-dot']);
+  for (const effect of catalog.effects) assert.equal((await loadFX(join(root, effect.file))).meta.id, effect.id);
 });
