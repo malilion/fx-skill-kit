@@ -85,7 +85,7 @@ See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and c
 
 Private project. Core tools use pure ESM and Node built-ins, with zero runtime dependencies.
 
-Private gallery deployment: [GitHub Pages](https://malilion.github.io/fx-skill-kit/gallery/) once private Pages is enabled and its workflow succeeds. Access is limited to authorized repository collaborators after GitHub sign-in; an anonymous 404 does not establish a deployment failure. The deploy artifact includes source modules, example effects, documentation, and the gallery’s linked contact sheets.
+Gallery access: use `npm run gallery` locally. The current personal-account Pages configuration returns 404 and does not provide a usable private gallery; a successful workflow deployment does not establish private access. Repository visibility and Pages settings are unchanged.
 
 Not included: physical ESP32 flashing or display verification, a hardware-specific compressed player, or launch videos. C-header export is software tested; use oledfx for its dedicated compression pipeline and firmware examples.
 
