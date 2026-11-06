@@ -1,17 +1,6 @@
-// Copy to fx.config.js to register domain checks. No config means CHK-06 skips.
-export const domainChecks = [
-  {
-    id: 'example/no-op',
-    run(ctx) {
-      return { pass: true, detail: `${ctx.meta.id}: ${ctx.frames.length} sampled frames, seed=${ctx.seed}` };
-    },
-  },
-  {
-    id: 'inkfx/entropy',
-    run() { return { pass: true, skip: true, detail: 'Stub: implement ink-tone entropy for inkfx' }; },
-  },
-  {
-    id: 'oledfx/shimmer',
-    run() { return { pass: true, skip: true, detail: 'Stub: implement isolated-pixel shimmer for oledfx' }; },
-  },
-];
+import { inkEntropy, oledShimmer, oledRLEBudget } from './src/checks/domain.js';
+
+// Copy to fx.config.js. Select the checks for your project's domain.
+export const domainChecks = [inkEntropy()];
+// OLED's RGBA adapter uses alpha >=128 for lit pixels (transparent = off).
+// export const domainChecks = [oledShimmer({ maxRate: 0.1 }), oledRLEBudget({ maxBytes: 4096 })];

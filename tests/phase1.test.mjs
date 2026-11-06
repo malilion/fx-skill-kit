@@ -1,4 +1,4 @@
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, readFile, writeFile, access, rm, mkdir, copyFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
@@ -12,6 +12,16 @@ import { createFrame, fillCircle, setPixel, clear } from '../src/core/frame.js';
 import { loadFX, sampleFX, withoutMathRandom, mse } from '../src/core/run.js';
 import { encodePNG, crc32 } from '../src/core/png.js';
 import { mulberry32 } from '../src/core/seed.js';
+
+// Functional checks must not depend on host scheduling. The budget tests below
+// exercise strict thresholds with an injected clock and a real 5ms slow frame;
+// `npm run check` remains the strict, real-clock integration benchmark.
+const originalPerfEnv = process.env.FX_CHECK_PERF;
+process.env.FX_CHECK_PERF = '0';
+after(() => {
+  if (originalPerfEnv === undefined) delete process.env.FX_CHECK_PERF;
+  else process.env.FX_CHECK_PERF = originalPerfEnv;
+});
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const example = id => join(root, 'examples/fx', `${id}.js`);
@@ -317,22 +327,23 @@ test('CHK-02 defaults to 1.5% and exempts transition id, path, or category only'
   assert.equal(checkById(await checkFX(ordinary), 'CHK-02').pass, false);
 });
 
-test('CHK-03 uses median adjacent MSE times 1.5 and an absolute fallback for static loops', async t => {
-  const moving = await fixture(t, `const value=Math.round(this.t*31)%2*255;
+test('CHK-03 uses playback seam vs adjacent MSE times 1.5 with explicit optional tolerance', async t => {
+  const moving = await fixture(t, `const value=Math.round(this.t*32)%2*255;
     for(let y=12;y<20;y++) for(let x=12;x<20;x++) frame.data.set([value,30,40,255],(y*frame.w+x)*4);`, { loop: true });
-  const relative = checkById(await checkFX(moving, { fps: 31 }), 'CHK-03');
+  const relative = checkById(await checkFX(moving, { fps: 32 }), 'CHK-03');
   assert.equal(relative.pass, true);
   assert.ok(relative.runs[0].seam > 0.5);
   assert.equal(relative.runs[0].limit, relative.runs[0].medianAdjacent * 1.5);
-  const almostStatic = await fixture(t, `${solidCenter} if(this.t>0.99) frame.data[(14*frame.w+14)*4]++;`, { loop: true });
-  const fallback = checkById(await checkFX(almostStatic), 'CHK-03');
+  const almostStatic = await fixture(t, `${solidCenter} if(this.t>0.95) frame.data[(14*frame.w+14)*4]++;`, { loop: true });
+  assert.equal(checkById(await checkFX(almostStatic), 'CHK-03').pass, false);
+  const fallback = checkById(await checkFX(almostStatic, { seamThreshold: 0.5 }), 'CHK-03');
   assert.equal(fallback.pass, true);
   assert.equal(fallback.runs[0].medianAdjacent, 0);
   assert.equal(fallback.runs[0].limit, 0.5);
   assert.ok(fallback.runs[0].seam > 0);
 });
 
-test('CHK-04 rejects invisible and overfilled FX, with inclusive peak-fill bounds', async t => {
+test('CHK-04 rejects invisible and persistently overfilled FX, with inclusive fill bounds', async t => {
   for (const [body, meta, expected] of [
     ['', {}, false],
     ['frame.data.set([1,2,3,255],(16*frame.w+16)*4);', {}, false],
@@ -354,7 +365,7 @@ test('CHK-04 measures trailing blank duration, ignores windup and permits a shor
     assert.equal(checkById(checked, 'CHK-04').pass, expected, String(cutoff));
   }
   const windup = await fixture(t, `if(this.t>0.8) { ${solidCenter} }`, { prelude: 'export const act={windup:0.5};' });
-  assert.equal(checkById(await checkFX(windup), 'CHK-04').pass, true);
+  assert.equal(checkById(await checkFX(windup), 'CHK-04').pass, false, 'negative windup cannot excuse an 80% blank active head');
   const tail = await fixture(t, `if(this.t<0.5) { ${solidCenter} }`);
   const result = await cli('check', [tail]);
   assert.equal(result.status, 1);
@@ -445,11 +456,11 @@ test('CHK-06 loads optional named/default configs and passes context to async do
     await writeFile(configFile, source);
     assert.equal(checkById(await checkFX(file, { configFile }), 'CHK-06').pass, false, source);
   }
-  const exampleConfig = await checkFX(file, { configFile: join(root, 'fx.config.example.js') });
+  const exampleConfig = await checkFX(example('pulse-dot'), { configFile: join(root, 'fx.config.example.js') });
   const registered = checkById(exampleConfig, 'CHK-06');
   assert.equal(registered.pass, true);
-  assert.deepEqual(registered.plugins.map(plugin => plugin.id), ['example/no-op', 'inkfx/entropy', 'oledfx/shimmer']);
-  assert.equal(registered.plugins[1].skip, true);
+  assert.deepEqual(registered.plugins.map(plugin => plugin.id), ['inkfx/entropy']);
+  assert.equal(registered.plugins[0].pass, true);
 });
 
 test('new supports category/name, --loop/--sim and creates then updates a catalog without duplicates', async t => {
@@ -502,6 +513,9 @@ test('act emits every frame at fixed 12fps including windup, hit freeze and reco
     assert.equal(png.w, stats.sheet.w);
     assert.equal(png.h, stats.sheet.h);
     assert.deepEqual(stats.act, act);
+    assert.ok(stats.frames.some(frame => frame.phase === 'WINDUP'));
+    assert.ok(stats.frames.some(frame => frame.phase === 'FREEZE'));
+    assert.ok(stats.frames.some(frame => frame.phase === 'RECOVERY'));
     assert.equal(stats.requestedFps, 12);
     assert.equal(stats.frames[0].time, -0.2);
     assert.equal(stats.frames.at(-1).time, 0.85);

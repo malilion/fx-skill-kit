@@ -19,3 +19,10 @@ export function actTimeline(fx) {
   }
   return { startTime: -windup, endTime: Math.max(...events) + recovery };
 }
+
+export function actState(act, time, duration) {
+  if (!act) return {};
+  const hit = (act.hits ?? []).find(hit => time >= hit.t && time < hit.t + (hit.freeze ?? 0));
+  const pose = (act.poses ?? []).filter(pose => pose[0] <= time).sort((a, b) => b[0] - a[0])[0]?.[1];
+  return { phase: time < 0 ? 'WINDUP' : hit ? 'FREEZE' : time >= duration ? 'RECOVERY' : 'ACTIVE', pose };
+}

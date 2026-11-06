@@ -6,10 +6,11 @@
   "type": "module",
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test",
+    "test": "node --test --test-concurrency=1",
     "check": "node tools/check.mjs",
     "render": "node tools/render.mjs",
     "new": "node tools/new.mjs",
-    "act": "node tools/act.mjs"
+    "act": "node tools/act.mjs",
+    "mcp": "node tools/mcp-server.mjs"
   }
 }

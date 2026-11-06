@@ -1,0 +1,165 @@
+[
+  {
+    "file": "examples/fx/pulse-dot.js",
+    "pass": true,
+    "checks": [
+      {
+        "id": "CHK-01",
+        "pass": true,
+        "detail": "Determinism seed=42 SHA-256 2474a07259c3751a4a361489d88934ee61d197d27fa38d7b4aec238c29f09dbd / 2474a07259c3751a4a361489d88934ee61d197d27fa38d7b4aec238c29f09dbd"
+      },
+      {
+        "id": "CHK-02",
+        "pass": true,
+        "skip": false,
+        "detail": "Edge Spill 0.000% < 1.500%"
+      },
+      {
+        "id": "CHK-03",
+        "pass": true,
+        "skip": true,
+        "detail": "Loop Seam: meta.loop=false"
+      },
+      {
+        "id": "CHK-04",
+        "pass": true,
+        "runs": [
+          {
+            "maxFill": 0.2459375,
+            "minFill": 0,
+            "leadingRatio": 0.03333333333333333,
+            "trailingRatio": 0.03333333333333333,
+            "pass": true
+          },
+          {
+            "maxFill": 0.2459375,
+            "minFill": 0,
+            "leadingRatio": 0.03333333333333333,
+            "trailingRatio": 0.03333333333333333,
+            "pass": true
+          }
+        ],
+        "detail": "Dead Frames: visible >= 0.2%, not overfilled throughout > 85%; blank head/tail 3.33%/3.33%; 3.33%/3.33% <= 15%"
+      },
+      {
+        "id": "CHK-05",
+        "pass": true,
+        "p95": 0.3591179996728897,
+        "max": 0.4190019965171814,
+        "steps": 300,
+        "hz": 120,
+        "warmupSteps": 360,
+        "soft": false,
+        "budgetPass": true,
+        "detail": "Frame Budget: 300 steps at 120Hz; p95 0.359ms < 1.5ms; max 0.419ms < 3.0ms"
+      },
+      {
+        "id": "CHK-06",
+        "pass": true,
+        "skip": false,
+        "detail": "Domain Plugin: inkfx/entropy: PASS density entropy 1.948 bits >= 0.5",
+        "plugins": [
+          {
+            "id": "inkfx/entropy",
+            "pass": true,
+            "skip": false,
+            "detail": "density entropy 1.948 bits >= 0.5"
+          }
+        ]
+      }
+    ],
+    "hash": "2474a07259c3751a4a361489d88934ee61d197d27fa38d7b4aec238c29f09dbd"
+  },
+  {
+    "file": "examples/fx/orbit-loop.js",
+    "pass": true,
+    "checks": [
+      {
+        "id": "CHK-01",
+        "pass": true,
+        "detail": "Determinism seed=42 SHA-256 0998a3339c365f45720cc3c047c9c61e6e60d7b427a2b8e0bc8748caef0d0bc2 / 0998a3339c365f45720cc3c047c9c61e6e60d7b427a2b8e0bc8748caef0d0bc2"
+      },
+      {
+        "id": "CHK-02",
+        "pass": true,
+        "skip": false,
+        "detail": "Edge Spill 0.000% < 1.500%"
+      },
+      {
+        "id": "CHK-03",
+        "pass": true,
+        "runs": [
+          {
+            "seam": 35.65458984375,
+            "medianAdjacent": 39.876611328125,
+            "limit": 59.814916992187506,
+            "centroidShift": 3.0119064718768946,
+            "medianAdjacentShift": 3.44612245596983,
+            "centroidLimit": 5.169183683954745,
+            "time": 1.9666666666666666,
+            "pass": true
+          },
+          {
+            "seam": 35.65458984375,
+            "medianAdjacent": 39.876611328125,
+            "limit": 59.814916992187506,
+            "centroidShift": 3.0119064718768946,
+            "medianAdjacentShift": 3.44612245596983,
+            "centroidLimit": 5.169183683954745,
+            "time": 1.9666666666666666,
+            "pass": true
+          }
+        ],
+        "detail": "Loop Seam t=1.9667 MSE 35.654590 <= 59.814917; centroid 3.0119px <= 5.1692px (adjacent x 1.5); t=1.9667 MSE 35.654590 <= 59.814917; centroid 3.0119px <= 5.1692px (adjacent x 1.5)"
+      },
+      {
+        "id": "CHK-04",
+        "pass": true,
+        "runs": [
+          {
+            "maxFill": 0.0216796875,
+            "minFill": 0.0180078125,
+            "leadingRatio": 0,
+            "trailingRatio": 0,
+            "pass": true
+          },
+          {
+            "maxFill": 0.0216796875,
+            "minFill": 0.0180078125,
+            "leadingRatio": 0,
+            "trailingRatio": 0,
+            "pass": true
+          }
+        ],
+        "detail": "Dead Frames: visible >= 0.2%, not overfilled throughout > 85%; blank head/tail 0.00%/0.00%; 0.00%/0.00% <= 15%"
+      },
+      {
+        "id": "CHK-05",
+        "pass": true,
+        "p95": 0.053891003131866455,
+        "max": 0.11114300787448883,
+        "steps": 300,
+        "hz": 120,
+        "warmupSteps": 360,
+        "soft": false,
+        "budgetPass": true,
+        "detail": "Frame Budget: 300 steps at 120Hz; p95 0.054ms < 1.5ms; max 0.111ms < 3.0ms"
+      },
+      {
+        "id": "CHK-06",
+        "pass": true,
+        "skip": false,
+        "detail": "Domain Plugin: inkfx/entropy: PASS density entropy 1.968 bits >= 0.5",
+        "plugins": [
+          {
+            "id": "inkfx/entropy",
+            "pass": true,
+            "skip": false,
+            "detail": "density entropy 1.968 bits >= 0.5"
+          }
+        ]
+      }
+    ],
+    "hash": "0998a3339c365f45720cc3c047c9c61e6e60d7b427a2b8e0bc8748caef0d0bc2"
+  }
+]

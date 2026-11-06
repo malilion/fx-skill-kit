@@ -6,10 +6,40 @@ import { createFrame, clear } from '../src/core/frame.js';
 import { examples, isMain, parseArgs, numberOption, resolveFXFile } from './cli.mjs';
 
 const median = values => {
+  if (!values.length) return 0;
   const sorted = values.toSorted((a, b) => a - b);
   const middle = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
 };
+
+function centroid(frame, w) {
+  let mass = 0, x = 0, y = 0;
+  for (let i = 3; i < frame.data.length; i += 4) {
+    const alpha = frame.data[i];
+    const pixel = (i - 3) / 4;
+    mass += alpha; x += (pixel % w) * alpha; y += Math.floor(pixel / w) * alpha;
+  }
+  return mass ? [x / mass, y / mass] : null;
+}
+
+export function loopSeam(run, tolerance = 0) {
+  const frames = run.frames;
+  const distance = (a, b) => {
+    const ca = centroid(a, run.meta.w), cb = centroid(b, run.meta.w);
+    if (!ca && !cb) return 0;
+    if (!ca || !cb) return Math.hypot(run.meta.w, run.meta.h);
+    return Math.hypot(ca[0] - cb[0], ca[1] - cb[1]);
+  };
+  const first = frames[0], last = frames.at(-1);
+  const seam = mse(first.data, last.data);
+  const adjacent = median(frames.slice(1).map((frame, i) => mse(frames[i].data, frame.data)));
+  const shift = distance(first, last);
+  const adjacentShift = median(frames.slice(1).map((frame, i) => distance(frames[i], frame)));
+  const limit = Math.max(tolerance, adjacent * 1.5);
+  const shiftLimit = adjacentShift * 1.5;
+  return { seam, medianAdjacent: adjacent, limit, centroidShift: shift, medianAdjacentShift: adjacentShift,
+    centroidLimit: shiftLimit, time: last.time, pass: seam <= limit + 1e-10 && shift <= shiftLimit + 1e-8 };
+}
 
 // Use a private clock so FX cannot access the guarded wall/performance clocks.
 export function frameBudget(fx, { seed = 42, warmupSteps = 360, clock = () => Number(process.hrtime.bigint()) / 1e6 } = {}) {
@@ -67,7 +97,7 @@ async function domainChecks(configFile, ctx) {
 }
 
 export async function checkFX(file, {
-  seed = 42, fps = 30, edgeThreshold = 0.015, seamThreshold = 0.5,
+  seed = 42, fps = 30, edgeThreshold = 0.015, seamThreshold = 0,
   perfSoft = false, configFile = 'fx.config.js',
 } = {}) {
   if (!Number.isFinite(edgeThreshold) || edgeThreshold < 0 || edgeThreshold > 1 ||
@@ -83,6 +113,8 @@ export async function checkFX(file, {
     checks.push({ id: 'CHK-01', pass: a.hash === b.hash, detail: `Determinism seed=${seed} SHA-256 ${a.hash} / ${b.hash}` });
   } catch (error) {
     checks.push({ id: 'CHK-01', pass: false, detail: `Determinism: ${error.message}` });
+    for (let id = 2; id <= 6; id++) checks.push({ id: `CHK-0${id}`, pass: false, skip: true, blocked: true,
+      detail: 'Not run: CHK-01 could not produce valid deterministic frames' });
     return { file, pass: false, checks };
   }
   const runs = [a, b];
@@ -92,27 +124,36 @@ export async function checkFX(file, {
   checks.push({ id: 'CHK-02', pass: transition || edge < edgeThreshold, skip: transition,
     detail: transition ? 'Edge Spill: transitions exemption' : `Edge Spill ${(edge * 100).toFixed(3)}% < ${(edgeThreshold * 100).toFixed(3)}%` });
   if (a.meta.loop) {
-    const seams = runs.map(run => {
-      const seam = mse(run.frames[0].data, run.frames.at(-1).data);
-      const adjacent = median(run.frames.slice(1).map((frame, i) => mse(run.frames[i].data, frame.data)));
-      const limit = Math.max(seamThreshold, adjacent * 1.5);
-      return { seam, medianAdjacent: adjacent, limit, pass: seam <= limit };
-    });
-    checks.push({ id: 'CHK-03', pass: seams.every(seam => seam.pass), runs: seams,
-      detail: `Loop Seam ${seams.map(s => `MSE ${s.seam.toFixed(6)} <= max(${seamThreshold}, median ${s.medianAdjacent.toFixed(6)} x 1.5)`).join('; ')}` });
+    try {
+      const seams = await withoutMathRandom(async () => {
+        if (fx.meta.duration <= 1 / fps) throw new Error('Loop needs at least two playback frames; increase --fps');
+        return runs.map(() => loopSeam(sampleFX(fx, {
+          seed, fps, endTime: fx.meta.duration - 1 / fps, fixedFps: true,
+        }), seamThreshold));
+      });
+      checks.push({ id: 'CHK-03', pass: seams.every(seam => seam.pass), runs: seams,
+        detail: `Loop Seam ${seams.map(s => `t=${s.time.toFixed(4)} MSE ${s.seam.toFixed(6)} <= ${s.limit.toFixed(6)}; centroid ${s.centroidShift.toFixed(4)}px <= ${s.centroidLimit.toFixed(4)}px (adjacent x 1.5)`).join('; ')}` });
+    } catch (error) {
+      checks.push({ id: 'CHK-03', pass: false, detail: `Loop Seam: ${error.message}` });
+    }
   } else {
     checks.push({ id: 'CHK-03', pass: true, skip: true, detail: 'Loop Seam: meta.loop=false' });
   }
   const dead = runs.map(run => {
     const frames = run.frames.filter(frame => frame.time >= 0); // Exclude negative windup.
     const maxFill = Math.max(...frames.map(frame => frame.fillRatio));
+    const minFill = Math.min(...frames.map(frame => frame.fillRatio));
+    let leading = 0;
+    for (const frame of frames) { if (frame.fillRatio > 1e-6) break; leading++; }
     let trailing = 0;
     for (let i = frames.length - 1; i >= 0 && frames[i].fillRatio <= 1e-6; i--) trailing++;
     const trailingRatio = Math.min(1, trailing * run.dt / run.meta.duration);
-    return { maxFill, trailingRatio, pass: maxFill >= 0.002 && maxFill <= 0.85 && trailingRatio <= 0.15 };
+    const leadingRatio = Math.min(1, leading * run.dt / run.meta.duration);
+    return { maxFill, minFill, leadingRatio, trailingRatio,
+      pass: maxFill >= 0.002 && minFill <= 0.85 && trailingRatio <= 0.15 && leadingRatio <= 0.15 };
   });
   checks.push({ id: 'CHK-04', pass: dead.every(run => run.pass), runs: dead,
-    detail: `Dead Frames: peak fill ${(Math.max(...dead.map(r => r.maxFill)) * 100).toFixed(3)}% (0.2%-85%); blank tail ${(Math.max(...dead.map(r => r.trailingRatio)) * 100).toFixed(2)}% <= 15%` });
+    detail: `Dead Frames: visible >= 0.2%, not overfilled throughout > 85%; blank head/tail ${dead.map(r => `${(r.leadingRatio * 100).toFixed(2)}%/${(r.trailingRatio * 100).toFixed(2)}%`).join('; ')} <= 15%` });
   if (process.env.FX_CHECK_PERF === '0') {
     checks.push({ id: 'CHK-05', pass: true, skip: true, detail: 'Frame Budget: FX_CHECK_PERF=0' });
   } else {
@@ -133,24 +174,29 @@ export async function checkFX(file, {
 }
 
 export async function main(args = process.argv.slice(2), { log = console.log } = {}) {
-  const { files, options } = parseArgs(args, ['seed', 'fps', 'edge-threshold', 'seam-threshold', 'config'], ['perf-soft']);
+  const { files, options } = parseArgs(args, ['seed', 'fps', 'edge-threshold', 'seam-threshold', 'config'], ['perf-soft', 'json']);
   if (options.help) {
-    log('Usage: npm run check -- [file.js|id ...] [--seed 42] [--fps 30] [--edge-threshold 0.015] [--seam-threshold 0.5] [--perf-soft] [--config fx.config.js]');
+    log('Usage: npm run check -- [file.js|id ...] [--seed 42] [--fps 30] [--json] [--edge-threshold 0.015] [--seam-threshold 0] [--perf-soft] [--config fx.config.js]');
     return;
   }
   let failed = false;
+  const reports = [];
   for (const input of files.length ? files : examples) {
     const file = await resolveFXFile(input);
     const result = await checkFX(file, {
       seed: numberOption(options, 'seed', 42), fps: numberOption(options, 'fps', 30),
       edgeThreshold: numberOption(options, 'edge-threshold', 0.015),
-      seamThreshold: numberOption(options, 'seam-threshold', 0.5),
+      seamThreshold: numberOption(options, 'seam-threshold', 0),
       perfSoft: Boolean(options['perf-soft']), configFile: options.config,
     });
-    log(file);
-    for (const check of result.checks) log(`  ${check.skip ? 'SKIP' : check.soft ? 'WARN' : check.pass ? 'PASS' : 'FAIL'} ${check.id} ${check.detail}`);
+    reports.push(result);
+    if (!options.json) {
+      log(file);
+      for (const check of result.checks) log(`  ${check.skip ? 'SKIP' : check.soft ? 'WARN' : check.pass ? 'PASS' : 'FAIL'} ${check.id} ${check.detail}`);
+    }
     failed ||= !result.pass;
   }
+  if (options.json) log(JSON.stringify(reports, null, 2));
   if (failed) process.exitCode = 1;
 }
 

@@ -83,7 +83,8 @@
       frame = createFrame(module.meta.w, module.meta.h, module.meta.ox, module.meta.oy);
       canvas.width = frame.w; canvas.height = frame.h;
       image = new ImageData(frame.data, frame.w, frame.h);
-      ticks = Math.ceil(module.meta.duration * 60); dt = module.meta.duration / ticks;
+      const hz = module.meta.sim ? 120 : 60;
+      ticks = Math.ceil(module.meta.duration * hz); dt = module.meta.sim ? 1 / 120 : module.meta.duration / ticks;
       tick = 0; accumulator = 0; previous = 0;
       $('sheet').href = `../records/${module.meta.id}/contact.png`;
       paint();

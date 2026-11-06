@@ -12,4 +12,4 @@ All FX drawing helpers use straight-alpha RGBA byte colors and a row-major `Uint
 
 Use `frame.ox`/`frame.oy` as the effect origin. Generate random particle parameters in `create({seed})`; advance state only in `step(dt)`; render a complete frame in `draw(frame)`. Keep transparent pixels' RGB zero. Avoid `Math.random`, `Date.now`, and `performance.now`.
 
-A non-loop envelope can use `Math.sin(Math.PI * Math.min(1,t/duration))`; a loop can use `150 + 80*Math.sin(2*Math.PI*t/duration)` for alpha. Handle negative t explicitly when authoring windup. See [AUTHORING.md](../../../docs/AUTHORING.md) for the full lifecycle and checks.
+A non-loop envelope can use `Math.sin(Math.PI * Math.min(1,t/duration))`; a loop can use `150 + 80*Math.cos(2*Math.PI*t/duration)` for alpha. Handle negative t explicitly when authoring windup. See [AUTHORING.md](../../../docs/AUTHORING.md) for the full lifecycle and checks.
