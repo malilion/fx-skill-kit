@@ -1,0 +1,26 @@
+---
+name: fx-authoring
+description: Create or refine deterministic procedural FX in fx-skill-kit using its RGBA contract, automated checks, and contact-sheet visual review. Use for FX module authoring rather than general image generation.
+---
+
+# FX authoring loop
+
+Read [the authoring contract](../../docs/AUTHORING.md) before changing an FX. Use repo-root commands. Keep the tools dependency-free, use seeded randomness, and keep content clear of the outermost pixel ring.
+
+Follow **Draft → Check → Render → Look → Refine** for every new effect and visual change. Passing checks alone does not complete the task.
+
+1. **Draft.** Scaffold with `npm run new -- <id>` or edit an existing module. Export the required metadata and a fresh `create({seed})` instance. Define intended timing, origin, silhouette, and whether the animation loops. Generate random parameters in `create`; drawing must not mutate simulation state.
+2. **Check.** Run `npm run check -- examples/fx/<id>.js --seed 1`. Fix every CHK-01..03 failure before proceeding. Preserve the animation's intended behavior rather than loosening thresholds to hide defects. CHK-04..06 are reserved and do not block Phase 1.
+3. **Render.** Run `npm run render -- examples/fx/<id>.js --seed 1`. Keep sampling and seed consistent with the check. Read `contact.json` for precise times and stats when needed.
+4. **Look.** Open and inspect the actual `examples/out/<id>/contact.png` with an available image viewer. Read left to right, top to bottom. Compare the first and final cells for loops, and adjacent cells for unexpected jumps. Check silhouette, ink softness, motion rhythm, clipping, and readability at the intended size. Do not infer visual quality only from hashes or statistics. If no image viewer is available, report that visual inspection is incomplete.
+5. **Refine.** Change the FX to address concrete issues observed in the sheet, then repeat Check → Render → Look. If the sheet already meets the intended result, record that no visual correction was needed. Finish only with current passing checks and an inspected sheet from the final FX source.
+
+## Reading a contact sheet
+
+- **Frame index** identifies the simulation tick. Cells may skip ticks; inspect the JSON `sheet.selected` list before interpreting a gap as a motion jump. Increase `--frames` for short bursts.
+- **Time** is elapsed seconds, including zero and the declared duration. Labels round to milliseconds; JSON retains full precision. Use it to judge anticipation, impact, and decay rather than assuming each cell is one display frame.
+- **Crosshair / OX / OY** mark the declared local origin. Watch for unintended drift or off-center expansion. The crosshair is an overlay, not FX content.
+- **Safe-area border** is a faint 8% inset guide. Leave breathing room for soft fringes; CHK-02 independently tests the outermost ring.
+- **Fill%** counts nontransparent FX pixels before overlays. Sudden spikes can reveal oversized radii or accidental full-frame fills; unexpectedly low values can reveal a missing draw. Compare cells and seeds; more fill is not inherently better.
+
+For seeded variations, repeat with another explicit seed and inspect that sheet too when randomness materially changes the silhouette. Report the final source path, check result, seed, and rendered sheet path. Do not claim unimplemented checks passed.

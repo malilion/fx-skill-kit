@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "orbit-loop",
+    "duration": 2,
+    "loop": true,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80
+  },
+  "seed": 1,
+  "requestedFps": 30,
+  "dt": 0.03333333333333333,
+  "hash": "2031161f6d4770bb418e6559131c368dd7813c3a3b7dda3b747cdc05492f0bf6",
+  "frameCount": 61,
+  "sheet": {
+    "w": 800,
+    "h": 1024,
+    "columns": 4,
+    "cellW": 192,
+    "cellH": 236,
+    "headerH": 64,
+    "selected": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      44,
+      48,
+      52,
+      56,
+      60
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": 0,
+      "fillRatio": 0.018515625,
+      "edgeRatio": 0,
+      "fillPercent": 1.8515625,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": 0.03333333333333333,
+      "fillRatio": 0.01859375,
+      "edgeRatio": 0,
+      "fillPercent": 1.859375,
+      "contactCell": null
+    },
+    {
+      "index": 2,
+      "time": 0.06666666666666667,
+      "fillRatio": 0.0190234375,
+      "edgeRatio": 0,
+      "fillPercent": 1.90234375,
+      "contactCell": null
+    },
+    {
+      "index": 3,
+      "time": 0.1,
+      "fillRatio": 0.0192578125,
+      "edgeRatio": 0,
+      "fillPercent": 1.92578125,
+      "contactCell": null
+    },
+    {
+      "index": 4,
+      "time": 0.13333333333333333,
+      "fillRatio": 0.019375,
+      "edgeRatio": 0,
+      "fillPercent": 1.9375,
+      "contactCell": 1
+    },
+    {
+      "index": 5,
+      "time": 0.16666666666666666,
+      "fillRatio": 0.020078125,
+      "edgeRatio": 0,
+      "fillPercent": 2.0078125,
+      "contactCell": null
+    },
+    {
+      "index": 6,
+      "time": 0.2,
+      "fillRatio": 0.0201953125,
+      "edgeRatio": 0,
+      "fillPercent": 2.01953125,
+      "contactCell": null
+    },
+    {
+      "index": 7,
+      "time": 0.23333333333333334,
+      "fillRatio": 0.020703125,
+      "edgeRatio": 0,
+      "fillPercent": 2.0703125,
+      "contactCell": null
+    },
+    {
+      "index": 8,
+      "time": 0.26666666666666666,
+      "fillRatio": 0.02109375,
+      "edgeRatio": 0,
+      "fillPercent": 2.109375,
+      "contactCell": 2
+    },
+    {
+      "index": 9,
+      "time": 0.3,
+      "fillRatio": 0.0209765625,
+      "edgeRatio": 0,
+      "fillPercent": 2.09765625,
+      "contactCell": null
+    },
+    {
+      "index": 10,
+      "time": 0.3333333333333333,
+      "fillRatio": 0.0210546875,
+      "edgeRatio": 0,
+      "fillPercent": 2.10546875,
+      "contactCell": null
+    },
+    {
+      "index": 11,
+      "time": 0.36666666666666664,
+      "fillRatio": 0.0216015625,
+      "edgeRatio": 0,
+      "fillPercent": 2.16015625,
+      "contactCell": null
+    },
+    {
+      "index": 12,
+      "time": 0.4,
+      "fillRatio": 0.021484375,
+      "edgeRatio": 0,
+      "fillPercent": 2.1484375,
+      "contactCell": 3
+    },
+    {
+      "index": 13,
+      "time": 0.43333333333333335,
+      "fillRatio": 0.0212890625,
+      "edgeRatio": 0,
+      "fillPercent": 2.12890625,
+      "contactCell": null
+    },
+    {
+      "index": 14,
+      "time": 0.4666666666666667,
+      "fillRatio": 0.021640625,
+      "edgeRatio": 0,
+      "fillPercent": 2.1640625,
+      "contactCell": null
+    },
+    {
+      "index": 15,
+      "time": 0.5,
+      "fillRatio": 0.0212109375,
+      "edgeRatio": 0,
+      "fillPercent": 2.12109375,
+      "contactCell": null
+    },
+    {
+      "index": 16,
+      "time": 0.5333333333333333,
+      "fillRatio": 0.0209765625,
+      "edgeRatio": 0,
+      "fillPercent": 2.09765625,
+      "contactCell": 4
+    },
+    {
+      "index": 17,
+      "time": 0.5666666666666667,
+      "fillRatio": 0.0208984375,
+      "edgeRatio": 0,
+      "fillPercent": 2.08984375,
+      "contactCell": null
+    },
+    {
+      "index": 18,
+      "time": 0.6,
+      "fillRatio": 0.0205078125,
+      "edgeRatio": 0,
+      "fillPercent": 2.05078125,
+      "contactCell": null
+    },
+    {
+      "index": 19,
+      "time": 0.6333333333333333,
+      "fillRatio": 0.019921875,
+      "edgeRatio": 0,
+      "fillPercent": 1.9921874999999998,
+      "contactCell": null
+    },
+    {
+      "index": 20,
+      "time": 0.6666666666666666,
+      "fillRatio": 0.0199609375,
+      "edgeRatio": 0,
+      "fillPercent": 1.9960937500000002,
+      "contactCell": 5
+    },
+    {
+      "index": 21,
+      "time": 0.7,
+      "fillRatio": 0.019609375,
+      "edgeRatio": 0,
+      "fillPercent": 1.9609374999999998,
+      "contactCell": null
+    },
+    {
+      "index": 22,
+      "time": 0.7333333333333333,
+      "fillRatio": 0.01921875,
+      "edgeRatio": 0,
+      "fillPercent": 1.921875,
+      "contactCell": null
+    },
+    {
+      "index": 23,
+      "time": 0.7666666666666666,
+      "fillRatio": 0.0191015625,
+      "edgeRatio": 0,
+      "fillPercent": 1.9101562499999998,
+      "contactCell": null
+    },
+    {
+      "index": 24,
+      "time": 0.8,
+      "fillRatio": 0.01875,
+      "edgeRatio": 0,
+      "fillPercent": 1.875,
+      "contactCell": 6
+    },
+    {
+      "index": 25,
+      "time": 0.8333333333333334,
+      "fillRatio": 0.0184375,
+      "edgeRatio": 0,
+      "fillPercent": 1.84375,
+      "contactCell": null
+    },
+    {
+      "index": 26,
+      "time": 0.8666666666666667,
+      "fillRatio": 0.0184765625,
+      "edgeRatio": 0,
+      "fillPercent": 1.8476562500000002,
+      "contactCell": null
+    },
+    {
+      "index": 27,
+      "time": 0.9,
+      "fillRatio": 0.0182421875,
+      "edgeRatio": 0,
+      "fillPercent": 1.82421875,
+      "contactCell": null
+    },
+    {
+      "index": 28,
+      "time": 0.9333333333333333,
+      "fillRatio": 0.018125,
+      "edgeRatio": 0,
+      "fillPercent": 1.8124999999999998,
+      "contactCell": 7
+    },
+    {
+      "index": 29,
+      "time": 0.9666666666666667,
+      "fillRatio": 0.018359375,
+      "edgeRatio": 0,
+      "fillPercent": 1.8359375,
+      "contactCell": null
+    },
+    {
+      "index": 30,
+      "time": 1,
+      "fillRatio": 0.018515625,
+      "edgeRatio": 0,
+      "fillPercent": 1.8515625,
+      "contactCell": null
+    },
+    {
+      "index": 31,
+      "time": 1.0333333333333332,
+      "fillRatio": 0.01859375,
+      "edgeRatio": 0,
+      "fillPercent": 1.859375,
+      "contactCell": null
+    },
+    {
+      "index": 32,
+      "time": 1.0666666666666667,
+      "fillRatio": 0.0190234375,
+      "edgeRatio": 0,
+      "fillPercent": 1.90234375,
+      "contactCell": 8
+    },
+    {
+      "index": 33,
+      "time": 1.1,
+      "fillRatio": 0.0192578125,
+      "edgeRatio": 0,
+      "fillPercent": 1.92578125,
+      "contactCell": null
+    },
+    {
+      "index": 34,
+      "time": 1.1333333333333333,
+      "fillRatio": 0.019375,
+      "edgeRatio": 0,
+      "fillPercent": 1.9375,
+      "contactCell": null
+    },
+    {
+      "index": 35,
+      "time": 1.1666666666666667,
+      "fillRatio": 0.020078125,
+      "edgeRatio": 0,
+      "fillPercent": 2.0078125,
+      "contactCell": null
+    },
+    {
+      "index": 36,
+      "time": 1.2,
+      "fillRatio": 0.0201953125,
+      "edgeRatio": 0,
+      "fillPercent": 2.01953125,
+      "contactCell": 9
+    },
+    {
+      "index": 37,
+      "time": 1.2333333333333334,
+      "fillRatio": 0.020703125,
+      "edgeRatio": 0,
+      "fillPercent": 2.0703125,
+      "contactCell": null
+    },
+    {
+      "index": 38,
+      "time": 1.2666666666666666,
+      "fillRatio": 0.02109375,
+      "edgeRatio": 0,
+      "fillPercent": 2.109375,
+      "contactCell": null
+    },
+    {
+      "index": 39,
+      "time": 1.3,
+      "fillRatio": 0.0209765625,
+      "edgeRatio": 0,
+      "fillPercent": 2.09765625,
+      "contactCell": null
+    },
+    {
+      "index": 40,
+      "time": 1.3333333333333333,
+      "fillRatio": 0.0210546875,
+      "edgeRatio": 0,
+      "fillPercent": 2.10546875,
+      "contactCell": 10
+    },
+    {
+      "index": 41,
+      "time": 1.3666666666666667,
+      "fillRatio": 0.0216015625,
+      "edgeRatio": 0,
+      "fillPercent": 2.16015625,
+      "contactCell": null
+    },
+    {
+      "index": 42,
+      "time": 1.4,
+      "fillRatio": 0.021484375,
+      "edgeRatio": 0,
+      "fillPercent": 2.1484375,
+      "contactCell": null
+    },
+    {
+      "index": 43,
+      "time": 1.4333333333333333,
+      "fillRatio": 0.0212890625,
+      "edgeRatio": 0,
+      "fillPercent": 2.12890625,
+      "contactCell": null
+    },
+    {
+      "index": 44,
+      "time": 1.4666666666666666,
+      "fillRatio": 0.021640625,
+      "edgeRatio": 0,
+      "fillPercent": 2.1640625,
+      "contactCell": 11
+    },
+    {
+      "index": 45,
+      "time": 1.5,
+      "fillRatio": 0.0212109375,
+      "edgeRatio": 0,
+      "fillPercent": 2.12109375,
+      "contactCell": null
+    },
+    {
+      "index": 46,
+      "time": 1.5333333333333332,
+      "fillRatio": 0.0209765625,
+      "edgeRatio": 0,
+      "fillPercent": 2.09765625,
+      "contactCell": null
+    },
+    {
+      "index": 47,
+      "time": 1.5666666666666667,
+      "fillRatio": 0.0208984375,
+      "edgeRatio": 0,
+      "fillPercent": 2.08984375,
+      "contactCell": null
+    },
+    {
+      "index": 48,
+      "time": 1.6,
+      "fillRatio": 0.0205078125,
+      "edgeRatio": 0,
+      "fillPercent": 2.05078125,
+      "contactCell": 12
+    },
+    {
+      "index": 49,
+      "time": 1.6333333333333333,
+      "fillRatio": 0.019921875,
+      "edgeRatio": 0,
+      "fillPercent": 1.9921874999999998,
+      "contactCell": null
+    },
+    {
+      "index": 50,
+      "time": 1.6666666666666667,
+      "fillRatio": 0.0199609375,
+      "edgeRatio": 0,
+      "fillPercent": 1.9960937500000002,
+      "contactCell": null
+    },
+    {
+      "index": 51,
+      "time": 1.7,
+      "fillRatio": 0.019609375,
+      "edgeRatio": 0,
+      "fillPercent": 1.9609374999999998,
+      "contactCell": null
+    },
+    {
+      "index": 52,
+      "time": 1.7333333333333334,
+      "fillRatio": 0.01921875,
+      "edgeRatio": 0,
+      "fillPercent": 1.921875,
+      "contactCell": 13
+    },
+    {
+      "index": 53,
+      "time": 1.7666666666666666,
+      "fillRatio": 0.0191015625,
+      "edgeRatio": 0,
+      "fillPercent": 1.9101562499999998,
+      "contactCell": null
+    },
+    {
+      "index": 54,
+      "time": 1.8,
+      "fillRatio": 0.01875,
+      "edgeRatio": 0,
+      "fillPercent": 1.875,
+      "contactCell": null
+    },
+    {
+      "index": 55,
+      "time": 1.8333333333333333,
+      "fillRatio": 0.0184375,
+      "edgeRatio": 0,
+      "fillPercent": 1.84375,
+      "contactCell": null
+    },
+    {
+      "index": 56,
+      "time": 1.8666666666666667,
+      "fillRatio": 0.0184765625,
+      "edgeRatio": 0,
+      "fillPercent": 1.8476562500000002,
+      "contactCell": 14
+    },
+    {
+      "index": 57,
+      "time": 1.9,
+      "fillRatio": 0.0182421875,
+      "edgeRatio": 0,
+      "fillPercent": 1.82421875,
+      "contactCell": null
+    },
+    {
+      "index": 58,
+      "time": 1.9333333333333333,
+      "fillRatio": 0.018125,
+      "edgeRatio": 0,
+      "fillPercent": 1.8124999999999998,
+      "contactCell": null
+    },
+    {
+      "index": 59,
+      "time": 1.9666666666666666,
+      "fillRatio": 0.018359375,
+      "edgeRatio": 0,
+      "fillPercent": 1.8359375,
+      "contactCell": null
+    },
+    {
+      "index": 60,
+      "time": 2,
+      "fillRatio": 0.018515625,
+      "edgeRatio": 0,
+      "fillPercent": 1.8515625,
+      "contactCell": 15
+    }
+  ]
+}
