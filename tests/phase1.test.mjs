@@ -426,6 +426,54 @@ test('CHK-05 hard fails by default, supports --perf-soft, and FX_CHECK_PERF=0 sk
   assert.equal((await checkFX(otherFailure, { perfSoft: true })).pass, false, 'perf options do not mask dead frames');
 });
 
+test('CHK-05 on CI uses median of trials and a relaxed budget; local stays strict', () => {
+  const originalCi = process.env.CI;
+  const fx = { meta: { duration: 1, w: 2, h: 2, ox: 1, oy: 1 }, create() {
+    return { t: 0, step(dt) { this.t += dt; }, draw() {} };
+  } };
+  try {
+    delete process.env.CI;
+    let ticks = 0;
+    const local = frameBudget(fx, { clock: () => ticks++ });
+    assert.equal(local.trials, 1);
+    assert.equal(local.p95Limit, 1.5);
+    assert.equal(local.maxLimit, 3);
+    assert.equal(local.pass, true);
+
+    process.env.CI = 'true';
+    ticks = 0;
+    const ci = frameBudget(fx, { clock: () => ticks++ });
+    assert.equal(ci.trials, 5);
+    assert.equal(ci.p95Limit, 2.5);
+    assert.equal(ci.maxLimit, 5);
+    assert.equal(ci.pass, true);
+
+    // One of five trials reports max=4; median max stays 1 → still under CI limit 5.
+    let calls = 0;
+    const spiked = frameBudget(fx, {
+      trials: 5,
+      p95Limit: 1.5,
+      maxLimit: 3,
+      clock: () => {
+        const n = calls++;
+        // Only measured steps call clock (2× per step → 600 calls/trial). Spike trial 0 deltas to 4.
+        const trial = Math.floor(n / 600);
+        return n + (trial === 0 && n % 2 === 1 ? 3 : 0);
+      },
+    });
+    assert.equal(spiked.trials, 5);
+    assert.equal(spiked.max, 1, `median max should ignore single-trial spike, got ${spiked.max}`);
+    assert.equal(spiked.pass, true);
+
+    ticks = 0;
+    const forced = frameBudget(fx, { trials: 1, p95Limit: 1.5, maxLimit: 3, clock: () => ticks++ * 2 });
+    assert.equal(forced.pass, false, 'explicit strict limits still hard-fail');
+  } finally {
+    if (originalCi === undefined) delete process.env.CI;
+    else process.env.CI = originalCi;
+  }
+});
+
 test('CHK-06 loads optional named/default configs and passes context to async domain checks', async t => {
   const dir = await temporary(t);
   const file = await fixture(t, solidCenter);
