@@ -380,18 +380,20 @@ test('CHK-05 warms up, measures exactly 300 step+draw calls at 120Hz, and enforc
     return { t: 0, step(dt) { assert.equal(dt, 1 / 120); this.t += dt; steps++; }, draw() { draws++; } };
   } };
   let ticks = 0;
-  const budget = frameBudget(fx, { clock: () => ticks++ });
+  // Force one trial: GitHub Actions sets CI=true which would otherwise run 5.
+  const budget = frameBudget(fx, { trials: 1, p95Limit: 1.5, maxLimit: 3, clock: () => ticks++ });
   assert.equal(budget.pass, true);
   assert.equal(budget.p95, 1);
   assert.equal(budget.max, 1);
   assert.equal(budget.steps, 300);
+  assert.equal(budget.trials, 1);
   assert.equal(steps, 660);
   assert.equal(draws, steps);
   assert.ok(creates >= 5, 'replays animation instead of measuring beyond its lifetime');
   ticks = 0;
-  assert.equal(frameBudget(fx, { clock: () => ticks++ * 1.5 }).pass, false, 'p95 limit is strict');
+  assert.equal(frameBudget(fx, { trials: 1, p95Limit: 1.5, maxLimit: 3, clock: () => ticks++ * 1.5 }).pass, false, 'p95 limit is strict');
   ticks = 0;
-  const spike = frameBudget(fx, { clock: () => {
+  const spike = frameBudget(fx, { trials: 1, p95Limit: 1.5, maxLimit: 3, clock: () => {
     const call = ticks++;
     return Math.floor(call / 2) * 10 + (call % 2 ? (call === 599 ? 3 : 1) : 0);
   } });
