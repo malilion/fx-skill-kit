@@ -1,5 +1,8 @@
 # fx-skill-kit
 
+<p align="center"><img src="docs/brand/icon-512.png" alt="fx-skill-kit mark — contact sheet + agent loop" width="160" height="160"></p>
+
+
 **Zero-dependency procedural FX authoring: six quality checks, visual review, sprite/GIF export, and four MCP tools.**
 
 ![Orbit loop preview](records/orbit-loop/preview.gif)

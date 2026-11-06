@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>fx-skill-kit · Local gallery</title>
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="./favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="./logo.png">
   <style>
     :root { color-scheme: light; font-family: ui-sans-serif, system-ui, sans-serif; color: #233d43; background: #f5f1e9; }
     * { box-sizing: border-box; }
@@ -23,6 +26,8 @@
     button { cursor: pointer; flex: 1; }
     button:hover { background: #e2eae3; }
     button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #416c72; outline-offset: 3px; }
+    .brand-row { margin: 0 0 8px; }
+    .brand-logo { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 24px rgba(23,40,48,.18); }
     #status { font: 13px/1.8 ui-monospace, monospace; display: block; margin: 22px 0 0; }
     .note { border-top: 1px solid #d7ddd4; padding-top: 20px; font-size: 14px; }
     a { color: #276b78; }
@@ -32,6 +37,7 @@
 <body>
   <main>
     <div class="eyebrow">fx-skill-kit / local gallery</div>
+    <p class="brand-row"><img class="brand-logo" src="./logo.svg" width="56" height="56" alt="fx-skill-kit"></p>
     <h1>Small effects. A clearer view.</h1>
     <p>Watch the ink bloom or follow a particle around its orbit. Change the seed, replay the motion, and check how each effect sits around its origin.</p>
     <div class="workspace">

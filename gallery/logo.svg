@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="fx-skill-kit">
+  <defs>
+    <linearGradient id="kitbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#12161f"/>
+      <stop offset="100%" stop-color="#1b2230"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7dd3c0"/>
+      <stop offset="100%" stop-color="#5b8def"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#kitbg)"/>
+  <rect x="18" y="18" width="476" height="476" rx="82" fill="none" stroke="#2c3648" stroke-width="6"/>
+  <!-- contact sheet 3x2 cells -->
+  <g fill="#0c1018" stroke="#3a465c" stroke-width="4">
+    <rect x="72" y="88" width="112" height="88" rx="10"/>
+    <rect x="200" y="88" width="112" height="88" rx="10"/>
+    <rect x="328" y="88" width="112" height="88" rx="10"/>
+    <rect x="72" y="196" width="112" height="88" rx="10"/>
+    <rect x="200" y="196" width="112" height="88" rx="10"/>
+    <rect x="328" y="196" width="112" height="88" rx="10"/>
+  </g>
+  <!-- miniature FX glyphs inside cells -->
+  <g fill="none" stroke="#7dd3c0" stroke-width="5" stroke-linecap="round">
+    <circle cx="128" cy="132" r="22"/>
+    <path d="M230 148 C248 118, 268 118, 286 148"/>
+    <path d="M348 120 L384 164 M384 120 L348 164"/>
+  </g>
+  <g fill="none" stroke="#5b8def" stroke-width="5" stroke-linecap="round">
+    <path d="M96 240 H160 M128 220 V260"/>
+    <path d="M224 220 C256 220, 256 260, 288 260"/>
+    <circle cx="384" cy="240" r="8"/><circle cx="360" cy="240" r="8" opacity="0.55"/><circle cx="408" cy="240" r="8" opacity="0.55"/>
+  </g>
+  <!-- agent loop arc: Draft → Check → Render → Look -->
+  <path d="M120 360 C160 320, 352 320, 392 360" fill="none" stroke="url(#accent)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M372 340 L404 360 L372 380" fill="none" stroke="#5b8def" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- four loop nodes -->
+  <g>
+    <circle cx="128" cy="356" r="16" fill="#7dd3c0"/>
+    <circle cx="220" cy="332" r="16" fill="#6bb8e8"/>
+    <circle cx="312" cy="332" r="16" fill="#5b8def"/>
+    <circle cx="392" cy="360" r="16" fill="#8b7cf0"/>
+  </g>
+  <!-- wrench / toolkit tick overlapping loop -->
+  <path d="M96 400 L130 434 L148 416 L114 382 Z" fill="#c9d2e3" opacity="0.9"/>
+  <rect x="140" y="408" width="52" height="14" rx="4" transform="rotate(-45 140 408)" fill="#c9d2e3" opacity="0.9"/>
+  <!-- CHK badge -->
+  <rect x="360" y="400" width="72" height="36" rx="8" fill="#1e2a3d" stroke="#7dd3c0" stroke-width="3"/>
+  <path d="M376 418 L386 428 L416 402" fill="none" stroke="#7dd3c0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
