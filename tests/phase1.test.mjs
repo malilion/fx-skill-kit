@@ -618,3 +618,15 @@ test('render and act default to records/<category/name> and catalog lists real e
   assert.deepEqual(catalog.effects.map(effect => effect.id).sort(), ['orbit-loop', 'pulse-dot']);
   for (const effect of catalog.effects) assert.equal((await loadFX(join(root, effect.file))).meta.id, effect.id);
 });
+
+
+test('unknown catalog IDs give recovery guidance and never become import errors', async () => {
+  for (const tool of ['check', 'render', 'act']) {
+    const result = await cli(tool, ['pulse-dto']);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /Unknown effect ID: "pulse-dto"/);
+    assert.match(result.stderr, /orbit-loop, pulse-dot/);
+    assert.match(result.stderr, /\.js\/\.mjs file path/);
+    assert.doesNotMatch(result.stdout + result.stderr, /ERR_MODULE_NOT_FOUND/);
+  }
+});

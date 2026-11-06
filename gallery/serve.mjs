@@ -25,4 +25,6 @@ const server = createServer(async (req, res) => {
   }
 });
 server.on('error', error => { console.error(error.message); process.exitCode = 1; });
-server.listen(8080, '127.0.0.1', () => console.log('FX gallery: http://127.0.0.1:8080/gallery/ (Ctrl+C to stop)'));
+const port = Number(process.env.PORT ?? 8080);
+if (!Number.isInteger(port) || port < 0 || port > 65535) throw new RangeError('Invalid PORT');
+server.listen(port, '127.0.0.1', () => console.log(`FX gallery: http://127.0.0.1:${server.address().port}/gallery/ (Ctrl+C to stop)`));

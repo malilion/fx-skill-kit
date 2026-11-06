@@ -1,0 +1,57 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "gallery/**"
+      - "src/**"
+      - "docs/**"
+      - "examples/**"
+      - "records/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify private repository and Pages visibility
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api 'repos/${{ github.repository }}' --jq .private)" = true
+          test "$(gh api 'repos/${{ github.repository }}/pages' --jq .public)" = false
+      - name: Stage browser assets without a build
+        run: |
+          mkdir -p _site
+          cp -R gallery src docs examples records _site/
+          cat > _site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta http-equiv="refresh" content="0; url=./gallery/">
+          <title>fx-skill-kit gallery</title>
+          <a href="./gallery/">Open the fx-skill-kit gallery</a>
+          </html>
+          HTML
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy private Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

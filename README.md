@@ -7,9 +7,16 @@
 
 ![Orbit loop preview](records/orbit-loop/preview.gif)
 
-Draft a tiny JavaScript effect, check its behavior, and render a contact sheet you can actually judge. fx-skill-kit gives humans and coding agents the same loop: **Draft → Check → Render → Look → Refine**.
+For procedural-asset developers and coding-agent authors working with deterministic RGBA effects. Draft a tiny JavaScript effect, check its behavior, and render a contact sheet you can actually judge. fx-skill-kit gives humans and coding agents the same loop: **Draft → Check → Render → Look → Refine**.
 
 It catches unseeded randomness and clocks, edge spill, broken loop seams, dead frames, and slow drawing. Optional domain plugins add project-specific checks. Every contact-sheet cell shows a frame number, elapsed seconds, fill percentage, safe-area guide, and origin crosshair. The JSON beside it keeps full-precision timings and frame statistics.
+
+The starter catalog contains **2 effects**, both uncategorized in `src/catalog.json`; it is a tooling starter, with no larger FX library bundled.
+
+| Catalog category | Effects |
+| --- | ---: |
+| Uncategorized (`orbit-loop`, `pulse-dot`) | 2 |
+| **Total** | **2** |
 
 ## Try it
 
@@ -18,9 +25,13 @@ Requires Node.js 20 or newer. No package installation or build step.
 ```sh
 npm test
 npm run check
-npm run render -- --sheet --gif
-npm run act
-# Open records/pulse-dot/contact.png and records/orbit-loop/act-strip.png
+npm run check -- pulse-dot --seed 42
+npm run render -- pulse-dot --seed 42 --sheet --gif --out artifacts/pulse-dot
+npm run act -- orbit-loop --seed 42 --out artifacts/orbit-loop
+# Open artifacts/pulse-dot/contact.png and artifacts/orbit-loop/act-strip.png
+
+npm run gallery
+# Open http://127.0.0.1:8080/gallery/
 ```
 
 Create your own effect, then check and inspect it:
@@ -64,7 +75,7 @@ Read each sheet left to right, top to bottom. The crosshair anchors the effect's
 ## Preview in motion
 
 ```sh
-node gallery/serve.mjs
+npm run gallery
 # Open http://127.0.0.1:8080/gallery/
 ```
 
@@ -73,3 +84,9 @@ The static gallery loads the same ES modules onto a canvas, with seed selection,
 See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and check contracts. Agents can follow [the FX authoring skill](skills/fx-authoring/SKILL.md) to keep visual inspection in the loop.
 
 Private project. Core tools use pure ESM and Node built-ins, with zero runtime dependencies.
+
+Private gallery deployment: [GitHub Pages](https://malilion.github.io/fx-skill-kit/gallery/) once private Pages is enabled and its workflow succeeds. Access is limited to authorized repository collaborators after GitHub sign-in; an anonymous 404 does not establish a deployment failure. The deploy artifact includes source modules, example effects, documentation, and the gallery’s linked contact sheets.
+
+Not included: physical ESP32 flashing or display verification, a hardware-specific compressed player, or launch videos. C-header export is software tested; use oledfx for its dedicated compression pipeline and firmware examples.
+
+If a command fails, use Node.js 20+ and run it from the repository root so catalog IDs resolve. Unknown IDs list available catalog entries; a local module can be passed as a `.js`/`.mjs` path. If port 8080 is in use, run `PORT=8081 npm run gallery` on macOS/Linux and open http://127.0.0.1:8081/gallery/ (PowerShell: `$env:PORT=8081; npm run gallery`).

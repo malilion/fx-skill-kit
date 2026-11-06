@@ -27,9 +27,11 @@ export async function resolveFXFile(input) {
   if (input.endsWith('.js') || input.endsWith('.mjs')) return input;
   try {
     const catalog = JSON.parse(await readFile('src/catalog.json', 'utf8'));
-    return catalog.effects.find(effect => effect.id === input)?.file ?? input;
+    const entry = catalog.effects.find(effect => effect.id === input);
+    if (entry) return entry.file;
+    throw new Error(`Unknown effect ID: "${input}". Available IDs: ${catalog.effects.map(effect => effect.id).join(', ')}. Use a catalog ID or a .js/.mjs file path.`);
   } catch (error) {
-    if (error.code === 'ENOENT') return input;
+    if (error.code === 'ENOENT') throw new Error(`Unknown effect ID: "${input}". No src/catalog.json found; run from the repository root or pass a .js/.mjs file path.`);
     throw error;
   }
 }
