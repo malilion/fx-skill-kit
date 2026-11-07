@@ -5,7 +5,8 @@ import { resolve, extname, sep } from 'node:path';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-  '.md': 'text/plain; charset=utf-8', '.png': 'image/png', '.json': 'application/json' };
+  '.md': 'text/plain; charset=utf-8', '.png': 'image/png', '.json': 'application/json',
+  '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.gif': 'image/gif' };
 const server = createServer(async (req, res) => {
   try {
     if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405).end(); return; }

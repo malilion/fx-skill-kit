@@ -1,0 +1,9 @@
+{
+  "name": "fx-skill-kit",
+  "displayName": "fx-skill-kit",
+  "version": "0.1.0",
+  "description": "Author deterministic procedural FX. The bundled skill runs the quality check and then renders a contact sheet before delivery.",
+  "skills": [
+    "./skills/fx-authoring"
+  ]
+}

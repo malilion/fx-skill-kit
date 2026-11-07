@@ -74,19 +74,10 @@ Read each sheet left to right, top to bottom. The crosshair anchors the effect's
 
 ## Preview in motion
 
-```sh
-npm run gallery
-# Open http://127.0.0.1:8080/gallery/
-```
+The local gallery plays each effect on a canvas the size of its frame. Switch the palette, drag the preview or set view/tilt, copy that effect's source, and download a PNG plus a C header of the current frame. Seed, replay, pause, and the origin guide are on the same page. If the HTML was opened as a file: URL, the page explains how to serve this repository instead.
 
-The static gallery loads the same ES modules onto a canvas, with seed selection, replay, pause, and origin guides. Any local static server rooted at this repo also works. No build step or hosted deployment is needed.
-
-See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and check contracts. Agents can follow [the FX authoring skill](skills/fx-authoring/SKILL.md) to keep visual inspection in the loop.
+See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and check contracts. Agents can follow [the FX authoring skill](skills/fx-authoring/SKILL.md) to keep visual inspection in the loop. `.claude-plugin/plugin.json` loads that skill.
 
 Private project. Core tools use pure ESM and Node built-ins, with zero runtime dependencies.
 
-Gallery access: use `npm run gallery` locally. The current personal-account Pages configuration returns 404 and does not provide a usable private gallery; a successful workflow deployment does not establish private access. Repository visibility and Pages settings are unchanged.
-
-Not included: physical ESP32 flashing or display verification, a hardware-specific compressed player, or launch videos. C-header export is software tested; use oledfx for its dedicated compression pipeline and firmware examples.
-
-If a command fails, use Node.js 20+ and run it from the repository root so catalog IDs resolve. Unknown IDs list available catalog entries; a local module can be passed as a `.js`/`.mjs` path. If port 8080 is in use, run `PORT=8081 npm run gallery` on macOS/Linux and open http://127.0.0.1:8081/gallery/ (PowerShell: `$env:PORT=8081; npm run gallery`).
+If a command fails, use Node.js 20+ and run it from the repository root so catalog IDs resolve. Unknown IDs list available catalog entries; a local module can be passed as a `.js`/`.mjs` path. If port 8080 is already taken, set `PORT` to a free port before the gallery command above.

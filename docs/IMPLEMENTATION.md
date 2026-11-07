@@ -17,8 +17,8 @@ Both examples passed strict CLI checks with the working ink-entropy domain plugi
 
 | Asset | p95 | max | Result |
 | --- | --- | --- | --- |
-| pulse-dot.js | 0.359ms | 0.419ms | PASS |
-| orbit-loop.js | 0.054ms | 0.111ms | PASS |
+| pulse-dot.js | 0.699ms | 0.749ms | PASS |
+| orbit-loop.js | 0.042ms | 0.100ms | PASS |
 
 Tests cover all six gates, scaffold/catalog behavior, fixed-120Hz Sim state across display rates, dense act timelines and phases, exact PNG atlas pixels, independent GIF decoding, palette/tilt propagation, C mask packing, all four MCP tools and JSON-RPC stream framing. A real stdio smoke session exercised initialization, discovery and all four tools. A generated C header passed cc C11 syntax checking. Functional tests skip incidental timing to avoid scheduler-related flakes; explicit budget tests cover strict thresholds and real slow-frame failures.
 

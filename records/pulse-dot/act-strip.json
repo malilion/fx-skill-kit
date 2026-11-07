@@ -19,7 +19,7 @@
   "dt": 0.08333333333333333,
   "simulationHz": null,
   "effectOptions": {},
-  "hash": "44b76934791f761b607c2e0485bd9d8ef65cc42200cc9a008ab8012028eab0be",
+  "hash": "4df331f8c8b45a9cd05f5e4623dd5396a988f0a5d2e7cf0b4992fc27d90292db",
   "frameCount": 13,
   "sheet": {
     "w": 1184,
@@ -57,155 +57,155 @@
     {
       "index": 1,
       "time": 0.08333333333333333,
-      "fillRatio": 0.05578125,
+      "fillRatio": 0.09171875,
       "edgeRatio": 0,
       "bounds": {
-        "x": 59,
-        "y": 59,
-        "w": 42,
-        "h": 42
+        "x": 53,
+        "y": 53,
+        "w": 54,
+        "h": 54
       },
-      "fillPercent": 5.578125,
+      "fillPercent": 9.171875,
       "contactCell": 1
     },
     {
       "index": 2,
       "time": 0.16666666666666666,
-      "fillRatio": 0.094375,
+      "fillRatio": 0.1921875,
       "edgeRatio": 0,
       "bounds": {
-        "x": 52,
-        "y": 52,
-        "w": 56,
-        "h": 56
+        "x": 40,
+        "y": 40,
+        "w": 80,
+        "h": 80
       },
-      "fillPercent": 9.4375,
+      "fillPercent": 19.21875,
       "contactCell": 2
     },
     {
       "index": 3,
       "time": 0.25,
-      "fillRatio": 0.1359375,
+      "fillRatio": 0.3134375,
       "edgeRatio": 0,
       "bounds": {
-        "x": 47,
-        "y": 47,
-        "w": 66,
-        "h": 66
+        "x": 29,
+        "y": 29,
+        "w": 102,
+        "h": 102
       },
-      "fillPercent": 13.593749999999998,
+      "fillPercent": 31.343749999999996,
       "contactCell": 3
     },
     {
       "index": 4,
       "time": 0.3333333333333333,
-      "fillRatio": 0.17796875,
+      "fillRatio": 0.4375,
       "edgeRatio": 0,
       "bounds": {
-        "x": 42,
-        "y": 42,
-        "w": 76,
-        "h": 76
+        "x": 20,
+        "y": 20,
+        "w": 120,
+        "h": 120
       },
-      "fillPercent": 17.796875,
+      "fillPercent": 43.75,
       "contactCell": 4
     },
     {
       "index": 5,
       "time": 0.41666666666666663,
-      "fillRatio": 0.21296875,
+      "fillRatio": 0.54578125,
       "edgeRatio": 0,
       "bounds": {
-        "x": 38,
-        "y": 38,
-        "w": 84,
-        "h": 84
+        "x": 13,
+        "y": 13,
+        "w": 134,
+        "h": 134
       },
-      "fillPercent": 21.296875,
+      "fillPercent": 54.578125,
       "contactCell": 5
     },
     {
       "index": 6,
       "time": 0.5,
-      "fillRatio": 0.23671875,
+      "fillRatio": 0.62,
       "edgeRatio": 0,
       "bounds": {
-        "x": 36,
-        "y": 36,
-        "w": 88,
-        "h": 88
+        "x": 9,
+        "y": 9,
+        "w": 142,
+        "h": 142
       },
-      "fillPercent": 23.671875,
+      "fillPercent": 62,
       "contactCell": 6
     },
     {
       "index": 7,
       "time": 0.5833333333333333,
-      "fillRatio": 0.2465625,
+      "fillRatio": 0.64703125,
       "edgeRatio": 0,
       "bounds": {
-        "x": 35,
-        "y": 35,
-        "w": 90,
-        "h": 90
+        "x": 7,
+        "y": 7,
+        "w": 146,
+        "h": 146
       },
-      "fillPercent": 24.65625,
+      "fillPercent": 64.703125,
       "contactCell": 7
     },
     {
       "index": 8,
       "time": 0.6666666666666666,
-      "fillRatio": 0.23859375,
+      "fillRatio": 0.6234375,
       "edgeRatio": 0,
       "bounds": {
-        "x": 36,
-        "y": 36,
-        "w": 88,
-        "h": 88
+        "x": 9,
+        "y": 9,
+        "w": 142,
+        "h": 142
       },
-      "fillPercent": 23.859375,
+      "fillPercent": 62.34375,
       "contactCell": 8
     },
     {
       "index": 9,
       "time": 0.75,
-      "fillRatio": 0.2165625,
+      "fillRatio": 0.5540625,
       "edgeRatio": 0,
       "bounds": {
-        "x": 38,
-        "y": 38,
-        "w": 84,
-        "h": 84
+        "x": 13,
+        "y": 13,
+        "w": 134,
+        "h": 134
       },
-      "fillPercent": 21.65625,
+      "fillPercent": 55.40625,
       "contactCell": 9
     },
     {
       "index": 10,
       "time": 0.8333333333333333,
-      "fillRatio": 0.181796875,
+      "fillRatio": 0.44828125,
       "edgeRatio": 0,
       "bounds": {
-        "x": 41,
-        "y": 42,
-        "w": 77,
-        "h": 76
+        "x": 20,
+        "y": 20,
+        "w": 120,
+        "h": 120
       },
-      "fillPercent": 18.1796875,
+      "fillPercent": 44.828125,
       "contactCell": 10
     },
     {
       "index": 11,
       "time": 0.9166666666666666,
-      "fillRatio": 0.1456640625,
+      "fillRatio": 0.3225,
       "edgeRatio": 0,
       "bounds": {
-        "x": 38,
-        "y": 46,
-        "w": 79,
-        "h": 73
+        "x": 29,
+        "y": 29,
+        "w": 102,
+        "h": 102
       },
-      "fillPercent": 14.56640625,
+      "fillPercent": 32.25,
       "contactCell": 11
     },
     {
