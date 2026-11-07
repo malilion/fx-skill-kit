@@ -43,7 +43,7 @@ jobs:
           <a href="./gallery/">Open the fx-skill-kit gallery</a>
           </html>
           HTML
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
       - name: Deploy GitHub Pages
