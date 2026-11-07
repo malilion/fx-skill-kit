@@ -74,7 +74,7 @@ Read each sheet left to right, top to bottom. The crosshair anchors the effect's
 
 ## Preview in motion
 
-The local gallery plays each effect on a canvas the size of its frame. Switch the palette, drag the preview or set view/tilt, copy that effect's source, and download a PNG plus a C header of the current frame. Seed, replay, pause, and the origin guide are on the same page. If the HTML was opened as a file: URL, the page explains how to serve this repository instead.
+The gallery plays each effect on a canvas the size of its frame. Switch the palette, drag the preview or set view/tilt, copy that effect's source, and download a PNG plus a C header of the current frame. Seed, replay, pause, and the origin guide are on the same page. The hosted site is [https://malilion.github.io/fx-skill-kit/](https://malilion.github.io/fx-skill-kit/). If the HTML was opened as a file: URL, the page explains how to serve this repository instead.
 
 See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and check contracts. Agents can follow [the FX authoring skill](skills/fx-authoring/SKILL.md) to keep visual inspection in the loop. `.claude-plugin/plugin.json` loads that skill.
 
