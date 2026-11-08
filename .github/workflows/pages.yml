@@ -9,6 +9,8 @@ on:
       - "docs/**"
       - "examples/**"
       - "records/**"
+      - "README.md"
+      - "README.zh-TW.md"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -29,10 +31,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+      - name: Verify repository remains private
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api 'repos/${{ github.repository }}' --jq .private)" = true
       - name: Stage browser assets without a build
         run: |
           mkdir -p _site
-          cp -R gallery src docs examples records _site/
+          cp -R gallery src docs examples records README.md README.zh-TW.md _site/
           cat > _site/index.html <<'HTML'
           <!doctype html>
           <html lang="en">
