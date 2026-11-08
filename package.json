@@ -14,6 +14,9 @@
     "render": "node tools/render.mjs",
     "new": "node tools/new.mjs",
     "act": "node tools/act.mjs",
+    "export-sheet": "node tools/export-sheet.mjs",
+    "export-mcu": "node tools/export-mcu.mjs",
+    "showcase": "node tools/showcase.mjs",
     "mcp": "node tools/mcp-server.mjs",
     "gallery": "node gallery/serve.mjs"
   }

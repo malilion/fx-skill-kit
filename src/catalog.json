@@ -2,18 +2,322 @@
   "schemaVersion": 1,
   "effects": [
     {
+      "id": "eyes/curious-blink",
+      "category": "eyes",
+      "file": "src/fx/eyes/curious-blink.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "eyes/cyber-charge",
+      "category": "eyes",
+      "file": "src/fx/eyes/cyber-charge.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "eyes/dizzy-spiral",
+      "category": "eyes",
+      "file": "src/fx/eyes/dizzy-spiral.js",
+      "duration": 1.6,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "eyes/happy-squint",
+      "category": "eyes",
+      "file": "src/fx/eyes/happy-squint.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "ink-burst/heavy-impact",
+      "category": "ink-burst",
+      "file": "src/fx/ink-burst/heavy-impact.js",
+      "duration": 0.8,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "ink-burst/qi-surge",
+      "category": "ink-burst",
+      "file": "src/fx/ink-burst/qi-surge.js",
+      "duration": 1.4,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "ink-burst/splash-guard",
+      "category": "ink-burst",
+      "file": "src/fx/ink-burst/splash-guard.js",
+      "duration": 1.8,
+      "loop": true,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
       "id": "orbit-loop",
       "file": "examples/fx/orbit-loop.js",
-      "category": null,
+      "duration": 2,
       "loop": true,
-      "sim": false
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "pomodoro/hot-coffee",
+      "category": "pomodoro",
+      "file": "src/fx/pomodoro/hot-coffee.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "pomodoro/hourglass-flip",
+      "category": "pomodoro",
+      "file": "src/fx/pomodoro/hourglass-flip.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
     },
     {
       "id": "pulse-dot",
       "file": "examples/fx/pulse-dot.js",
-      "category": null,
+      "duration": 1,
       "loop": false,
-      "sim": false
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "sword/cross-cleave",
+      "category": "sword",
+      "file": "src/fx/sword/cross-cleave.js",
+      "duration": 0.85,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "sword/myriad-swords",
+      "category": "sword",
+      "file": "src/fx/sword/myriad-swords.js",
+      "duration": 1.4,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "sword/sword-qi-slash",
+      "category": "sword",
+      "file": "src/fx/sword/sword-qi-slash.js",
+      "duration": 0.75,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "system/battery-charge",
+      "category": "system",
+      "file": "src/fx/system/battery-charge.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "system/cpu-wave",
+      "category": "system",
+      "file": "src/fx/system/cpu-wave.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "system/wifi-pulse",
+      "category": "system",
+      "file": "src/fx/system/wifi-pulse.js",
+      "duration": 1.6,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "talisman/bagua-seal",
+      "category": "talisman",
+      "file": "src/fx/talisman/bagua-seal.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "talisman/cinnabar-burn",
+      "category": "talisman",
+      "file": "src/fx/talisman/cinnabar-burn.js",
+      "duration": 1.4,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "talisman/ink-chains",
+      "category": "talisman",
+      "file": "src/fx/talisman/ink-chains.js",
+      "duration": 1.8,
+      "loop": true,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "transitions/brush-sweep",
+      "category": "transitions",
+      "file": "src/fx/transitions/brush-sweep.js",
+      "duration": 0.9,
+      "loop": false,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "transitions/crt-off",
+      "category": "transitions",
+      "file": "src/fx/transitions/crt-off.js",
+      "duration": 1.2,
+      "loop": false,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "transitions/ink-drop-wash",
+      "category": "transitions",
+      "file": "src/fx/transitions/ink-drop-wash.js",
+      "duration": 1.5,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "transitions/venetian-blinds",
+      "category": "transitions",
+      "file": "src/fx/transitions/venetian-blinds.js",
+      "duration": 1.2,
+      "loop": false,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "ui/realm-breakthrough",
+      "category": "ui",
+      "file": "src/fx/ui/realm-breakthrough.js",
+      "duration": 1.5,
+      "loop": false,
+      "sim": true,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "ui/vermilion-seal",
+      "category": "ui",
+      "file": "src/fx/ui/vermilion-seal.js",
+      "duration": 0.9,
+      "loop": false,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "weather/rain-storm",
+      "category": "weather",
+      "file": "src/fx/weather/rain-storm.js",
+      "duration": 1.5,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "weather/snow-drift",
+      "category": "weather",
+      "file": "src/fx/weather/snow-drift.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "weather/sunny-orbit",
+      "category": "weather",
+      "file": "src/fx/weather/sunny-orbit.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 128,
+      "h": 64
+    },
+    {
+      "id": "zen/bamboo-wind",
+      "category": "zen",
+      "file": "src/fx/zen/bamboo-wind.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "zen/falling-sakura",
+      "category": "zen",
+      "file": "src/fx/zen/falling-sakura.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 160,
+      "h": 160
+    },
+    {
+      "id": "zen/plum-blossom",
+      "category": "zen",
+      "file": "src/fx/zen/plum-blossom.js",
+      "duration": 2,
+      "loop": true,
+      "sim": false,
+      "w": 160,
+      "h": 160
     }
   ]
 }

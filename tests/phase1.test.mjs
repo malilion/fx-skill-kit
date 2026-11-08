@@ -615,7 +615,11 @@ test('render and act default to records/<category/name> and catalog lists real e
   await access(contact.json);
   await access(strip.json);
   const catalog = JSON.parse(await readFile(join(root, 'src/catalog.json'), 'utf8'));
-  assert.deepEqual(catalog.effects.map(effect => effect.id).sort(), ['orbit-loop', 'pulse-dot']);
+  const ids = catalog.effects.map(effect => effect.id);
+  assert.deepEqual(ids, [...ids].sort());
+  for (const required of ['orbit-loop', 'pulse-dot', 'sword/sword-qi-slash', 'eyes/happy-squint', 'eyes/curious-blink']) {
+    assert.ok(ids.includes(required), `catalog includes ${required}`);
+  }
   for (const effect of catalog.effects) assert.equal((await loadFX(join(root, effect.file))).meta.id, effect.id);
 });
 
@@ -625,7 +629,8 @@ test('unknown catalog IDs give recovery guidance and never become import errors'
     const result = await cli(tool, ['pulse-dto']);
     assert.equal(result.status, 1);
     assert.match(result.stderr, /Unknown effect ID: "pulse-dto"/);
-    assert.match(result.stderr, /orbit-loop, pulse-dot/);
+    assert.match(result.stderr, /orbit-loop/);
+    assert.match(result.stderr, /pulse-dot/);
     assert.match(result.stderr, /\.js\/\.mjs file path/);
     assert.doesNotMatch(result.stdout + result.stderr, /ERR_MODULE_NOT_FOUND/);
   }

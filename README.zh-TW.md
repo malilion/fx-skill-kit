@@ -1,41 +1,44 @@
-# fx-skill-kit
+# fx-skill-kit · inkfx · oledfx
 
 <p align="center"><img src="docs/brand/icon-512.png" alt="fx-skill-kit 標誌 — 分格圖與代理迴圈" width="160" height="160"></p>
 
 [English](README.md) · **繁體中文**
 
-**零依賴的程序化特效製作：六項品質檢查、視覺檢視、sprite／GIF 匯出，以及四個 MCP 工具。**
+**零依賴程序化特效全套件：東方水墨與武俠引擎 (`inkfx`)、嵌入式 1-bit 與 RGB565 微螢幕編譯庫 (`oledfx`)、六大品質守門員、Contact Sheet 視覺自檢與四個 MCP 工具 (`fx-skill-kit`)。**
 
-![軌道循環預覽](records/orbit-loop/preview.gif)
+![6x4 24格同步動態展示牆](records/showcase-grid.gif)
 
-給製作程序化素材的人，以及撰寫程式代理的人。效果是可重現的 RGBA。先寫一小段 JavaScript，檢查它的行為，再渲染一張你可以親自判斷的分格圖（contact sheet）。人和程式代理走同一條迴圈：**起草 → 檢查 → 渲染 → 觀看 → 修改**。
+![水墨劍氣斬擊預覽](records/sword/sword-qi-slash/preview.gif) ![好奇眨眼預覽](records/eyes/curious-blink/preview.gif) ![軌道循環預覽](records/orbit-loop/preview.gif)
 
-它會抓到未設種子的隨機與時鐘、邊緣溢出、斷掉的循環接縫、空白幀，以及畫太慢。選用的領域外掛可以加上專案自己的檢查。每一格分格圖都有幀編號、經過秒數、填色百分比、安全區和原點十字。旁邊的 JSON 保留完整精度的耗時與幀統計。
+專為程序化素材開發者、獨立遊戲創作者、ESP32 創客與 AI Coding Agent 打造。撰寫精簡的確定性 JavaScript 特效，透過自動化檢查攔截工程缺陷，並渲染出多模態模型與人類都能一眼審查的時間軸接觸表（Contact Sheet）：**Draft → Check → Render → Look → Refine**。
 
-入門目錄有 **2 個效果**，都在 `src/catalog.json` 裡標成未分類。這是工具組的起點，沒有再綁一套更大的特效庫。
+內建目錄收錄 **32 組特效**，完整涵蓋基礎 RGBA、**InkFX**（`16` 組特效，`Pigment + Wetness` 雙緩衝水墨物理模型、飛白與水暈、傳統礦物色盤、武俠 `act` 蓄力與頓幀，涵蓋 6 大分類）以及 **OLEDFX**（`14` 組特效，`128×64` 1-bit 與 `RGB565` 微螢幕動畫、Ordered Bayer 4×4 抖動演算法、`XOR-Delta + RLE` 差分壓縮與 ESP32 C Header 解碼器，涵蓋 5 大分類）：
 
 | 目錄分類 | 效果數 |
 | --- | ---: |
-| 未分類（`orbit-loop`、`pulse-dot`） | 2 |
-| **合計** | **2** |
+| 基礎入門 (`orbit-loop`、`pulse-dot`) | 2 |
+| InkFX 東方水墨 (`sword/*` ×3、`talisman/*` ×3、`zen/*` ×3、`ink-burst/*` ×3、`transitions/*` ×2、`ui/*` ×2) | 16 |
+| OLEDFX 微螢幕動畫 (`eyes/*` ×4、`weather/*` ×3、`system/*` ×3、`pomodoro/*` ×2、`transitions/*` ×2) | 14 |
+| **合計** | **32** |
 
 ## 試一次
 
-需要 Node.js 20 或更新版本。不用安裝套件，也不用建置。
+需要 Node.js 20 或更新版本。零外部套件、免安裝建置。
 
 ```sh
 npm test
 npm run check
-npm run check -- pulse-dot --seed 42
-npm run render -- pulse-dot --seed 42 --sheet --gif --out artifacts/pulse-dot
-npm run act -- orbit-loop --seed 42 --out artifacts/orbit-loop
-# 開啟 artifacts/pulse-dot/contact.png 與 artifacts/orbit-loop/act-strip.png
+npm run check -- sword/sword-qi-slash eyes/curious-blink --seed 42
+npm run render -- sword/sword-qi-slash --seed 42 --sheet --gif
+npm run act -- sword/sword-qi-slash --seed 42
+npm run export-sheet -- sword/sword-qi-slash --palette zhusha --paper
+npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64 --fps 24 --compress xor-rle
 
 npm run gallery
 # 開啟 http://127.0.0.1:8080/gallery/
 ```
 
-建立自己的效果，然後檢查並查看：
+建立自己的效果，然後執行檢查與視覺自檢：
 
 ```sh
 npm run new -- ui/my-pulse --loop --sim
@@ -44,41 +47,32 @@ npm run render -- ui/my-pulse --seed 42
 npm run act -- ui/my-pulse --seed 42
 ```
 
-腳手架會寫入 `src/fx/<category/name>.js` 並更新 `src/catalog.json`。工具接受目錄 ID 或 JS 路徑。`act` 以每秒 12 幀把樣本寫到 `records/<id>/act-strip.png` 和 JSON；效果若有 `act` 中繼資料，會包含負向的蓄力與回復。`render --out examples/out/<id>` 仍支援較早的輸出位置。
+- **水墨遊戲引擎匯出器 (`tools/export-sheet.mjs`)**：支援輸出透明背景 (`sheet.png`) 或宣紙紋理底色 (`--paper`、`sheet-paper.png`)，並附帶相容 Aseprite / Godot / Phaser 的 JSON Atlas（內含 `meta.inkfx.act` 武俠蓄力與頓幀時間點）與四大傳統礦物色盤（`songyan` 松煙、`zhusha` 朱砂、`shiqing` 石青、`nijin` 泥金）。
+- **微控制器硬體匯出器 (`tools/export-mcu.mjs`)**：支援 `ssd1306-128x64`、`ssd1306-128x32`、`led-matrix-64x32`、`st7789-128x128` 等硬體規格預設集。`--compress xor-rle` 採用 SSD1306 原生垂直 Page 佈局與 `XOR-Delta + RLE` 差分壓縮（將 48 KB 原始幀壓縮至 `< 3.5 KB`，壓縮率達 90%+），並內建零動態記憶體配置（Zero-malloc）的 `oledfx_step_frame` C 解碼器；同時支援 `--compress xbm` 與 `--compress adafruit`。
 
-用 `npm run render -- orbit-loop --sheet --gif --seed 42` 匯出每一個播放幀。`sheet.png` 是透明的，沒有標註；`sheet.json` 是陣列圖集，含每幀矩形、毫秒長度、原點、種子、是否循環，以及 act 中繼資料。`preview.gif` 不依賴外部套件，使用 216 色盤與透明。GIF 以百分之一秒計時，並使用字面 LZW，所以檔案偏大、作法單純；半透明會先合成到紙色上。循環會省掉重複的終點幀。`--palette zhusha`（或一組十六進位色碼的 JSON 陣列）會傳給效果；`--multi-angle` 會為有實作這些輸入的模組渲染九組 `(tiltX, tiltY)` 視角。
-
-在這個儲存庫用 `npm run mcp` 啟動 stdio MCP 伺服器（請把用戶端設成直接執行 `node tools/mcp-server.mjs`）。它提供：
+在儲存庫用 `npm run mcp` 啟動 stdio MCP 伺服器（用戶端請設定直接執行 `node tools/mcp-server.mjs`）：
 
 | 工具 | 結果 |
 | --- | --- |
-| `fx_search_catalog(query?, category?)` | 依 ID、標籤與中繼資料做本地關鍵字排序 |
-| `fx_render_contact_sheet(effect_id, palette?)` | PNG 圖塊與產物路徑 |
-| `fx_run_diagnostics(effect_id)` | CHK-01..06 結構化報告，種子 42 |
-| `fx_export_asset(effect_id, target_format, palette?)` | `sheet`、`gif`、`png` 或 `c-header` 的產物路徑 |
+| `fx_search_catalog(query?, category?)` | 依 ID、標籤與分類做本地關鍵字排序搜尋 |
+| `fx_render_contact_sheet(effect_id, palette?)` | 回傳 Base64 PNG 圖塊與產物路徑 |
+| `fx_run_diagnostics(effect_id)` | 回傳 CHK-01..06 結構化診斷報告（種子 42） |
+| `fx_export_asset(effect_id, target_format, palette?)` | 匯出 `sheet`、`gif`、`png` 或 `c-header` 產物路徑 |
 
-見 [MCP 設定與協定](docs/MCP.md)。不需要 MCP SDK 或 npm 套件。C header 是未壓縮的 SSD1306 直向頁，來自 alpha 遮罩；硬體專用的壓縮管線屬於 oledfx 匯出器。
-
-檢查預設使用種子 42。邊緣占用必須低於 1.5%（轉場除外）。循環接縫比較 `t=0` 與 `duration − 1/fps`，MSE 和質心位移都要落在相鄰幀中位數變化的 1.5 倍以內。有效內容開頭與結尾的空白各不得超過 15%；效果必須變成可見（填色 0.2%），且不能整段都超過 85% 填色。暖機之後，120Hz 跑 300 步，p95 須小於 1.5ms、最大值須小於 3ms。不穩定的 CI 可用 `--perf-soft` 改成警告，或設 `FX_CHECK_PERF=0` 跳過計時。`check --json` 輸出機器可讀報告。把 `fx.config.example.js` 複製成 `fx.config.js` 即可登記領域檢查；內建可重用的墨色熵、獨立 OLED 閃爍，以及 XOR-RLE 大小檢查。
+詳見 [MCP 設定與協定](docs/MCP.md) 與 [完整實作報告](docs/IMPLEMENTATION.md)。
 
 ## 你會看到什麼
 
-**脈衝點：** 一團有種子的柔和墨色，綻開再淡去。
+**水墨劍氣斬擊 (`sword/sword-qi-slash`)：** 含負時間軸壓身蓄力、朱砂寒光、飛白劍氣弧線、命中頓幀（Hit-stop）與甩墨水暈。
 
-![脈衝點分格圖，含幀編號、秒數、填色比例、安全區與原點十字](records/pulse-dot/contact.png)
+![水墨劍氣斬擊分格圖](records/sword/sword-qi-slash/contact.png)
 
-**軌道循環：** 一顆粒子和淡出的尾跡，回到起始相位。
+**好奇歪頭眨眼 (`eyes/curious-blink`)：** `128×64` 1-bit 參數化雙眼與視線追蹤，經 `export-mcu.mjs` XOR-RLE 壓縮後僅 `2,849 Bytes`。
 
-![軌道循環分格圖，開頭與結尾幀對得起來](records/orbit-loop/contact.png)
+![好奇眨眼分格圖](records/eyes/curious-blink/contact.png)
 
-由左到右、由上到下讀。十字標的是效果原點；填色百分比是標註之前的效果本身。第一格和最後一格都包含時間軸的兩個端點。加上 `--frames 31` 可以看更多時刻，或用 `--out path/to/review` 指定輸出目錄。
+## 互動展示牆 (Gallery)
 
-## 動起來的預覽
+執行 `npm run gallery` 可開啟宣紙／OLED 雙棲互動展示牆：內建 `IntersectionObserver` 60fps 全目錄即時縮圖牆、傳統礦物色盤切換、宣紙纖維粗細滑桿、武俠木人樁 `act` 演出疊加、`0.25x` 慢動作逐幀檢視、SSD1306 單色與經典「上 16px 黃光＋下 48px 藍光」雙色螢光模擬、單檔 JS／React／Vue 元件複製，以及 PNG 與 XOR-RLE C Header 一鍵下載。
 
-Gallery 以效果自己的幀尺寸在畫布上播放。可以切換色盤、拖曳預覽或設定 view/tilt、複製該效果的原始碼，並下載目前這一幀的 PNG 與 C header。種子、重播、暫停和原點參考線都在同一頁。若這份 HTML 是用 file: 網址打開的，頁面會說明要改怎麼把這個儲存庫提供出來。
-
-中繼資料、RGBA 緩衝、種子與檢查契約見 [AUTHORING.md](docs/AUTHORING.md)。代理可以跟著 [FX 撰寫技能](skills/fx-authoring/SKILL.md)，把視覺檢查留在迴圈裡。`.claude-plugin/plugin.json` 會載入這個技能。
-
-核心工具是純 ESM，只用 Node 內建模組，零執行期依賴。
-
-指令失敗時，請用 Node.js 20 以上，並在儲存庫根目錄執行，目錄 ID 才找得到。未知 ID 會列出可用的目錄項目；本地模組可以直接傳 `.js` 或 `.mjs` 路徑。若 8080 埠已被占用，請在上面的 gallery 指令之前把 `PORT` 設成一個空閒埠。
+中繼資料、緩衝區、種子與檢查契約見 [AUTHORING.md](docs/AUTHORING.md)。AI Agent 請遵循 [FX 撰寫技能](skills/fx-authoring/SKILL.md) 執行視覺自檢閉環。

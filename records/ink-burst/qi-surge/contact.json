@@ -1,0 +1,1015 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "ink-burst/qi-surge",
+    "name": "Blood Qi Surge",
+    "category": "ink-burst",
+    "tags": [
+      "inkfx",
+      "wuxia",
+      "burst",
+      "qi",
+      "zhusha"
+    ],
+    "duration": 1.4,
+    "loop": false,
+    "sim": true,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80,
+    "defaultPalette": [
+      "#f4efe6",
+      "#dfb8b0",
+      "#a85249",
+      "#63201b",
+      "#1c1211",
+      "#c83228"
+    ]
+  },
+  "act": {
+    "windup": 0.15,
+    "poses": [
+      [
+        -0.15,
+        "DANTIAN_GATHER"
+      ],
+      [
+        0,
+        "QI_ERUPT",
+        "snap"
+      ],
+      [
+        0.5,
+        "AURA_PILLAR"
+      ]
+    ],
+    "hits": [
+      {
+        "t": 0.05,
+        "freeze": 0.08,
+        "shakeAmp": 3,
+        "inkSplash": 22
+      }
+    ],
+    "recovery": 0.2
+  },
+  "timeline": {
+    "start": -0.15,
+    "end": 1.5999999999999999,
+    "fixedFps": false
+  },
+  "seed": 1,
+  "requestedFps": 30,
+  "dt": 0.033018867924528295,
+  "simulationHz": 120,
+  "effectOptions": {},
+  "hash": "1490a05a4ad1e28a8ca7367be9b172aed786d58efed47be8cec6904aa1702bd8",
+  "frameCount": 54,
+  "sheet": {
+    "w": 800,
+    "h": 1072,
+    "columns": 4,
+    "cellW": 192,
+    "cellH": 248,
+    "headerH": 64,
+    "selected": [
+      0,
+      4,
+      7,
+      11,
+      14,
+      18,
+      21,
+      25,
+      28,
+      32,
+      35,
+      39,
+      42,
+      46,
+      49,
+      53
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": -0.15,
+      "simulationTime": -0.15,
+      "fillRatio": 0.04484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 97,
+        "w": 56,
+        "h": 29
+      },
+      "phase": "WINDUP",
+      "pose": "DANTIAN_GATHER",
+      "fillPercent": 4.484375,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": -0.1169811320754717,
+      "simulationTime": -0.125,
+      "fillRatio": 0.0449609375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 97,
+        "w": 56,
+        "h": 29
+      },
+      "phase": "WINDUP",
+      "pose": "DANTIAN_GATHER",
+      "fillPercent": 4.49609375,
+      "contactCell": null
+    },
+    {
+      "index": 2,
+      "time": -0.0839622641509434,
+      "simulationTime": -0.09166666666666666,
+      "fillRatio": 0.0453125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 97,
+        "w": 56,
+        "h": 29
+      },
+      "phase": "WINDUP",
+      "pose": "DANTIAN_GATHER",
+      "fillPercent": 4.53125,
+      "contactCell": null
+    },
+    {
+      "index": 3,
+      "time": -0.05094339622641511,
+      "simulationTime": -0.058333333333333334,
+      "fillRatio": 0.045703125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 97,
+        "w": 56,
+        "h": 29
+      },
+      "phase": "WINDUP",
+      "pose": "DANTIAN_GATHER",
+      "fillPercent": 4.5703125,
+      "contactCell": null
+    },
+    {
+      "index": 4,
+      "time": -0.017924528301886816,
+      "simulationTime": -0.024999999999999994,
+      "fillRatio": 0.0465234375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 97,
+        "w": 56,
+        "h": 29
+      },
+      "phase": "WINDUP",
+      "pose": "DANTIAN_GATHER",
+      "fillPercent": 4.65234375,
+      "contactCell": 1
+    },
+    {
+      "index": 5,
+      "time": 0.015094339622641478,
+      "simulationTime": 0.008333333333333331,
+      "fillRatio": 0.047578125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 96,
+        "w": 56,
+        "h": 31
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 4.7578125,
+      "contactCell": null
+    },
+    {
+      "index": 6,
+      "time": 0.04811320754716977,
+      "simulationTime": 0.041666666666666685,
+      "fillRatio": 0.0495703125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 92,
+        "w": 56,
+        "h": 35
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 4.95703125,
+      "contactCell": null
+    },
+    {
+      "index": 7,
+      "time": 0.08113207547169807,
+      "simulationTime": 0.07500000000000001,
+      "fillRatio": 0.0511328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 89,
+        "w": 56,
+        "h": 38
+      },
+      "phase": "FREEZE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 5.11328125,
+      "contactCell": 2
+    },
+    {
+      "index": 8,
+      "time": 0.11415094339622636,
+      "simulationTime": 0.10833333333333336,
+      "fillRatio": 0.053828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 85,
+        "w": 56,
+        "h": 42
+      },
+      "phase": "FREEZE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 5.3828125,
+      "contactCell": null
+    },
+    {
+      "index": 9,
+      "time": 0.14716981132075466,
+      "simulationTime": 0.1416666666666667,
+      "fillRatio": 0.057109375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 82,
+        "w": 56,
+        "h": 45
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 5.7109375,
+      "contactCell": null
+    },
+    {
+      "index": 10,
+      "time": 0.18018867924528295,
+      "simulationTime": 0.17500000000000002,
+      "fillRatio": 0.0605859375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 79,
+        "w": 56,
+        "h": 48
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 6.05859375,
+      "contactCell": null
+    },
+    {
+      "index": 11,
+      "time": 0.21320754716981125,
+      "simulationTime": 0.20833333333333334,
+      "fillRatio": 0.0669921875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 76,
+        "w": 56,
+        "h": 51
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 6.699218749999999,
+      "contactCell": 3
+    },
+    {
+      "index": 12,
+      "time": 0.24622641509433954,
+      "simulationTime": 0.24166666666666667,
+      "fillRatio": 0.07328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 73,
+        "w": 56,
+        "h": 55
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 7.328125000000001,
+      "contactCell": null
+    },
+    {
+      "index": 13,
+      "time": 0.27924528301886786,
+      "simulationTime": 0.275,
+      "fillRatio": 0.0798828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 51,
+        "y": 70,
+        "w": 58,
+        "h": 58
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 7.98828125,
+      "contactCell": null
+    },
+    {
+      "index": 14,
+      "time": 0.3122641509433961,
+      "simulationTime": 0.30833333333333335,
+      "fillRatio": 0.0861328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 51,
+        "y": 68,
+        "w": 58,
+        "h": 60
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 8.61328125,
+      "contactCell": 4
+    },
+    {
+      "index": 15,
+      "time": 0.34528301886792445,
+      "simulationTime": 0.3416666666666667,
+      "fillRatio": 0.0925390625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 51,
+        "y": 65,
+        "w": 59,
+        "h": 63
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 9.25390625,
+      "contactCell": null
+    },
+    {
+      "index": 16,
+      "time": 0.3783018867924527,
+      "simulationTime": 0.375,
+      "fillRatio": 0.0988671875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 50,
+        "y": 63,
+        "w": 60,
+        "h": 65
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 9.88671875,
+      "contactCell": null
+    },
+    {
+      "index": 17,
+      "time": 0.41132075471698093,
+      "simulationTime": 0.4083333333333333,
+      "fillRatio": 0.104765625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 49,
+        "y": 61,
+        "w": 62,
+        "h": 67
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 10.4765625,
+      "contactCell": null
+    },
+    {
+      "index": 18,
+      "time": 0.4443396226415093,
+      "simulationTime": 0.44166666666666665,
+      "fillRatio": 0.110859375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 49,
+        "y": 59,
+        "w": 62,
+        "h": 69
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 11.0859375,
+      "contactCell": 5
+    },
+    {
+      "index": 19,
+      "time": 0.47735849056603763,
+      "simulationTime": 0.475,
+      "fillRatio": 0.1158203125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 49,
+        "y": 57,
+        "w": 63,
+        "h": 72
+      },
+      "phase": "ACTIVE",
+      "pose": "QI_ERUPT",
+      "fillPercent": 11.58203125,
+      "contactCell": null
+    },
+    {
+      "index": 20,
+      "time": 0.5103773584905659,
+      "simulationTime": 0.5083333333333333,
+      "fillRatio": 0.121328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 47,
+        "y": 56,
+        "w": 65,
+        "h": 73
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 12.1328125,
+      "contactCell": null
+    },
+    {
+      "index": 21,
+      "time": 0.5433962264150941,
+      "simulationTime": 0.5416666666666666,
+      "fillRatio": 0.1258984375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 47,
+        "y": 54,
+        "w": 66,
+        "h": 75
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 12.589843749999998,
+      "contactCell": 6
+    },
+    {
+      "index": 22,
+      "time": 0.5764150943396225,
+      "simulationTime": 0.575,
+      "fillRatio": 0.130390625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 46,
+        "y": 53,
+        "w": 67,
+        "h": 76
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 13.039062500000002,
+      "contactCell": null
+    },
+    {
+      "index": 23,
+      "time": 0.6094339622641508,
+      "simulationTime": 0.6083333333333333,
+      "fillRatio": 0.1341796875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 46,
+        "y": 52,
+        "w": 68,
+        "h": 77
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 13.41796875,
+      "contactCell": null
+    },
+    {
+      "index": 24,
+      "time": 0.642452830188679,
+      "simulationTime": 0.6416666666666666,
+      "fillRatio": 0.138828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 46,
+        "y": 51,
+        "w": 68,
+        "h": 78
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 13.8828125,
+      "contactCell": null
+    },
+    {
+      "index": 25,
+      "time": 0.6754716981132073,
+      "simulationTime": 0.6749999999999999,
+      "fillRatio": 0.142578125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 45,
+        "y": 50,
+        "w": 69,
+        "h": 80
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 14.2578125,
+      "contactCell": 7
+    },
+    {
+      "index": 26,
+      "time": 0.7084905660377356,
+      "simulationTime": 0.7083333333333333,
+      "fillRatio": 0.14578125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 45,
+        "y": 49,
+        "w": 70,
+        "h": 81
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 14.578125,
+      "contactCell": null
+    },
+    {
+      "index": 27,
+      "time": 0.741509433962264,
+      "simulationTime": 0.7333333333333333,
+      "fillRatio": 0.1487109375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 45,
+        "y": 48,
+        "w": 70,
+        "h": 82
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 14.87109375,
+      "contactCell": null
+    },
+    {
+      "index": 28,
+      "time": 0.7745283018867922,
+      "simulationTime": 0.7666666666666666,
+      "fillRatio": 0.15125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 45,
+        "y": 47,
+        "w": 70,
+        "h": 83
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 15.125,
+      "contactCell": 8
+    },
+    {
+      "index": 29,
+      "time": 0.8075471698113205,
+      "simulationTime": 0.7999999999999999,
+      "fillRatio": 0.1536328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 45,
+        "y": 45,
+        "w": 70,
+        "h": 85
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 15.36328125,
+      "contactCell": null
+    },
+    {
+      "index": 30,
+      "time": 0.8405660377358488,
+      "simulationTime": 0.8333333333333333,
+      "fillRatio": 0.15484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 44,
+        "w": 71,
+        "h": 86
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 15.484375,
+      "contactCell": null
+    },
+    {
+      "index": 31,
+      "time": 0.8735849056603772,
+      "simulationTime": 0.8666666666666666,
+      "fillRatio": 0.157109375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 43,
+        "w": 72,
+        "h": 87
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 15.7109375,
+      "contactCell": null
+    },
+    {
+      "index": 32,
+      "time": 0.9066037735849054,
+      "simulationTime": 0.9,
+      "fillRatio": 0.1586328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 42,
+        "w": 72,
+        "h": 88
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 15.86328125,
+      "contactCell": 9
+    },
+    {
+      "index": 33,
+      "time": 0.9396226415094336,
+      "simulationTime": 0.9333333333333332,
+      "fillRatio": 0.1603515625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 41,
+        "w": 72,
+        "h": 90
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.03515625,
+      "contactCell": null
+    },
+    {
+      "index": 34,
+      "time": 0.9726415094339619,
+      "simulationTime": 0.9666666666666667,
+      "fillRatio": 0.161796875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 41,
+        "w": 72,
+        "h": 90
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.1796875,
+      "contactCell": null
+    },
+    {
+      "index": 35,
+      "time": 1.0056603773584905,
+      "simulationTime": 0.9999999999999999,
+      "fillRatio": 0.162578125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 40,
+        "w": 72,
+        "h": 91
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.2578125,
+      "contactCell": 10
+    },
+    {
+      "index": 36,
+      "time": 1.0386792452830187,
+      "simulationTime": 1.0333333333333334,
+      "fillRatio": 0.1632421875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 40,
+        "w": 72,
+        "h": 91
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.32421875,
+      "contactCell": null
+    },
+    {
+      "index": 37,
+      "time": 1.071698113207547,
+      "simulationTime": 1.0666666666666667,
+      "fillRatio": 0.163828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 39,
+        "w": 72,
+        "h": 92
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.3828125,
+      "contactCell": null
+    },
+    {
+      "index": 38,
+      "time": 1.1047169811320754,
+      "simulationTime": 1.1,
+      "fillRatio": 0.1642578125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 39,
+        "w": 73,
+        "h": 92
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.42578125,
+      "contactCell": null
+    },
+    {
+      "index": 39,
+      "time": 1.1377358490566036,
+      "simulationTime": 1.1333333333333335,
+      "fillRatio": 0.1646875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 44,
+        "y": 39,
+        "w": 73,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.46875,
+      "contactCell": 11
+    },
+    {
+      "index": 40,
+      "time": 1.1707547169811319,
+      "simulationTime": 1.1666666666666667,
+      "fillRatio": 0.165078125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 43,
+        "y": 39,
+        "w": 75,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.5078125,
+      "contactCell": null
+    },
+    {
+      "index": 41,
+      "time": 1.20377358490566,
+      "simulationTime": 1.2000000000000002,
+      "fillRatio": 0.165,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 43,
+        "y": 39,
+        "w": 75,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.5,
+      "contactCell": null
+    },
+    {
+      "index": 42,
+      "time": 1.2367924528301883,
+      "simulationTime": 1.2333333333333334,
+      "fillRatio": 0.1658203125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 42,
+        "y": 39,
+        "w": 77,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.58203125,
+      "contactCell": 12
+    },
+    {
+      "index": 43,
+      "time": 1.2698113207547168,
+      "simulationTime": 1.2666666666666668,
+      "fillRatio": 0.166171875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 42,
+        "y": 39,
+        "w": 77,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.6171875,
+      "contactCell": null
+    },
+    {
+      "index": 44,
+      "time": 1.302830188679245,
+      "simulationTime": 1.3,
+      "fillRatio": 0.166640625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 41,
+        "y": 39,
+        "w": 79,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.6640625,
+      "contactCell": null
+    },
+    {
+      "index": 45,
+      "time": 1.3358490566037733,
+      "simulationTime": 1.3333333333333335,
+      "fillRatio": 0.16640625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 41,
+        "y": 39,
+        "w": 79,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.640625,
+      "contactCell": null
+    },
+    {
+      "index": 46,
+      "time": 1.3688679245283017,
+      "simulationTime": 1.3666666666666667,
+      "fillRatio": 0.1665625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "ACTIVE",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.65625,
+      "contactCell": 13
+    },
+    {
+      "index": 47,
+      "time": 1.40188679245283,
+      "simulationTime": 1.4000000000000001,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": null
+    },
+    {
+      "index": 48,
+      "time": 1.4349056603773582,
+      "simulationTime": 1.4333333333333333,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": null
+    },
+    {
+      "index": 49,
+      "time": 1.4679245283018865,
+      "simulationTime": 1.4666666666666668,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": 14
+    },
+    {
+      "index": 50,
+      "time": 1.5009433962264147,
+      "simulationTime": 1.5,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": null
+    },
+    {
+      "index": 51,
+      "time": 1.5339622641509432,
+      "simulationTime": 1.5333333333333334,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": null
+    },
+    {
+      "index": 52,
+      "time": 1.5669811320754714,
+      "simulationTime": 1.5666666666666667,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": null
+    },
+    {
+      "index": 53,
+      "time": 1.5999999999999999,
+      "simulationTime": 1.6,
+      "fillRatio": 0.1673046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 39,
+        "w": 81,
+        "h": 94
+      },
+      "phase": "RECOVERY",
+      "pose": "AURA_PILLAR",
+      "fillPercent": 16.73046875,
+      "contactCell": 15
+    }
+  ]
+}

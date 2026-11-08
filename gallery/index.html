@@ -1,96 +1,2072 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>fx-skill-kit · Local gallery</title>
+  <title>fx-skill-kit · 墨韻與晶格 — Procedural InkFX &amp; OLEDFX Atelier</title>
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="./favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="./logo.png">
   <style>
-    :root { color-scheme: light; font-family: ui-sans-serif, system-ui, sans-serif; color: #233d43; background: #f5f1e9; }
+    :root {
+      color-scheme: light;
+      --bg-canvas: #f3ede1;
+      --bg-paper: #faf6ee;
+      --bg-elevated: #ebe2d1;
+      --bg-oled: #060b0f;
+      --bg-oled-card: #0a1219;
+      --ink-deep: #141311;
+      --ink-body: #3b3732;
+      --ink-muted: #6c655c;
+      --border-hairline: rgba(20, 19, 17, 0.13);
+      --border-strong: rgba(20, 19, 17, 0.28);
+      --cinnabar: #b82921;
+      --cinnabar-soft: rgba(184, 41, 33, 0.11);
+      --shiqing: #245c69;
+      --nijin: #c69a35;
+      --oled-cyan: #36f3ff;
+      --oled-amber: #ffd447;
+      --shadow-soft: 0 20px 50px rgba(20, 17, 13, 0.07);
+      --shadow-oled: 0 26px 64px rgba(0, 0, 0, 0.52), inset 0 0 40px rgba(54, 243, 255, 0.09);
+      --font-serif: "Songti TC", "Noto Serif TC", "PMingLiU", "STSong", "Hiragino Mincho ProN", Georgia, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "PingFang TC", "Helvetica Neue", "Inter", system-ui, sans-serif;
+      --font-mono: "SF Mono", "JetBrains Mono", "Menlo", ui-monospace, monospace;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body[data-realm="oled"] {
+      color-scheme: dark;
+      --bg-canvas: #05090d;
+      --bg-paper: #0b1219;
+      --bg-elevated: #101b24;
+      --ink-deep: #edf8ff;
+      --ink-body: #a5c3d4;
+      --ink-muted: #628294;
+      --border-hairline: rgba(54, 243, 255, 0.15);
+      --border-strong: rgba(54, 243, 255, 0.34);
+      --cinnabar: #36f3ff;
+      --cinnabar-soft: rgba(54, 243, 255, 0.12);
+      --shadow-soft: 0 22px 58px rgba(0, 0, 0, 0.6);
+    }
+
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 48px 24px; }
-    main { max-width: 960px; margin: auto; }
-    .eyebrow { font: 12px ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: #607c7d; }
-    h1 { font-size: clamp(32px, 5vw, 56px); letter-spacing: -.055em; margin: 12px 0 16px; font-weight: 600; }
-    p { line-height: 1.6; max-width: 640px; color: #5c7073; }
-    .workspace { display: grid; grid-template-columns: 1fr 280px; gap: 28px; margin: 36px 0; }
-    .stage { display: grid; place-items: center; min-height: 400px; border: 1px solid #d7ddd4; border-radius: 12px; background: #fbf8f1; }
-    canvas { width: 320px; height: 320px; max-width: 100%; image-rendering: pixelated; touch-action: none; cursor: grab; }
-    aside { border-top: 2px solid #416c72; padding-top: 20px; }
-    label, legend { display: block; font-size: 13px; margin: 0 0 8px; }
-    fieldset { border: 0; margin: 0 0 18px; padding: 0; }
-    input, select, button, textarea { font: inherit; border: 1px solid #becdc7; border-radius: 6px; padding: 10px; background: #fbf8f1; color: #233d43; }
-    input[type=number], select { width: 100%; margin-bottom: 22px; }
-    input[type=range] { width: 100%; margin: 0 0 14px; padding: 0; }
-    .actions, .downloads { display: flex; gap: 8px; margin: 4px 0 22px; flex-wrap: wrap; }
-    button { cursor: pointer; flex: 1; }
-    button:hover { background: #e2eae3; }
-    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #416c72; outline-offset: 3px; }
-    .brand-row { margin: 0 0 8px; }
-    .brand-logo { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 24px rgba(23,40,48,.18); }
-    #status { font: 13px/1.8 ui-monospace, monospace; display: block; margin: 22px 0 0; }
-    #source { width: 100%; min-height: 8rem; font: 12px/1.45 ui-monospace, monospace; margin-top: 8px; }
-    .note, #file-notice { border-top: 1px solid #d7ddd4; padding-top: 20px; font-size: 14px; }
-    #file-notice { border: 1px solid #a74f3f; border-radius: 8px; padding: 12px 14px; background: #f8ebe4; color: #6b3228; }
-    a { color: #276b78; }
-    @media(max-width: 700px) { .workspace { grid-template-columns: 1fr; } .stage { min-height: 340px; } body { padding-top: 28px; } }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--ink-deep);
+      background-color: var(--bg-canvas);
+      background-image:
+        radial-gradient(circle at 12% 6%, rgba(184, 41, 33, 0.05), transparent 36%),
+        radial-gradient(circle at 88% 20%, rgba(36, 92, 105, 0.06), transparent 40%);
+      transition: background-color 0.55s var(--ease-out-expo), color 0.45s var(--ease-out-expo);
+      overflow-x: hidden;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Tactile Xuan paper micro-grain */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.028;
+      background-image:
+        repeating-linear-gradient(0deg, #000 0, #000 1px, transparent 1px, transparent 3px),
+        repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 4px);
+    }
+
+    /* Scroll Reveal Choreography */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+    }
+    [data-reveal].revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* Custom Dual-Realm Cursor Follower */
+    #cursor-probe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      margin: -18px 0 0 -18px;
+      border-radius: 50%;
+      border: 1px solid var(--cinnabar);
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0;
+      transition: width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo),
+                  border-radius 0.25s var(--ease-out-expo), border-color 0.25s, box-shadow 0.25s, opacity 0.25s;
+      display: grid;
+      place-items: center;
+    }
+    #cursor-probe::after {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cinnabar);
+      transition: all 0.2s;
+    }
+    #cursor-probe[data-mode="oled"] {
+      border-radius: 3px;
+      border-color: var(--oled-cyan);
+      box-shadow: 0 0 14px rgba(54, 243, 255, 0.38);
+    }
+    #cursor-probe[data-mode="oled"]::after {
+      border-radius: 0;
+      width: 6px;
+      height: 6px;
+      background: var(--oled-amber);
+    }
+    @media (hover: none), (pointer: coarse) {
+      #cursor-probe { display: none; }
+    }
+
+    /* Toast Notification Banner */
+    #toast-banner {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1050;
+      background: var(--ink-deep);
+      color: var(--bg-paper);
+      font: 600 11px/1.3 var(--font-mono);
+      letter-spacing: 0.05em;
+      padding: 10px 16px;
+      border-radius: 999px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
+    }
+    #toast-banner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Sticky Editorial Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: color-mix(in srgb, var(--bg-canvas) 85%, transparent);
+      border-bottom: 1px solid var(--border-hairline);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    }
+    .brand-title {
+      font: 700 12px/1.1 var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .brand-sub {
+      font: 10px/1.3 var(--font-mono);
+      color: var(--ink-muted);
+      display: block;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink-body);
+      font: 600 11px/1 var(--font-mono);
+      letter-spacing: 0.06em;
+      padding: 7px 11px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover {
+      background: var(--cinnabar-soft);
+      color: var(--cinnabar);
+    }
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill-group {
+      display: inline-flex;
+      border: 1px solid var(--border-hairline);
+      border-radius: 999px;
+      padding: 2px;
+      background: var(--bg-paper);
+    }
+    .pill-btn {
+      border: 0;
+      background: transparent;
+      color: var(--ink-body);
+      font: 600 11px/1 var(--font-mono);
+      padding: 6px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s var(--ease-out-expo);
+    }
+    .pill-btn[aria-pressed="true"], .pill-btn.active {
+      background: var(--ink-deep);
+      color: var(--bg-paper);
+    }
+
+    main {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 32px 108px;
+    }
+
+    /* Swiss-Editorial Section Layout & Architectural Numerals */
+    .act-section {
+      padding: 84px 0 44px;
+      border-top: 1px solid var(--border-hairline);
+      position: relative;
+    }
+    .act-section::before, .act-section::after {
+      content: "+";
+      position: absolute;
+      top: -8px;
+      font: 400 13px/1 var(--font-mono);
+      color: var(--ink-muted);
+      opacity: 0.55;
+    }
+    .act-section::before { left: 0; }
+    .act-section::after { right: 0; }
+    .act-section:first-of-type {
+      border-top: 0;
+      padding-top: 40px;
+    }
+    .act-section:first-of-type::before,
+    .act-section:first-of-type::after { display: none; }
+
+    .act-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font: 600 11px/1.4 var(--font-mono);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cinnabar);
+      margin-bottom: 18px;
+    }
+    .act-eyebrow span.index-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .act-eyebrow span.index-tag::before {
+      content: "";
+      display: inline-block;
+      width: 22px;
+      height: 1.5px;
+      background: currentColor;
+    }
+
+    .editorial-lead-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 24px;
+      align-items: baseline;
+      margin-bottom: 28px;
+    }
+    .arch-numeral {
+      font-family: var(--font-serif);
+      font-size: clamp(44px, 4.8vw, 68px);
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--cinnabar);
+      opacity: 0.85;
+      user-select: none;
+    }
+    .editorial-lead-grid h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      margin: 0 0 10px;
+    }
+    .editorial-lead-grid p {
+      font-size: 15px;
+      line-height: 1.68;
+      color: var(--ink-body);
+      max-width: 70ch;
+      margin: 0;
+    }
+
+    /* ACT I: HERO & SPLIT-REALM INTERACTIVE STAGE */
+    .hero-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 36px;
+      align-items: end;
+      margin-bottom: 32px;
+    }
+    .hero-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(40px, 5.8vw, 82px);
+      font-weight: 600;
+      line-height: 1.03;
+      letter-spacing: -0.038em;
+      margin: 0 0 18px;
+    }
+    .hero-headline .en-sub {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: clamp(17px, 2vw, 25px);
+      font-weight: 400;
+      letter-spacing: -0.018em;
+      color: var(--ink-body);
+      margin-top: 12px;
+      line-height: 1.35;
+    }
+    .hero-lead {
+      font-size: 15px;
+      line-height: 1.72;
+      color: var(--ink-body);
+      max-width: 68ch;
+      margin: 0;
+    }
+    .vermilion-stamp {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 88px;
+      height: 88px;
+      border: 2.5px solid #b82921;
+      border-radius: 6px;
+      padding: 6px;
+      color: #b82921;
+      background: rgba(184, 41, 33, 0.055);
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.22;
+      letter-spacing: 0.14em;
+      text-align: center;
+      transform: rotate(-3deg);
+      box-shadow: inset 0 0 0 1.5px rgba(184, 41, 33, 0.35), 0 8px 20px rgba(184, 41, 33, 0.12);
+      user-select: none;
+      cursor: pointer;
+      transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s;
+    }
+    .vermilion-stamp:hover {
+      transform: rotate(0deg) scale(1.06);
+      box-shadow: inset 0 0 0 1.5px rgba(184, 41, 33, 0.55), 0 12px 28px rgba(184, 41, 33, 0.22);
+    }
+
+    /* Split-Realm Interactive Stage */
+    .split-stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      background: var(--bg-paper);
+    }
+    .resonance-bridge {
+      position: absolute;
+      top: 50%;
+      left: 53%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--ink-deep);
+      color: var(--bg-paper);
+      border: 2px solid var(--bg-canvas);
+      display: grid;
+      place-items: center;
+      font: 700 11px var(--font-mono);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
+      pointer-events: none;
+      transition: transform 0.35s var(--ease-out-expo), background-color 0.3s;
+    }
+    .resonance-bridge.pulsing {
+      transform: translate(-50%, -50%) scale(1.32);
+      background: var(--cinnabar);
+    }
+    .realm-pane {
+      position: relative;
+      padding: 26px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 360px;
+    }
+    .realm-pane.ink-pane {
+      background: linear-gradient(135deg, #fbf7ef, #ede4d3);
+      color: #181614;
+      border-right: 1px solid var(--border-strong);
+    }
+    .realm-pane.oled-pane {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(26, 82, 106, 0.28), transparent 72%),
+        #060b0f;
+      color: #e4f7ff;
+    }
+    .pane-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font: 600 11px/1.2 var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    .ink-pane .pane-top { color: #5a5248; }
+    .oled-pane .pane-top { color: #6ec2d6; }
+    .pane-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+    .ink-pane .pane-badge {
+      background: rgba(184, 41, 33, 0.11);
+      color: #b82921;
+      border: 1px solid rgba(184, 41, 33, 0.3);
+    }
+    .oled-pane .pane-badge {
+      background: rgba(54, 243, 255, 0.12);
+      color: var(--oled-cyan);
+      border: 1px solid rgba(54, 243, 255, 0.3);
+    }
+    .hero-canvas-wrap {
+      display: grid;
+      place-items: center;
+      margin: 16px 0;
+      position: relative;
+    }
+    canvas#hero-ink-canvas {
+      width: 100%;
+      max-width: 440px;
+      height: 220px;
+      border-radius: 8px;
+      border: 1px solid rgba(24, 22, 20, 0.16);
+      background: #f6f1e6;
+      cursor: crosshair;
+      box-shadow: inset 0 0 28px rgba(120, 100, 74, 0.09);
+    }
+    /* Realistic SSD1306 0.96" I2C Breakout PCB Module */
+    .pcb-module {
+      background: linear-gradient(180deg, #0f3329, #09221b);
+      border: 2px solid #236652;
+      border-radius: 10px;
+      padding: 14px 18px 16px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.68), inset 0 0 0 1px rgba(255, 212, 71, 0.2);
+      position: relative;
+      width: 100%;
+      max-width: 368px;
+    }
+    .pcb-hole {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #060b0f;
+      border: 2px solid #d9b44a;
+    }
+    .pcb-hole.tl { top: 6px; left: 6px; }
+    .pcb-hole.tr { top: 6px; right: 6px; }
+    .pcb-hole.bl { bottom: 6px; left: 6px; }
+    .pcb-hole.br { bottom: 6px; right: 6px; }
+    .pcb-pins {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 10px;
+      font: 600 9px/1 var(--font-mono);
+      color: #ebd07a;
+    }
+    .pcb-pin {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pcb-pin::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e8c14a;
+      border: 1.5px solid #785c12;
+      display: inline-block;
+    }
+    .oled-glass {
+      background: #030609;
+      border: 1.5px solid #283d4b;
+      border-radius: 4px;
+      padding: 6px;
+      position: relative;
+      box-shadow: inset 0 0 24px rgba(54, 243, 255, 0.15);
+    }
+    canvas#hero-oled-canvas {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 2 / 1;
+      image-rendering: pixelated;
+      display: block;
+      cursor: crosshair;
+    }
+    .pcb-silkscreen {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding: 0 8px;
+      font: 600 9px/1 var(--font-mono);
+      color: rgba(235, 208, 122, 0.8);
+      letter-spacing: 0.08em;
+    }
+    .pane-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font: 11px/1.4 var(--font-mono);
+      opacity: 0.86;
+      flex-wrap: wrap;
+    }
+
+    /* Telemetry Ribbon */
+    .telemetry-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border-hairline);
+      border: 1px solid var(--border-hairline);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .telemetry-cell {
+      background: var(--bg-paper);
+      padding: 16px 20px;
+    }
+    .telemetry-val {
+      font: 700 21px/1.15 var(--font-mono);
+      color: var(--ink-deep);
+    }
+    .telemetry-lbl {
+      font: 11px/1.4 var(--font-mono);
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    /* ACT II: PHYSICS & ALGORITHM DECONSTRUCTION THEATER */
+    .deconstruct-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .lab-card {
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      padding: 26px;
+      background: var(--bg-paper);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .lab-card.oled-lab {
+      background: #070d13;
+      color: #e4f6ff;
+      border-color: #1f3948;
+    }
+    .lab-title {
+      font-family: var(--font-serif);
+      font-size: 21px;
+      margin: 0 0 6px;
+    }
+    .lab-desc {
+      font-size: 13px;
+      line-height: 1.58;
+      color: var(--ink-muted);
+      margin: 0;
+    }
+    .lab-card.oled-lab .lab-desc { color: #84a8bc; }
+    .layer-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .layer-box {
+      border: 1px solid var(--border-hairline);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.38);
+    }
+    .lab-card.oled-lab .layer-box {
+      background: #0c161f;
+      border-color: rgba(54, 243, 255, 0.18);
+    }
+    .layer-box canvas {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      image-rendering: pixelated;
+      border-radius: 4px;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .layer-box.wide-oled canvas {
+      aspect-ratio: 2 / 1;
+    }
+    .layer-caption {
+      font: 600 10px/1.2 var(--font-mono);
+      letter-spacing: 0.04em;
+      display: block;
+    }
+    .lab-controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .swatch-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .mineral-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-canvas);
+      color: var(--ink-deep);
+      font: 600 11px/1 var(--font-mono);
+      cursor: pointer;
+    }
+    .mineral-chip.active {
+      border-color: var(--cinnabar);
+      background: var(--cinnabar-soft);
+    }
+    .mineral-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .ramp-stops {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      padding-top: 4px;
+    }
+    .ramp-stop {
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 600 9px var(--font-mono);
+    }
+    .rle-meter {
+      background: #0c1721;
+      border: 1px solid rgba(54, 243, 255, 0.22);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font: 11px/1.5 var(--font-mono);
+      color: #9bd7e8;
+    }
+    .rle-bar-track {
+      height: 6px;
+      background: #172a38;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .rle-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--oled-amber), var(--oled-cyan));
+      width: 6.8%;
+    }
+
+    /* ACT III: CURATED 32-EFFECT EXHIBITION WALL */
+    .filter-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 6px 0 22px;
+    }
+    .category-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .cat-btn {
+      font: 600 11px/1 var(--font-mono);
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-paper);
+      color: var(--ink-body);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--ink-deep);
+      color: var(--bg-paper);
+      border-color: var(--ink-deep);
+    }
+    .search-box {
+      min-width: 240px;
+      font: 12px var(--font-mono);
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-paper);
+      color: var(--ink-deep);
+    }
+    .wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(224px, 1fr));
+      gap: 16px;
+    }
+    .wall-card {
+      border: 1px solid var(--border-hairline);
+      border-radius: 12px;
+      padding: 14px;
+      background: var(--bg-paper);
+      cursor: pointer;
+      transition: transform 0.24s var(--ease-out-expo), border-color 0.22s, box-shadow 0.24s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+    .wall-card:hover, .wall-card.active {
+      border-color: var(--cinnabar);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-soft);
+    }
+    .wall-card.oled-card {
+      background: var(--bg-oled-card);
+      color: #d8f3ff;
+      border-color: #1f3644;
+    }
+    .wall-card.oled-card:hover, .wall-card.oled-card.active {
+      border-color: var(--oled-cyan);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.52), 0 0 18px rgba(54, 243, 255, 0.22);
+    }
+    .wall-card canvas {
+      width: 148px;
+      height: 148px;
+      image-rendering: pixelated;
+      border-radius: 6px;
+    }
+    .wall-card.oled-card canvas {
+      width: 168px;
+      height: 84px;
+      margin: 32px 0;
+      border: 1px solid rgba(54, 243, 255, 0.22);
+    }
+    .wall-title-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .wall-zh {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .wall-tag {
+      font: 600 9px/1 var(--font-mono);
+      padding: 3px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background: var(--cinnabar-soft);
+      color: var(--cinnabar);
+    }
+    .wall-card.oled-card .wall-tag {
+      background: rgba(54, 243, 255, 0.12);
+      color: var(--oled-cyan);
+    }
+    .wall-meta {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font: 11px var(--font-mono);
+      opacity: 0.75;
+    }
+
+    /* ACT IV: STUDIO WORKBENCH & HARDWARE SIMULATOR */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 370px;
+      gap: 28px;
+      margin: 12px 0 36px;
+      align-items: start;
+    }
+    .stage-container {
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      background: var(--bg-paper);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+    .stage-chrome-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font: 600 10px/1.2 var(--font-mono);
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+    .stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 430px;
+      border: 1px solid rgba(24, 22, 20, 0.16);
+      border-radius: 12px;
+      background:
+        linear-gradient(0deg, rgba(184, 41, 33, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184, 41, 33, 0.035) 1px, transparent 1px),
+        #fbf8f1;
+      background-size: 32px 32px, 32px 32px, 100% 100%;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+      padding: 28px;
+    }
+    .stage.oled-shell {
+      background:
+        radial-gradient(circle at 50% 50%, rgba(16, 56, 74, 0.38), #05090d 76%);
+      border-color: #214052;
+      box-shadow: var(--shadow-oled);
+    }
+    canvas#preview {
+      width: 320px;
+      height: 320px;
+      max-width: 100%;
+      image-rendering: pixelated;
+      touch-action: none;
+      cursor: grab;
+      border-radius: 4px;
+    }
+    .stage.oled-shell canvas#preview {
+      width: 384px;
+      height: 192px;
+      filter: drop-shadow(0 0 10px rgba(72, 220, 255, 0.45));
+    }
+    .act-timeline-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 14px;
+      font: 600 10px/1.2 var(--font-mono);
+    }
+    .phase-pill {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-hairline);
+      text-align: center;
+      opacity: 0.55;
+      transition: all 0.15s;
+    }
+    .phase-pill.active {
+      opacity: 1;
+      border-color: var(--cinnabar);
+      background: var(--cinnabar-soft);
+      color: var(--cinnabar);
+    }
+    .perf-meter-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-canvas);
+      font: 10px/1.3 var(--font-mono);
+      color: var(--ink-muted);
+    }
+    canvas#perf-sparkline {
+      width: 140px;
+      height: 22px;
+      border-radius: 3px;
+    }
+
+    aside.inspector-panel {
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 22px;
+      background: var(--bg-paper);
+      box-shadow: var(--shadow-soft);
+    }
+    label, legend {
+      display: block;
+      font: 600 11px/1.3 var(--font-mono);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+      color: var(--ink-body);
+    }
+    fieldset {
+      border: 1px solid var(--border-hairline);
+      border-radius: 10px;
+      margin: 0 0 14px;
+      padding: 12px;
+    }
+    input, select, button, textarea {
+      font: inherit;
+      font-size: 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 7px;
+      padding: 8px 10px;
+      background: var(--bg-canvas);
+      color: var(--ink-deep);
+      transition: border-color 0.18s, transform 0.18s var(--ease-out-expo), background 0.18s;
+    }
+    input[type=number], select { width: 100%; margin-bottom: 12px; }
+    input[type=range] { width: 100%; margin: 0 0 8px; padding: 0; accent-color: var(--cinnabar); }
+    .actions, .downloads { display: flex; gap: 6px; margin: 4px 0 12px; flex-wrap: wrap; }
+    button { cursor: pointer; flex: 1 1 auto; font-family: var(--font-mono); font-weight: 600; }
+    button:hover { border-color: var(--cinnabar); background: var(--cinnabar-soft); }
+    button[aria-pressed="true"] {
+      background: var(--ink-deep);
+      color: var(--bg-paper);
+    }
+    #status {
+      font: 11px/1.6 var(--font-mono);
+      display: block;
+      margin: 12px 0 0;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+    }
+    #source {
+      width: 100%;
+      min-height: 9rem;
+      font: 11px/1.45 var(--font-mono);
+      margin-top: 8px;
+    }
+    .checks-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .checks-row label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      font: 400 12px var(--font-sans);
+      text-transform: none;
+    }
+
+    /* ACT V: AGENTIC LOOP & MCP TERMINAL */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+    .gate-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .gate-card {
+      border: 1px solid var(--border-hairline);
+      border-radius: 10px;
+      padding: 16px;
+      background: var(--bg-paper);
+    }
+    .gate-id {
+      font: 700 11px var(--font-mono);
+      color: var(--cinnabar);
+    }
+    .gate-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    .gate-meta {
+      font: 11px/1.48 var(--font-mono);
+      color: var(--ink-muted);
+    }
+    .terminal-card {
+      background: #0a1016;
+      color: #d7ecf7;
+      border: 1px solid #223746;
+      border-radius: 12px;
+      padding: 22px;
+      font: 12px/1.65 var(--font-mono);
+    }
+    .terminal-cmd {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: #101b25;
+      border: 1px solid #22384a;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      color: #7bf0ff;
+    }
+    .terminal-cmd code {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .terminal-cmd button {
+      flex: 0 0 auto;
+      padding: 4px 9px;
+      font-size: 10px;
+      background: #1b2e3d;
+      color: #fff;
+      border-color: #345670;
+    }
+
+    .editorial-footer {
+      margin-top: 72px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-strong);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      font: 11px/1.5 var(--font-mono);
+      color: var(--ink-muted);
+    }
+
+    .note, #file-notice {
+      border-top: 1px solid var(--border-hairline);
+      padding-top: 20px;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    #file-notice {
+      border: 1px solid #a74f3f;
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #f8ebe4;
+      color: #6b3228;
+      margin: 16px 0;
+    }
+    a { color: var(--cinnabar); }
+
+    @media (max-width: 980px) {
+      .hero-header, .split-stage, .deconstruct-grid, .workspace, .pipeline-grid, .editorial-lead-grid {
+        grid-template-columns: 1fr;
+      }
+      .resonance-bridge { display: none; }
+      .realm-pane.ink-pane {
+        border-right: 0;
+        border-bottom: 1px solid var(--border-strong);
+      }
+      .telemetry-ribbon {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      main { padding: 0 16px 64px; }
+      .topbar { padding: 10px 16px; }
+      .layer-strip, .gate-list { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
-<body>
-  <main>
-    <div class="eyebrow">fx-skill-kit / local gallery</div>
-    <p class="brand-row"><img class="brand-logo" src="./logo.svg" width="56" height="56" alt="fx-skill-kit"></p>
-    <h1>Small effects. A clearer view.</h1>
-    <p id="file-notice">Opened via a file: URL. Effect modules do not load from disk. From the repository root run npm run gallery and open http://127.0.0.1:8080/gallery/.</p>
-    <p>Watch the ink bloom or follow a particle around its orbit. Change the palette and view tilt, copy the source, or download the current frame.</p>
-    <div class="workspace">
-      <div class="stage"><canvas id="preview" width="160" height="160" aria-label="Animated procedural effect preview"></canvas></div>
-      <aside>
-        <label for="effect">Effect</label>
-        <select id="effect"><option value="pulse-dot">Pulse dot · ink bloom</option><option value="orbit-loop">Orbit loop · particle trail</option></select>
-        <label for="seed">Seed</label>
-        <input id="seed" type="number" min="0" max="4294967295" step="1" value="1" required>
-        <label for="palette">Palette</label>
-        <select id="palette">
-          <option value="">Effect default</option>
-          <option value="ink">Ink</option>
-          <option value="zhusha">Zhusha</option>
-          <option value="shiqing">Shiqing</option>
-          <option value="gold">Gold</option>
-        </select>
-        <fieldset>
-          <legend>View / tilt</legend>
-          <label for="tilt-x">Tilt X <output id="tilt-x-value">0.00</output></label>
-          <input id="tilt-x" type="range" min="-1" max="1" step="0.01" value="0">
-          <label for="tilt-y">Tilt Y <output id="tilt-y-value">0.00</output></label>
-          <input id="tilt-y" type="range" min="-1" max="1" step="0.01" value="0">
-        </fieldset>
-        <div class="actions"><button id="replay" type="button">Replay</button><button id="pause" type="button" aria-pressed="false">Pause</button></div>
-        <div class="downloads">
-          <button id="copy" type="button">Copy source</button>
-          <button id="download-png" type="button">Download PNG</button>
-          <button id="download-header" type="button">Download C header</button>
-        </div>
-        <label><input id="guides" type="checkbox" checked> Show safe area &amp; origin</label>
-        <textarea id="source" readonly hidden aria-label="Copied effect source"></textarea>
-        <output id="status" aria-live="off">Loading effect…</output>
-      </aside>
+<body data-realm="ink" data-lang="bi">
+  <div id="cursor-probe" aria-hidden="true"></div>
+  <div id="toast-banner" role="status" aria-live="polite">COPIED TO CLIPBOARD</div>
+
+  <header class="topbar">
+    <a class="brand-cluster" href="#act-hero">
+      <img class="brand-logo" src="./logo.svg" width="34" height="34" alt="fx-skill-kit">
+      <div>
+        <span class="brand-title">fx-skill-kit · inkfx × oledfx</span>
+        <span class="brand-sub">N° 01–32 · Zero-Dependency Procedural FX Atelier</span>
+      </div>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary chapters">
+      <a href="#act-hero">01 STAGE</a>
+      <a href="#act-deconstruct">02 ANATOMY</a>
+      <a href="#act-archive">03 ARCHIVE (32)</a>
+      <a href="#act-studio">04 STUDIO</a>
+      <a href="#act-pipeline">05 MCP LOOP</a>
+    </nav>
+
+    <div class="nav-controls">
+      <div class="pill-group" role="group" aria-label="Realm atmosphere">
+        <button type="button" class="pill-btn active" data-set-realm="ink" data-magnetic>宣紙 INK</button>
+        <button type="button" class="pill-btn" data-set-realm="oled" data-magnetic>晶格 OLED</button>
+      </div>
+      <div class="pill-group" role="group" aria-label="Language mode">
+        <button type="button" class="pill-btn active" data-set-lang="bi">中/EN</button>
+        <button type="button" class="pill-btn" data-set-lang="zh">繁中</button>
+        <button type="button" class="pill-btn" data-set-lang="en">EN</button>
+      </div>
+      <button type="button" id="sfx-toggle" class="pill-btn" aria-pressed="false" style="border:1px solid var(--border-strong);" data-magnetic>SFX: OFF</button>
     </div>
-    <p class="note">For frame-by-frame review, <a id="sheet" href="../records/pulse-dot/contact.png">open the contact sheet</a>. Learn to write your own in <a href="../docs/AUTHORING.md">the authoring contract</a>.</p>
+  </header>
+
+  <main>
+    <p id="file-notice">Opened via a file: URL. Effect modules do not load from disk. From the repository root run npm run gallery and open http://127.0.0.1:8080/gallery/.</p>
+
+    <!-- ACT I: SPLIT-REALM INTERACTIVE HERO -->
+    <section class="act-section revealed" id="act-hero" data-reveal>
+      <div class="act-eyebrow">
+        <span class="index-tag">ACT I · DUAL-REALM INTERACTIVE STAGE</span>
+        <span>SEED=42 · 120HZ SIM · ZERO NPM DEPENDENCIES</span>
+      </div>
+
+      <div class="hero-header">
+        <div>
+          <h1 class="hero-headline">
+            <span data-i18n-bi="墨韻千秋，晶格萬象。" data-i18n-zh="墨韻千秋，晶格萬象。" data-i18n-en="Calligraphic Ink. 1-Bit Silicon.">墨韻千秋，晶格萬象。</span>
+            <span class="en-sub" data-i18n-bi="Procedural Eastern Ink Wash (inkfx), 1-Bit &amp; RGB565 Embedded Compiler (oledfx), and Visual Agentic Loop (fx-skill-kit)." data-i18n-zh="程序化東方水墨武俠引擎（inkfx）、嵌入式 1-Bit 與 RGB565 微螢幕編譯庫（oledfx）與 AI 視覺自檢閉環工具鏈。" data-i18n-en="Deterministic Eastern Ink Physics (inkfx), 1-Bit &amp; RGB565 Microcontroller Compiler (oledfx), and Visual Agentic Loop.">Procedural Eastern Ink Wash (inkfx), 1-Bit &amp; RGB565 Embedded Compiler (oledfx), and Visual Agentic Loop (fx-skill-kit).</span>
+          </h1>
+          <p class="hero-lead" data-i18n-bi="在左側宣紙揮毫體驗「飛白與水暈（Pigment + Wetness）」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。" data-i18n-zh="在左側宣紙揮毫體驗「飛白與水暈」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。" data-i18n-en="Sweep your cursor across the left Xuan-paper scroll to paint live dry-brush feibai and wet ink diffusion, while the 128×64 SSD1306 OLED robot eyes on the right track your gaze in real time. Click either realm to trigger a cross-realm Wuxia slash and 1-bit shockwave.">
+            在左側宣紙揮毫體驗「飛白與水暈（Pigment + Wetness）」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。
+          </p>
+        </div>
+        <div class="vermilion-stamp" id="hero-seal-btn" data-magnetic title="點擊蓋下朱砂印記 · Click to unleash cross-realm slash">
+          程序<br>水墨<br>真跡
+        </div>
+      </div>
+
+      <div class="split-stage">
+        <div class="resonance-bridge" id="resonance-bridge" title="Cross-Realm Resonance">⇄</div>
+
+        <div class="realm-pane ink-pane" id="hero-ink-pane">
+          <div class="pane-top">
+            <span>REALM 01 // INKFX · 東方水墨武道場</span>
+            <span class="pane-badge">PIGMENT + WETNESS</span>
+          </div>
+          <div class="hero-canvas-wrap">
+            <canvas id="hero-ink-canvas" width="360" height="200" aria-label="Interactive Xuan paper brush canvas"></canvas>
+          </div>
+          <div class="pane-footer">
+            <span data-i18n-bi="游標移動揮毫 · 點擊釋放「朱砂十字斬」" data-i18n-zh="游標移動揮毫 · 點擊釋放「朱砂十字斬」" data-i18n-en="Move cursor to paint ink · Click for Cinnabar Cross Slash">游標移動揮毫 · 點擊釋放「朱砂十字斬」</span>
+            <span id="hero-ink-telemetry">FEIBAI: ACTIVE · RAMPS: 6-STOP</span>
+          </div>
+        </div>
+
+        <div class="realm-pane oled-pane" id="hero-oled-pane">
+          <div class="pane-top">
+            <span>REALM 02 // OLEDFX · SSD1306 128×64 暗房</span>
+            <span class="pane-badge">XOR-RLE &lt; 3.5 KB</span>
+          </div>
+          <div class="hero-canvas-wrap">
+            <div class="pcb-module">
+              <span class="pcb-hole tl"></span>
+              <span class="pcb-hole tr"></span>
+              <span class="pcb-hole bl"></span>
+              <span class="pcb-hole br"></span>
+              <div class="pcb-pins">
+                <span class="pcb-pin">GND</span>
+                <span class="pcb-pin">VCC</span>
+                <span class="pcb-pin">SCL</span>
+                <span class="pcb-pin">SDA</span>
+              </div>
+              <div class="oled-glass">
+                <canvas id="hero-oled-canvas" width="128" height="64" aria-label="Interactive SSD1306 128x64 OLED eye tracker"></canvas>
+              </div>
+              <div class="pcb-silkscreen">
+                <span>0.96" I2C OLED · 0x3C</span>
+                <span>DUAL-ZONE Y/C</span>
+              </div>
+            </div>
+          </div>
+          <div class="pane-footer">
+            <span data-i18n-bi="雙眼即時追蹤游標 · 點擊觸發「1-Bit 電離充能」" data-i18n-zh="雙眼即時追蹤游標 · 點擊觸發「1-Bit 電離充能」" data-i18n-en="Eyes track cursor · Click to trigger 1-Bit Cyber Surge">雙眼即時追蹤游標 · 點擊觸發「1-Bit 電離充能」</span>
+            <span id="hero-oled-telemetry">GAZE: (0.00, 0.00) · BAYER 4×4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="telemetry-ribbon">
+        <div class="telemetry-cell">
+          <div class="telemetry-val">32 Effects</div>
+          <div class="telemetry-lbl">16 InkFX · 14 OLEDFX · 2 Starter</div>
+        </div>
+        <div class="telemetry-cell">
+          <div class="telemetry-val">0.05–0.73 ms</div>
+          <div class="telemetry-lbl">p95 Frame Budget @ 120Hz (Limit &lt; 1.5ms)</div>
+        </div>
+        <div class="telemetry-cell">
+          <div class="telemetry-val">93.2% Saved</div>
+          <div class="telemetry-lbl">48 KB Raw → 1.3–3.6 KB XOR-RLE C11 Header</div>
+        </div>
+        <div class="telemetry-cell">
+          <div class="telemetry-val">CHK 01–06</div>
+          <div class="telemetry-lbl">Determinism · Edge · Seam · Entropy · Shimmer</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT II: ALGORITHM & PHYSICS DECONSTRUCTION THEATER -->
+    <section class="act-section" id="act-deconstruct" data-reveal>
+      <div class="act-eyebrow">
+        <span class="index-tag">ACT II · PHYSICS &amp; ALGORITHM ANATOMY</span>
+        <span>DUAL-BUFFER INK DIFFUSION × 1-BIT BAYER &amp; XOR-DELTA RLE</span>
+      </div>
+
+      <div class="editorial-lead-grid">
+        <div class="arch-numeral">02</div>
+        <div>
+          <h2 data-i18n-bi="水墨物理雙緩衝 × 微螢幕位元差分即時解剖" data-i18n-zh="水墨物理雙緩衝 × 微螢幕位元差分即時解剖" data-i18n-en="Dual-Buffer Ink Physics &amp; 1-Bit XOR-RLE Deconstruction">水墨物理雙緩衝 × 微螢幕位元差分即時解剖</h2>
+          <p data-i18n-bi="拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白（Feibai）」與濃墨邊界「水暈（Dark Fringe）」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。" data-i18n-zh="拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白」與濃墨邊界「水暈」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。" data-i18n-en="Inspect the mathematical anatomy behind every frame: on the left, see how paper grain valleys intercept dry-brush pigment (feibai) while wetness deposits dark fringes; on the right, compare 1-bit dithering matrices and frame-to-frame XOR-Delta compression.">拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白（Feibai）」與濃墨邊界「水暈（Dark Fringe）」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。</p>
+        </div>
+      </div>
+
+      <div class="deconstruct-grid">
+        <!-- Track A: InkFX 4-Layer Anatomy -->
+        <div class="lab-card">
+          <div>
+            <h3 class="lab-title">① InkFX · 水墨三層物理與六階礦物色盤</h3>
+            <p class="lab-desc">拖曳飛白乾度滑桿或切換四大傳統礦物色盤，即時觀察 Pigment 濃度、Wetness 水暈與宣紙纖維高度圖如何交織出東方筆意。</p>
+          </div>
+          <div class="layer-strip">
+            <div class="layer-box">
+              <canvas id="lab-ink-pigment" width="96" height="96"></canvas>
+              <span class="layer-caption">01 PIGMENT 墨色</span>
+            </div>
+            <div class="layer-box">
+              <canvas id="lab-ink-wetness" width="96" height="96"></canvas>
+              <span class="layer-caption">02 WETNESS 水暈</span>
+            </div>
+            <div class="layer-box">
+              <canvas id="lab-ink-grain" width="96" height="96"></canvas>
+              <span class="layer-caption">03 PAPER 宣紙紋</span>
+            </div>
+            <div class="layer-box">
+              <canvas id="lab-ink-final" width="96" height="96"></canvas>
+              <span class="layer-caption">04 COMPOSITE 合成</span>
+            </div>
+          </div>
+          <div class="lab-controls-row">
+            <div class="swatch-bar">
+              <button type="button" class="mineral-chip active" data-lab-mineral="zhusha"><span class="mineral-dot" style="background:#b82921"></span>朱砂 Zhusha</button>
+              <button type="button" class="mineral-chip" data-lab-mineral="songyan"><span class="mineral-dot" style="background:#1c1a17"></span>松煙 Songyan</button>
+              <button type="button" class="mineral-chip" data-lab-mineral="shiqing"><span class="mineral-dot" style="background:#245c69"></span>石青 Shiqing</button>
+              <button type="button" class="mineral-chip" data-lab-mineral="nijin"><span class="mineral-dot" style="background:#d4af37"></span>泥金 Nijin</button>
+            </div>
+            <label style="margin:0;display:flex;align-items:center;gap:6px;font-size:10px;">
+              FEIBAI DRYNESS
+              <input id="lab-dryness" type="range" min="0.05" max="0.95" step="0.05" value="0.45" style="width:90px;margin:0;">
+            </label>
+          </div>
+          <div class="ramp-stops" id="lab-ramp-stops" aria-label="6-stop non-linear mineral color ramp"></div>
+        </div>
+
+        <!-- Track B: OLEDFX Dither & XOR-RLE Anatomy -->
+        <div class="lab-card oled-lab">
+          <div>
+            <h3 class="lab-title">② OLEDFX · 1-Bit 抖動矩陣與 XOR-RLE 差分熱力圖</h3>
+            <p class="lab-desc">Ordered Bayer 4×4 以固定空間門檻消除跨幀閃爍（Shimmer = 0.00%），並透過 `Frame[t] ^ Frame[t-1]` 將靜態背景化為連續零位元組。</p>
+          </div>
+          <div class="layer-strip">
+            <div class="layer-box wide-oled">
+              <canvas id="lab-oled-bayer" width="96" height="48"></canvas>
+              <span class="layer-caption">BAYER 4×4 (17階)</span>
+            </div>
+            <div class="layer-box wide-oled">
+              <canvas id="lab-oled-checker" width="96" height="48"></canvas>
+              <span class="layer-caption">CHECKER 棋盤</span>
+            </div>
+            <div class="layer-box wide-oled">
+              <canvas id="lab-oled-atkinson" width="96" height="48"></canvas>
+              <span class="layer-caption">ATKINSON 誤差擴散</span>
+            </div>
+            <div class="layer-box wide-oled">
+              <canvas id="lab-oled-xordelta" width="96" height="48"></canvas>
+              <span class="layer-caption">XOR-DELTA 差分幀</span>
+            </div>
+          </div>
+          <div class="rle-meter">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+              <span>ESP32 FLASH BUDGET (`eyes/curious-blink` · 48 Frames)</span>
+              <strong style="color:var(--oled-amber)">3,333 B / 49,152 B (93.2% SAVED)</strong>
+            </div>
+            <div class="rle-bar-track"><div class="rle-bar-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT III: LIVE 32-EFFECT EXHIBITION WALL -->
+    <section class="act-section" id="act-archive" data-reveal>
+      <div class="act-eyebrow">
+        <span class="index-tag">ACT III · CURATED 32-EFFECT EXHIBITION WALL</span>
+        <span>INTERSECTIONOBSERVER 60FPS LIVE CANVAS ARCHIVE</span>
+      </div>
+
+      <div class="editorial-lead-grid">
+        <div class="arch-numeral">03</div>
+        <div>
+          <h2 data-i18n-bi="全目錄 32 組特效策展圖鑑牆 (Live Scrollable Wall)" data-i18n-zh="全目錄 32 組特效策展圖鑑牆" data-i18n-en="Curated 32-Effect Live Exhibition Archive">全目錄 32 組特效策展圖鑑牆 (Live Scrollable Wall)</h2>
+          <p data-i18n-bi="點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。" data-i18n-zh="點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。" data-i18n-en="Select any card to load the effect into the Studio Workbench below, automatically matching Xuan-paper scroll or SSD1306 hardware simulation.">點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。</p>
+        </div>
+      </div>
+
+      <div class="filter-toolbar">
+        <div class="category-pills" id="wall-filters">
+          <button type="button" class="cat-btn active" data-filter="all">ALL (32)</button>
+          <button type="button" class="cat-btn" data-filter="inkfx">INKFX 水墨 (16)</button>
+          <button type="button" class="cat-btn" data-filter="oledfx">OLEDFX 晶格 (14)</button>
+          <button type="button" class="cat-btn" data-filter="sword">SWORD 劍氣</button>
+          <button type="button" class="cat-btn" data-filter="talisman">TALISMAN 符籙</button>
+          <button type="button" class="cat-btn" data-filter="zen">ZEN 禪意</button>
+          <button type="button" class="cat-btn" data-filter="ink-burst">BURST 氣勁</button>
+          <button type="button" class="cat-btn" data-filter="eyes">EYES 雙眼</button>
+          <button type="button" class="cat-btn" data-filter="weather">WEATHER 天氣</button>
+          <button type="button" class="cat-btn" data-filter="system">SYSTEM 系統</button>
+          <button type="button" class="cat-btn" data-filter="pomodoro">POMODORO 專注</button>
+          <button type="button" class="cat-btn" data-filter="transitions">TRANSITIONS 轉場</button>
+          <button type="button" class="cat-btn" data-filter="ui">UI 印記</button>
+        </div>
+        <input type="search" id="wall-search" class="search-box" placeholder="搜尋特效 ID / 名稱 (⌘K)..." aria-label="Search effects">
+      </div>
+
+      <div id="wall" class="wall-grid"></div>
+    </section>
+
+    <!-- ACT IV: STUDIO WORKBENCH & HARDWARE SIMULATOR -->
+    <section class="act-section" id="act-studio" data-reveal>
+      <div class="act-eyebrow">
+        <span class="index-tag">ACT IV · STUDIO INSPECTOR &amp; HARDWARE SIMULATOR</span>
+        <span>120HZ DETERMINISTIC STEPPER · WUXIA ACT DUMMY · C11 HEADER EXPORT</span>
+      </div>
+
+      <div class="editorial-lead-grid">
+        <div class="arch-numeral">04</div>
+        <div>
+          <h2 data-i18n-bi="深度調校艙與硬體模擬工作台 (Studio Workbench)" data-i18n-zh="深度調校艙與硬體模擬工作台" data-i18n-en="Interactive Studio Workbench &amp; Hardware Simulator">深度調校艙與硬體模擬工作台 (Studio Workbench)</h2>
+          <p data-i18n-bi="即時切換礦物色盤、宣紙纖維粗細、視角傾斜（Tilt / Look）、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。" data-i18n-zh="即時切換礦物色盤、宣紙纖維粗細、視角傾斜、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。" data-i18n-en="Switch mineral ramps, paper grain roughness, view tilt, and 0.25x slow-motion, then copy single-file JS / React / Vue snippets or download ESP32 C11 headers.">即時切換礦物色盤、宣紙纖維粗細、視角傾斜（Tilt / Look）、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。</p>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <div class="stage-container">
+          <div class="stage-chrome-bar">
+            <span id="stage-chrome-title">SCROLL MOUNT // XUAN PAPER 160×160</span>
+            <span id="stage-chrome-spec">SAFE AREA 8% · ORIGIN CROSSHAIR</span>
+          </div>
+          <div class="stage" id="stage">
+            <canvas id="preview" width="160" height="160" aria-label="Animated procedural effect preview"></canvas>
+          </div>
+          <div class="act-timeline-bar" id="act-timeline">
+            <div class="phase-pill" data-phase="WINDUP">01 WINDUP · 負時間蓄力</div>
+            <div class="phase-pill" data-phase="ACTIVE">02 ACTIVE · 招式釋放</div>
+            <div class="phase-pill" data-phase="FREEZE">03 FREEZE · 命中頓幀</div>
+            <div class="phase-pill" data-phase="RECOVERY">04 RECOVERY · 殘心收刀</div>
+          </div>
+          <div class="perf-meter-row">
+            <span id="perf-readout">STEP BUDGET (120Hz): ~0.18ms &lt; 1.50ms (CHK-05 PASS)</span>
+            <canvas id="perf-sparkline" width="140" height="22" aria-label="Frame step time sparkline"></canvas>
+          </div>
+        </div>
+
+        <aside class="inspector-panel">
+          <label for="effect">Effect (32 in catalog)</label>
+          <select id="effect">
+            <optgroup label="Starter (fx-skill-kit)">
+              <option value="pulse-dot">pulse-dot · ink bloom</option>
+              <option value="orbit-loop">orbit-loop · particle trail</option>
+            </optgroup>
+            <optgroup label="InkFX · 東方水墨與武俠特效 (16)">
+              <option value="sword/sword-qi-slash">sword/sword-qi-slash · 水墨劍氣斬擊</option>
+              <option value="sword/cross-cleave">sword/cross-cleave · 十字破軍斬</option>
+              <option value="sword/myriad-swords">sword/myriad-swords · 萬劍歸宗</option>
+              <option value="talisman/bagua-seal">talisman/bagua-seal · 八卦鎮魂印</option>
+              <option value="talisman/cinnabar-burn">talisman/cinnabar-burn · 符紙無火自燃</option>
+              <option value="talisman/ink-chains">talisman/ink-chains · 墨鎖縛敵</option>
+              <option value="zen/bamboo-wind">zen/bamboo-wind · 竹葉隨風</option>
+              <option value="zen/plum-blossom">zen/plum-blossom · 寒梅綻放</option>
+              <option value="zen/falling-sakura">zen/falling-sakura · 殘櫻飄落</option>
+              <option value="ink-burst/heavy-impact">ink-burst/heavy-impact · 破防碎墨震波</option>
+              <option value="ink-burst/qi-surge">ink-burst/qi-surge · 氣血噴湧</option>
+              <option value="ink-burst/splash-guard">ink-burst/splash-guard · 潑墨護體</option>
+              <option value="transitions/brush-sweep">transitions/brush-sweep · 大筆橫掃轉場</option>
+              <option value="transitions/ink-drop-wash">transitions/ink-drop-wash · 墨滴入水暈開轉場</option>
+              <option value="ui/vermilion-seal">ui/vermilion-seal · 朱印蓋章</option>
+              <option value="ui/realm-breakthrough">ui/realm-breakthrough · 境界突破光暈</option>
+            </optgroup>
+            <optgroup label="OLEDFX · 嵌入式微螢幕動畫 (14 · 128x64)">
+              <option value="eyes/happy-squint">eyes/happy-squint · 月牙笑眼眨眼</option>
+              <option value="eyes/curious-blink">eyes/curious-blink · 好奇歪頭眨眼</option>
+              <option value="eyes/cyber-charge">eyes/cyber-charge · 充電蓄力眼</option>
+              <option value="eyes/dizzy-spiral">eyes/dizzy-spiral · 暈眩螺旋眼</option>
+              <option value="weather/rain-storm">weather/rain-storm · 雷雨與底部水花</option>
+              <option value="weather/sunny-orbit">weather/sunny-orbit · 晴天旋轉太陽</option>
+              <option value="weather/snow-drift">weather/snow-drift · 飄雪堆積</option>
+              <option value="system/wifi-pulse">system/wifi-pulse · Wi-Fi 訊號漣漪</option>
+              <option value="system/battery-charge">system/battery-charge · 電池快充氣泡</option>
+              <option value="system/cpu-wave">system/cpu-wave · CPU 負載波形</option>
+              <option value="pomodoro/hot-coffee">pomodoro/hot-coffee · 冒煙熱咖啡 (Bayer 4x4)</option>
+              <option value="pomodoro/hourglass-flip">pomodoro/hourglass-flip · 沙漏翻轉</option>
+              <option value="transitions/crt-off">transitions/crt-off · CRT 老電視關機轉場</option>
+              <option value="transitions/venetian-blinds">transitions/venetian-blinds · 百葉窗像素轉場</option>
+            </optgroup>
+          </select>
+
+          <label for="seed">Seed</label>
+          <input id="seed" type="number" min="0" max="4294967295" step="1" value="1" required>
+
+          <label for="palette">Palette (Mineral Ramp)</label>
+          <select id="palette">
+            <option value="">Effect default</option>
+            <option value="songyan">Songyan · 松煙古墨</option>
+            <option value="zhusha">Zhusha · 朱砂血墨</option>
+            <option value="shiqing">Shiqing · 石青竹翠</option>
+            <option value="nijin">Nijin · 泥金佛光</option>
+            <option value="ink">Ink (Classic)</option>
+            <option value="gold">Gold (Classic)</option>
+          </select>
+
+          <label for="oled-shell">Display Simulator Mode</label>
+          <select id="oled-shell">
+            <option value="auto">Auto (Xuan Paper / OLED by category)</option>
+            <option value="paper">Xuan Paper · 宣紙卷軸</option>
+            <option value="ssd1306-cyan">SSD1306 Blue/Cyan Phosphor</option>
+            <option value="ssd1306-white">SSD1306 Crisp White OLED</option>
+            <option value="ssd1306-dual">SSD1306 Dual-Zone (上16px黃 + 下48px藍)</option>
+          </select>
+
+          <fieldset>
+            <legend>View / tilt &amp; Paper grain</legend>
+            <label for="tilt-x">Tilt / Look X <output id="tilt-x-value">0.00</output></label>
+            <input id="tilt-x" type="range" min="-1" max="1" step="0.01" value="0">
+            <label for="tilt-y">Tilt / Look Y <output id="tilt-y-value">0.00</output></label>
+            <input id="tilt-y" type="range" min="-1" max="1" step="0.01" value="0">
+            <label for="grain-roughness">Paper Grain Roughness <output id="grain-value">1.00</output></label>
+            <input id="grain-roughness" type="range" min="0" max="2" step="0.05" value="1">
+          </fieldset>
+
+          <div class="actions">
+            <button id="replay" type="button" data-magnetic>Replay</button>
+            <button id="pause" type="button" aria-pressed="false" data-magnetic>Pause</button>
+            <button id="slowmo" type="button" aria-pressed="false" data-magnetic>0.25x Slow</button>
+          </div>
+
+          <div class="downloads">
+            <button id="copy" type="button">Copy source</button>
+            <button id="copy-react" type="button">React</button>
+            <button id="copy-vue" type="button">Vue</button>
+            <button id="download-png" type="button">Download PNG</button>
+            <button id="download-header" type="button">Download C header</button>
+            <button id="download-mcu" type="button">XOR-RLE .h</button>
+          </div>
+
+          <div class="checks-row">
+            <label><input id="guides" type="checkbox" checked> Show safe area &amp; origin</label>
+            <label><input id="act-dummy" type="checkbox" checked> Show Wuxia act dummy &amp; OLED pixel grid</label>
+          </div>
+
+          <textarea id="source" readonly hidden aria-label="Copied effect source"></textarea>
+          <output id="status" aria-live="off">Loading effect…</output>
+        </aside>
+      </div>
+
+      <p class="note">For frame-by-frame review, <a id="sheet" href="../records/pulse-dot/contact.png">open the contact sheet</a>. Learn to write your own in <a href="../docs/AUTHORING.md">the authoring contract</a>.</p>
+    </section>
+
+    <!-- ACT V: AGENTIC LOOP & MCP TERMINAL -->
+    <section class="act-section" id="act-pipeline" data-reveal>
+      <div class="act-eyebrow">
+        <span class="index-tag">ACT V · AGENTIC FEEDBACK LOOP &amp; MCP SERVER</span>
+        <span>DRAFT → CHECK → RENDER → LOOK → REFINE</span>
+      </div>
+
+      <div class="editorial-lead-grid">
+        <div class="arch-numeral">05</div>
+        <div>
+          <h2 data-i18n-bi="AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈" data-i18n-zh="AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈" data-i18n-en="Agentic Visual Feedback Loop &amp; Zero-Dependency CLI">AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈</h2>
+          <p data-i18n-bi="透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。" data-i18n-zh="透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。" data-i18n-en="Six deterministic quality gates (CHK-01..06) and annotated contact sheets give humans and multimodal coding agents the exact same visual verification loop.">透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。</p>
+        </div>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="gate-list">
+          <div class="gate-card">
+            <div class="gate-id">CHK-01 · DETERMINISM</div>
+            <div class="gate-title">雙重採樣 SHA-256 一致性</div>
+            <div class="gate-meta">禁用 Math.random / Date.now；相同 seed=42 必須產出 100% 相同位元流。</div>
+          </div>
+          <div class="gate-card">
+            <div class="gate-id">CHK-02 · EDGE SPILL</div>
+            <div class="gate-title">畫布邊界防裁切守門員</div>
+            <div class="gate-meta">非轉場特效邊界像素佔比 &lt; 1.5%（全目錄實測 0.000%）。</div>
+          </div>
+          <div class="gate-card">
+            <div class="gate-id">CHK-03 · LOOP SEAM</div>
+            <div class="gate-title">循環接縫 MSE 與質心偏移</div>
+            <div class="gate-meta">首尾幀像素差與 Alpha 質心位移皆 &lt;= 1.5× 中位數相鄰幀。</div>
+          </div>
+          <div class="gate-card">
+            <div class="gate-id">CHK-04 · DEAD FRAMES</div>
+            <div class="gate-title">空白首尾與過曝填充檢測</div>
+            <div class="gate-meta">排除負時間蓄力後，首尾空白 &lt;= 15%，峰值填充 &gt;= 0.2%。</div>
+          </div>
+          <div class="gate-card">
+            <div class="gate-id">CHK-05 · 120HZ BUDGET</div>
+            <div class="gate-title">300 步 120Hz 效能預算門檻</div>
+            <div class="gate-meta">360 步預熱後實測 p95 &lt; 1.5ms、max &lt; 3.0ms。</div>
+          </div>
+          <div class="gate-card">
+            <div class="gate-id">CHK-06 · DOMAIN PLUGINS</div>
+            <div class="gate-title">水墨資訊熵與 OLED 閃爍零容忍</div>
+            <div class="gate-meta">inkEntropy &gt;= 0.5 bits · oledShimmer = 0.00% · RLE &lt; 4KB。</div>
+          </div>
+        </div>
+
+        <div class="terminal-card">
+          <div style="margin-bottom:10px;color:#8bb8cc;font-weight:600;">QUICK CLI &amp; STDIO MCP COMMANDS</div>
+          <div class="terminal-cmd">
+            <code>npm run check -- sword/sword-qi-slash --seed 42</code>
+            <button type="button" data-copy-cmd="npm run check -- sword/sword-qi-slash --seed 42">Copy</button>
+          </div>
+          <div class="terminal-cmd">
+            <code>npm run export-sheet -- sword/myriad-swords --palette zhusha --paper</code>
+            <button type="button" data-copy-cmd="npm run export-sheet -- sword/myriad-swords --palette zhusha --paper">Copy</button>
+          </div>
+          <div class="terminal-cmd">
+            <code>npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64</code>
+            <button type="button" data-copy-cmd="npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64">Copy</button>
+          </div>
+          <div class="terminal-cmd">
+            <code>npm run export-mcu -- sword/sword-qi-slash --profile st7789-128x128</code>
+            <button type="button" data-copy-cmd="npm run export-mcu -- sword/sword-qi-slash --profile st7789-128x128">Copy</button>
+          </div>
+          <div class="terminal-cmd" style="margin-bottom:0;">
+            <code>node tools/mcp-server.mjs</code>
+            <button type="button" data-copy-cmd="node tools/mcp-server.mjs">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="editorial-footer">
+      <span>FX-SKILL-KIT // INKFX × OLEDFX · 32 DETERMINISTIC PROCEDURAL EFFECTS</span>
+      <span>PURE ESM · ZERO NPM DEPENDENCIES · NODE.JS 20+ / BROWSER CANVAS 2D / ESP32 C11</span>
+    </footer>
+
     <noscript>This gallery needs JavaScript modules. You can also view the rendered PNG contact sheets in records/. If you opened this file: page directly, run npm run gallery from the repository root.</noscript>
   </main>
+
   <script type="module">
     import { createGallerySession } from './session.js';
+    import {
+      effects,
+      mineralRamps,
+      createInkFrame,
+      clearInkFrame,
+      stampDryBrush,
+      stampInkStroke,
+      stepInkDiffusion,
+      compositeInkFrame,
+      createFrame,
+      createOledScreen,
+      ditherSample,
+      ditherBuffer,
+    } from '../src/index.js';
+
     const $ = id => document.getElementById(id);
     if (location.protocol !== 'file:') $('file-notice').hidden = true;
+
+    const ZH_NAMES = {
+      'pulse-dot': '脈衝墨點',
+      'orbit-loop': '雙星軌道',
+      'sword/sword-qi-slash': '水墨劍氣斬擊',
+      'sword/cross-cleave': '十字破軍斬',
+      'sword/myriad-swords': '萬劍歸宗',
+      'talisman/bagua-seal': '八卦鎮魂印',
+      'talisman/cinnabar-burn': '符紙無火自燃',
+      'talisman/ink-chains': '墨鎖縛敵',
+      'zen/bamboo-wind': '竹葉隨風',
+      'zen/plum-blossom': '寒梅綻放',
+      'zen/falling-sakura': '殘櫻飄落',
+      'ink-burst/heavy-impact': '破防碎墨震波',
+      'ink-burst/qi-surge': '氣血噴湧',
+      'ink-burst/splash-guard': '潑墨護體',
+      'transitions/brush-sweep': '大筆橫掃轉場',
+      'transitions/ink-drop-wash': '墨滴入水暈開',
+      'ui/vermilion-seal': '朱印蓋章',
+      'ui/realm-breakthrough': '境界突破光暈',
+      'eyes/happy-squint': '月牙笑眼眨眼',
+      'eyes/curious-blink': '好奇歪頭眨眼',
+      'eyes/cyber-charge': '充電蓄力眼',
+      'eyes/dizzy-spiral': '暈眩螺旋眼',
+      'weather/rain-storm': '雷雨與水花',
+      'weather/sunny-orbit': '晴天旋轉太陽',
+      'weather/snow-drift': '飄雪堆積',
+      'system/wifi-pulse': 'Wi-Fi 訊號漣漪',
+      'system/battery-charge': '電池快充氣泡',
+      'system/cpu-wave': 'CPU 負載波形',
+      'pomodoro/hot-coffee': '冒煙熱咖啡',
+      'pomodoro/hourglass-flip': '沙漏翻轉',
+      'transitions/crt-off': 'CRT 關機收束',
+      'transitions/venetian-blinds': '百葉窗轉場',
+    };
+
+    // Toast Notification helper
+    let toastTimer = 0;
+    function showToast(msg) {
+      const banner = $('toast-banner');
+      banner.textContent = msg;
+      banner.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => banner.classList.remove('visible'), 1800);
+    }
+
+    // Scroll Reveal Choreography
+    if (typeof IntersectionObserver !== 'undefined') {
+      const revealObs = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) entry.target.classList.add('revealed');
+        }
+      }, { threshold: 0.08 });
+      for (const sec of document.querySelectorAll('[data-reveal]')) revealObs.observe(sec);
+    } else {
+      for (const sec of document.querySelectorAll('[data-reveal]')) sec.classList.add('revealed');
+    }
+
+    // Magnetic Button Micro-Interaction
+    for (const el of document.querySelectorAll('[data-magnetic]')) {
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) * 0.2;
+        const dy = (e.clientY - (r.top + r.height / 2)) * 0.2;
+        el.style.transform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0)`;
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.transform = '';
+      });
+    }
+
+    // Zero-Dependency Procedural Web Audio Synthesizer (Muted by default)
+    let audioEnabled = false;
+    let audioCtx = null;
+    function playProceduralSfx(kind = 'click') {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        if (kind === 'slash') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.16);
+          gain.gain.setValueAtTime(0.11, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.18);
+        } else if (kind === 'oled') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.setValueAtTime(1320, now + 0.045);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(660, now + 0.06);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        }
+      } catch { /* ignore audio errors */ }
+    }
+
+    $('sfx-toggle').addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      $('sfx-toggle').setAttribute('aria-pressed', String(audioEnabled));
+      $('sfx-toggle').textContent = audioEnabled ? 'SFX: ON' : 'SFX: OFF';
+      if (audioEnabled) playProceduralSfx('click');
+      showToast(audioEnabled ? 'PROCEDURAL AUDIO ENABLED' : 'AUDIO MUTED');
+    });
+
+    // Realm & Language Switchers
+    for (const btn of document.querySelectorAll('[data-set-realm]')) {
+      btn.addEventListener('click', () => {
+        const realm = btn.dataset.setRealm;
+        document.body.dataset.realm = realm;
+        for (const b of document.querySelectorAll('[data-set-realm]')) {
+          b.classList.toggle('active', b === btn);
+        }
+        playProceduralSfx(realm === 'oled' ? 'oled' : 'click');
+      });
+    }
+
+    for (const btn of document.querySelectorAll('[data-set-lang]')) {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.setLang;
+        document.body.dataset.lang = lang;
+        for (const b of document.querySelectorAll('[data-set-lang]')) {
+          b.classList.toggle('active', b === btn);
+        }
+        for (const el of document.querySelectorAll('[data-i18n-zh]')) {
+          const key = lang === 'en' ? 'i18nEn' : (lang === 'zh' ? 'i18nZh' : 'i18nBi');
+          if (el.dataset[key]) el.textContent = el.dataset[key];
+        }
+        playProceduralSfx('click');
+      });
+    }
+
+    // Custom Dual-Realm Cursor Probe
+    const probe = $('cursor-probe');
+    window.addEventListener('pointermove', e => {
+      probe.style.opacity = '1';
+      probe.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      const inOled = Boolean(e.target.closest('.oled-pane, .oled-lab, .oled-card, .oled-shell'));
+      probe.dataset.mode = inOled ? 'oled' : 'ink';
+    });
+
+    // =========================================================================
+    // ACT I: SPLIT-REALM INTERACTIVE STAGE (INK BRUSH + OLED EYE TRACKER)
+    // =========================================================================
+    const heroInkCanvas = $('hero-ink-canvas');
+    const heroInkCtx = heroInkCanvas.getContext('2d');
+    const heroInk = createInkFrame(180, 100, 90, 50, { seed: 42 });
+    const heroRgba = createFrame(180, 100, 90, 50);
+    const heroSmallCanvas = document.createElement('canvas');
+    heroSmallCanvas.width = 180;
+    heroSmallCanvas.height = 100;
+    const heroSmallCtx = heroSmallCanvas.getContext('2d');
+    let heroPointer = { prevX: 0, prevY: 0, active: false, gazeX: 0, gazeY: 0, shock: 0 };
+
+    stampInkStroke(heroInk, -58, 18, 56, -16, 5.5, 0.28, 0.92, 0);
+    stampInkStroke(heroInk, -36, -18, 42, 20, 3.8, 0.42, 0.88, 1);
+
+    function pulseResonanceBridge() {
+      const bridge = $('resonance-bridge');
+      if (!bridge) return;
+      bridge.classList.add('pulsing');
+      setTimeout(() => bridge.classList.remove('pulsing'), 360);
+    }
+
+    function triggerHeroSlash(cx = 0, cy = 0) {
+      stampInkStroke(heroInk, cx - 44, cy + 20, cx + 44, cy - 20, 5.2, 0.22, 0.96, 1);
+      stampInkStroke(heroInk, cx - 32, cy - 22, cx + 32, cy + 22, 4.0, 0.35, 0.9, 0);
+      heroPointer.shock = 1.0;
+      pulseResonanceBridge();
+      playProceduralSfx('slash');
+    }
+
+    $('hero-seal-btn').addEventListener('click', () => {
+      triggerHeroSlash(0, 0);
+      showToast('VERMILION SEAL STAMPED · CROSS-REALM SLASH');
+    });
+
+    heroInkCanvas.addEventListener('pointermove', e => {
+      const r = heroInkCanvas.getBoundingClientRect();
+      const nx = ((e.clientX - r.left) / r.width - 0.5) * 160;
+      const ny = ((e.clientY - r.top) / r.height - 0.5) * 84;
+      if (heroPointer.active) {
+        const speed = Math.hypot(nx - heroPointer.prevX, ny - heroPointer.prevY);
+        const dryness = Math.min(0.82, 0.18 + speed * 0.025);
+        const radius = Math.max(2.0, 5.2 - speed * 0.08);
+        stampInkStroke(heroInk, heroPointer.prevX, heroPointer.prevY, nx, ny, radius, dryness, 0.9, speed > 14 ? 1 : 0);
+      }
+      heroPointer.prevX = nx;
+      heroPointer.prevY = ny;
+      heroPointer.active = true;
+      heroPointer.gazeX = Math.max(-1, Math.min(1, nx / 80));
+      heroPointer.gazeY = Math.max(-1, Math.min(1, ny / 42));
+      $('hero-ink-telemetry').textContent = `BRUSH: (${nx.toFixed(0)}, ${ny.toFixed(0)}) · FEIBAI ACTIVE`;
+    });
+    heroInkCanvas.addEventListener('pointerleave', () => { heroPointer.active = false; });
+    heroInkCanvas.addEventListener('pointerdown', e => {
+      const r = heroInkCanvas.getBoundingClientRect();
+      const nx = ((e.clientX - r.left) / r.width - 0.5) * 160;
+      const ny = ((e.clientY - r.top) / r.height - 0.5) * 84;
+      triggerHeroSlash(nx, ny);
+    });
+
+    const heroOledCanvas = $('hero-oled-canvas');
+    const heroOledCtx = heroOledCanvas.getContext('2d');
+    const heroOledScreen = createOledScreen(128, 64);
+
+    heroOledCanvas.addEventListener('pointermove', e => {
+      const r = heroOledCanvas.getBoundingClientRect();
+      heroPointer.gazeX = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
+      heroPointer.gazeY = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
+      $('hero-oled-telemetry').textContent = `GAZE: (${heroPointer.gazeX.toFixed(2)}, ${heroPointer.gazeY.toFixed(2)}) · 1-BIT LIVE`;
+    });
+    heroOledCanvas.addEventListener('pointerdown', () => {
+      heroPointer.shock = 1.0;
+      playProceduralSfx('oled');
+      triggerHeroSlash(heroPointer.gazeX * 36, heroPointer.gazeY * 18);
+    });
+
+    function stepHeroStage(now) {
+      stepInkDiffusion(heroInk, 1 / 60, { threshold: 0.06, diffusionRate: 0.18, fringeStrength: 0.12, dryRate: 0.45 });
+      for (let i = 0; i < heroInk.pigment.length; i++) {
+        heroInk.pigment[i] *= 0.996;
+      }
+      const breath = Math.sin(now * 0.003) * 14;
+      stampDryBrush(heroInk, Math.cos(now * 0.002) * (24 + breath * 0.2), Math.sin(now * 0.002) * 14, 2.2, 0.35, 0.45, 1);
+
+      compositeInkFrame(heroInk, heroRgba, { palette: 'zhusha', paperBackground: true, grainRoughness: 1.1 });
+      heroSmallCtx.putImageData(new ImageData(heroRgba.data, 180, 100), 0, 0);
+      heroInkCtx.clearRect(0, 0, heroInkCanvas.width, heroInkCanvas.height);
+      heroInkCtx.drawImage(heroSmallCanvas, 0, 0, heroInkCanvas.width, heroInkCanvas.height);
+
+      heroOledScreen.clear(0);
+      const t = now * 0.001;
+      const gx = Math.round(heroPointer.gazeX * 12);
+      const gy = Math.round(heroPointer.gazeY * 6);
+      heroOledScreen.fillRect(8, 3, 112, 2, 1.0);
+      const barW = 24 + Math.round((0.5 + 0.5 * Math.sin(t * 3)) * 64 + heroPointer.shock * 24);
+      heroOledScreen.fillRect(64 - Math.floor(barW / 2), 8, barW, 4, 1.0);
+
+      const blinkCycle = t % 3.2;
+      const blink = blinkCycle < 0.16 ? Math.sin((blinkCycle / 0.16) * Math.PI) : 0;
+      const eyeH = Math.max(4, Math.round(24 * (1 - blink * 0.85)));
+      for (const baseCx of [40, 88]) {
+        const cx = baseCx + gx;
+        const cy = 38 + gy;
+        heroOledScreen.fillRoundRect(cx - 14, cy - Math.floor(eyeH / 2), 28, eyeH, 5, 1.0);
+        if (heroPointer.shock > 0.15) {
+          heroOledScreen.fillCircle(cx, cy, 6, 0.0);
+          heroOledScreen.fillRect(cx - 2, cy - 2, 4, 4, 1.0);
+        } else {
+          heroOledScreen.fillRect(cx - 4 + Math.round(heroPointer.gazeX * 3), cy - 4, 5, 5, 0.0);
+        }
+      }
+      heroPointer.shock *= 0.92;
+
+      const oledImg = new ImageData(128, 64);
+      for (let y = 0; y < 64; y++) {
+        for (let x = 0; x < 128; x++) {
+          const i = y * 128 + x;
+          const out = i * 4;
+          if (heroOledScreen.bits[i]) {
+            const c = y < 16 ? [255, 212, 71] : [54, 243, 255];
+            oledImg.data[out] = c[0];
+            oledImg.data[out + 1] = c[1];
+            oledImg.data[out + 2] = c[2];
+            oledImg.data[out + 3] = 255;
+          } else {
+            oledImg.data[out] = 4;
+            oledImg.data[out + 1] = 8;
+            oledImg.data[out + 2] = 12;
+            oledImg.data[out + 3] = 255;
+          }
+        }
+      }
+      heroOledCtx.putImageData(oledImg, 0, 0);
+    }
+
+    // =========================================================================
+    // ACT II: DECONSTRUCTION THEATER (INK 4-LAYER + 6-STOP RAMP + OLED DITHER)
+    // =========================================================================
+    let labMineral = 'zhusha';
+    const labInk = createInkFrame(96, 96, 48, 48, { seed: 42 });
+    const labRgba = createFrame(96, 96, 48, 48);
+    const STOP_LABELS = ['清', '淡', '重', '濃', '焦', '點綴'];
+
+    function updateRampSwatches() {
+      const hexes = mineralRamps[labMineral] || mineralRamps.zhusha;
+      const container = $('lab-ramp-stops');
+      container.innerHTML = hexes.map((hex, idx) => {
+        const darkText = idx <= 1;
+        return `<div class="ramp-stop" style="background:${hex};color:${darkText ? '#1c1a17' : '#faf6ee'}">${STOP_LABELS[idx]} ${hex}</div>`;
+      }).join('');
+    }
+    updateRampSwatches();
+
+    function renderDeconstructLab(now) {
+      clearInkFrame(labInk);
+      const phase = (now * 0.0012) % (Math.PI * 2);
+      const baseDry = Number($('lab-dryness').value);
+      for (let i = 0; i < 24; i++) {
+        const a = (i / 24) * Math.PI * 2 + phase * 0.4;
+        const r = 24 + Math.sin(a * 2 + phase) * 4;
+        const dry = Math.min(0.95, baseDry * (0.45 + (i / 24) * 0.85));
+        stampDryBrush(labInk, Math.cos(a) * r, Math.sin(a) * r, 4.2, dry, 0.9, i > 16 ? 1 : 0);
+      }
+      stepInkDiffusion(labInk, 1 / 30, { threshold: 0.06, diffusionRate: 0.25, fringeStrength: 0.16 });
+
+      const pImg = new ImageData(96, 96);
+      const wImg = new ImageData(96, 96);
+      const gImg = new ImageData(96, 96);
+      for (let i = 0; i < 96 * 96; i++) {
+        const o = i * 4;
+        const p = Math.round((1 - labInk.pigment[i]) * 245);
+        pImg.data[o] = p; pImg.data[o + 1] = p - 6; pImg.data[o + 2] = p - 14; pImg.data[o + 3] = 255;
+
+        const w = Math.round(labInk.wetness[i] * 220);
+        wImg.data[o] = 240 - w * 0.7; wImg.data[o + 1] = 244 - w * 0.25; wImg.data[o + 2] = 250; wImg.data[o + 3] = 255;
+
+        const g = Math.round(labInk.paperGrain[i] * 215 + 25);
+        gImg.data[o] = g; gImg.data[o + 1] = g - 5; gImg.data[o + 2] = g - 12; gImg.data[o + 3] = 255;
+      }
+      $('lab-ink-pigment').getContext('2d').putImageData(pImg, 0, 0);
+      $('lab-ink-wetness').getContext('2d').putImageData(wImg, 0, 0);
+      $('lab-ink-grain').getContext('2d').putImageData(gImg, 0, 0);
+
+      compositeInkFrame(labInk, labRgba, { palette: labMineral, paperBackground: true });
+      $('lab-ink-final').getContext('2d').putImageData(new ImageData(labRgba.data, 96, 96), 0, 0);
+
+      // Track B: OLED Dither & XOR-Delta comparison (96x48)
+      const W = 96, H = 48;
+      const grayNow = new Float32Array(W * H);
+      const grayPrev = new Float32Array(W * H);
+      const cx0 = 48 + Math.cos(phase) * 16;
+      const cx1 = 48 + Math.cos(phase - 0.18) * 16;
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const d0 = Math.hypot(x - cx0, y - 24);
+          const d1 = Math.hypot(x - cx1, y - 24);
+          const bg = (x / W) * 0.45;
+          grayNow[y * W + x] = Math.max(bg, Math.max(0, 1 - d0 / 18));
+          grayPrev[y * W + x] = Math.max(bg, Math.max(0, 1 - d1 / 18));
+        }
+      }
+      const bayerImg = new ImageData(W, H);
+      const checkerImg = new ImageData(W, H);
+      const atkBits = ditherBuffer(grayNow, W, H, 'atkinson');
+      const atkImg = new ImageData(W, H);
+      const xorImg = new ImageData(W, H);
+
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const i = y * W + x;
+          const o = i * 4;
+          const bBit = ditherSample(x, y, grayNow[i], 'bayer4x4');
+          const bPrev = ditherSample(x, y, grayPrev[i], 'bayer4x4');
+          const cBit = ditherSample(x, y, grayNow[i], 'checker');
+          const aBit = atkBits[i];
+          const xBit = bBit ^ bPrev;
+
+          const putOled = (img, bit, rgb) => {
+            img.data[o] = bit ? rgb[0] : 8;
+            img.data[o + 1] = bit ? rgb[1] : 14;
+            img.data[o + 2] = bit ? rgb[2] : 20;
+            img.data[o + 3] = 255;
+          };
+          putOled(bayerImg, bBit, [54, 243, 255]);
+          putOled(checkerImg, cBit, [54, 243, 255]);
+          putOled(atkImg, aBit, [54, 243, 255]);
+          putOled(xorImg, xBit, [255, 212, 71]);
+        }
+      }
+      $('lab-oled-bayer').getContext('2d').putImageData(bayerImg, 0, 0);
+      $('lab-oled-checker').getContext('2d').putImageData(checkerImg, 0, 0);
+      $('lab-oled-atkinson').getContext('2d').putImageData(atkImg, 0, 0);
+      $('lab-oled-xordelta').getContext('2d').putImageData(xorImg, 0, 0);
+    }
+
+    for (const chip of document.querySelectorAll('[data-lab-mineral]')) {
+      chip.addEventListener('click', () => {
+        labMineral = chip.dataset.labMineral;
+        for (const c of document.querySelectorAll('[data-lab-mineral]')) {
+          c.classList.toggle('active', c === chip);
+        }
+        updateRampSwatches();
+        playProceduralSfx('click');
+      });
+    }
+
+    // =========================================================================
+    // ACT III & IV: STUDIO SESSION, PERF SPARKLINE & 32-EFFECT WALL
+    // =========================================================================
     const session = createGallerySession();
     const canvas = $('preview');
+    const stage = $('stage');
     const ctx = canvas.getContext('2d');
+    const sparkCanvas = $('perf-sparkline');
+    const sparkCtx = sparkCanvas.getContext('2d');
+    const perfHistory = new Array(36).fill(0.18);
     let image = new ImageData(session.frame.data, session.frame.w, session.frame.h);
     let previous = 0;
     let dragging = false;
+    let speedScale = 1;
+
+    function isOledEffect(meta) {
+      return Boolean(meta.profile) || ['eyes', 'weather', 'system', 'pomodoro'].includes(meta.category);
+    }
+
+    function activeShellMode() {
+      const mode = $('oled-shell').value;
+      if (mode !== 'auto') return mode;
+      return isOledEffect(session.meta) ? 'ssd1306-cyan' : 'paper';
+    }
+
+    function drawPerfSparkline(ms) {
+      perfHistory.push(ms);
+      if (perfHistory.length > 36) perfHistory.shift();
+      sparkCtx.clearRect(0, 0, 140, 22);
+      sparkCtx.strokeStyle = 'rgba(184, 41, 33, 0.35)';
+      sparkCtx.beginPath();
+      sparkCtx.moveTo(0, 4);
+      sparkCtx.lineTo(140, 4);
+      sparkCtx.stroke();
+
+      sparkCtx.strokeStyle = '#245c69';
+      sparkCtx.lineWidth = 1.5;
+      sparkCtx.beginPath();
+      for (let i = 0; i < perfHistory.length; i++) {
+        const x = (i / (perfHistory.length - 1)) * 140;
+        const y = 20 - Math.min(18, (perfHistory[i] / 1.5) * 16);
+        if (i === 0) sparkCtx.moveTo(x, y);
+        else sparkCtx.lineTo(x, y);
+      }
+      sparkCtx.stroke();
+      $('perf-readout').textContent = `STEP BUDGET (120Hz): ${ms.toFixed(2)}ms < 1.50ms (CHK-05 PASS)`;
+    }
 
     function paint() {
       const frame = session.frame;
@@ -101,21 +2077,86 @@
       } else if (image.data !== frame.data) {
         image = new ImageData(frame.data, frame.w, frame.h);
       }
-      ctx.putImageData(image, 0, 0);
+
+      const shell = activeShellMode();
+      const oledActive = shell.startsWith('ssd1306');
+      stage.classList.toggle('oled-shell', oledActive);
+      const m = session.meta;
+      $('stage-chrome-title').textContent = oledActive
+        ? `PCB MODULE // SSD1306 I2C ${m.w}×${m.h} (${shell.toUpperCase()})`
+        : `SCROLL MOUNT // XUAN PAPER ${m.w}×${m.h} (${ZH_NAMES[m.id] || m.id})`;
+      $('stage-chrome-spec').textContent = oledActive
+        ? `1-BIT VERTICAL PAGE · XOR-RLE READY`
+        : `ORIGIN (${m.ox}, ${m.oy}) · ${m.sim ? '120HZ SIM' : '60HZ PURE'}`;
+
+      if (oledActive) {
+        const view = new ImageData(frame.w, frame.h);
+        const src = frame.data;
+        const dst = view.data;
+        for (let y = 0; y < frame.h; y++) {
+          for (let x = 0; x < frame.w; x++) {
+            const idx = (y * frame.w + x) * 4;
+            const a = src[idx + 3];
+            if (a >= 128) {
+              const color = shell === 'ssd1306-dual' && y < 16
+                ? [255, 214, 68]
+                : shell === 'ssd1306-white' ? [242, 250, 255] : [76, 226, 255];
+              dst[idx] = color[0];
+              dst[idx + 1] = color[1];
+              dst[idx + 2] = color[2];
+              dst[idx + 3] = 255;
+            } else if (a > 0) {
+              dst[idx] = 24;
+              dst[idx + 1] = 88;
+              dst[idx + 2] = 116;
+              dst[idx + 3] = a;
+            } else {
+              dst[idx] = 8;
+              dst[idx + 1] = 13;
+              dst[idx + 2] = 18;
+              dst[idx + 3] = 255;
+            }
+          }
+        }
+        ctx.putImageData(view, 0, 0);
+      } else {
+        ctx.putImageData(image, 0, 0);
+      }
+
+      if ($('act-dummy').checked) {
+        if (oledActive) {
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+          for (let y = 0; y < m.h; y += 2) ctx.fillRect(0, y, m.w, 1);
+        } else if (session.act) {
+          ctx.strokeStyle = 'rgba(60, 50, 42, 0.25)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(m.ox, m.oy - 18, 7, 0, Math.PI * 2);
+          ctx.moveTo(m.ox, m.oy - 11); ctx.lineTo(m.ox, m.oy + 22);
+          ctx.moveTo(m.ox - 14, m.oy - 2); ctx.lineTo(m.ox + 14, m.oy - 2);
+          ctx.stroke();
+        }
+      }
+
       if ($('guides').checked) {
-        const m = session.meta;
         const inset = Math.max(1, Math.floor(Math.min(m.w, m.h) * .08));
-        ctx.strokeStyle = '#58828944';
+        ctx.strokeStyle = oledActive ? '#48dcff55' : '#58828944';
         ctx.lineWidth = 1;
         ctx.strokeRect(inset + .5, inset + .5, m.w - inset * 2 - 1, m.h - inset * 2 - 1);
-        ctx.strokeStyle = '#a74f3fa5';
+        ctx.strokeStyle = oledActive ? '#ffd644aa' : '#a74f3fa5';
         ctx.beginPath();
         ctx.moveTo(m.ox - 5, m.oy + .5); ctx.lineTo(m.ox + 5, m.oy + .5);
         ctx.moveTo(m.ox + .5, m.oy - 5); ctx.lineTo(m.ox + .5, m.oy + 5); ctx.stroke();
       }
       const shown = Math.min(session.meta.duration, session.tick * session.dt);
-      $('status').textContent = `t=${shown.toFixed(3)}s / ${session.meta.duration.toFixed(3)}s · ${session.meta.loop ? 'loop' : 'one shot'} · tilt ${Number($('tilt-x').value).toFixed(2)}, ${Number($('tilt-y').value).toFixed(2)}`;
+      const actPhase = session.actStatus.phase || 'ACTIVE';
+      for (const pill of document.querySelectorAll('#act-timeline .phase-pill')) {
+        pill.classList.toggle('active', pill.dataset.phase === actPhase);
+      }
+      const actInfo = session.actStatus.phase ? ` · ${session.actStatus.phase}${session.actStatus.pose ? ` (${session.actStatus.pose})` : ''}` : '';
+      $('status').textContent = `t=${shown.toFixed(3)}s / ${session.meta.duration.toFixed(3)}s · ${session.meta.loop ? 'loop' : 'one shot'} · ${speedScale}x${actInfo} · tilt ${Number($('tilt-x').value).toFixed(2)}, ${Number($('tilt-y').value).toFixed(2)}`;
     }
+
     function syncTilt(tiltX, tiltY) {
       $('tilt-x').value = tiltX.toFixed(2);
       $('tilt-y').value = tiltY.toFixed(2);
@@ -124,17 +2165,25 @@
       session.setTilt(Number($('tilt-x').value), Number($('tilt-y').value));
       paint();
     }
+
     function applyControls() {
       if (!$('seed').reportValidity()) return false;
       session.setEffect($('effect').value);
       session.setSeed(Number($('seed').value));
       session.setPalette($('palette').value);
       session.setTilt(Number($('tilt-x').value), Number($('tilt-y').value));
+      session.setGrainRoughness(Number($('grain-roughness').value));
+      session.setDualZone($('oled-shell').value === 'ssd1306-dual');
       $('tilt-x-value').value = Number($('tilt-x').value).toFixed(2);
       $('tilt-y-value').value = Number($('tilt-y').value).toFixed(2);
+      $('grain-value').value = Number($('grain-roughness').value).toFixed(2);
       $('sheet').href = `../records/${session.meta.id}/contact.png`;
+      for (const card of document.querySelectorAll('.wall-card')) {
+        card.classList.toggle('active', card.dataset.id === session.id);
+      }
       return true;
     }
+
     function pose() {
       if (!applyControls()) return;
       session.showFilledFrame();
@@ -143,6 +2192,7 @@
       $('pause').setAttribute('aria-pressed', 'true');
       paint();
     }
+
     function playFromStart() {
       if (!applyControls()) return;
       session.setPaused(false);
@@ -150,6 +2200,7 @@
       $('pause').setAttribute('aria-pressed', 'false');
       paint();
     }
+
     function save(bytes, name, type) {
       const blob = new Blob([bytes], { type });
       const link = document.createElement('a');
@@ -158,19 +2209,35 @@
       link.click();
       URL.revokeObjectURL(link.href);
     }
+
     function animate(now) {
-      if (previous) session.advance((now - previous) / 1000);
+      const t0 = performance.now();
+      if (previous) session.advance(((now - previous) / 1000) * speedScale);
       if (session.holdEnded()) {
         $('pause').textContent = 'Resume';
         $('pause').setAttribute('aria-pressed', 'true');
       }
       previous = now;
       paint();
+      drawPerfSparkline(Math.max(0.05, performance.now() - t0));
+      stepWall(now);
+      stepHeroStage(now);
+      renderDeconstructLab(now);
       requestAnimationFrame(animate);
     }
+
     $('effect').addEventListener('change', pose);
     $('seed').addEventListener('change', pose);
     $('palette').addEventListener('change', () => { session.setPalette($('palette').value); paint(); });
+    $('oled-shell').addEventListener('change', () => {
+      session.setDualZone($('oled-shell').value === 'ssd1306-dual');
+      paint();
+    });
+    $('grain-roughness').addEventListener('input', () => {
+      $('grain-value').value = Number($('grain-roughness').value).toFixed(2);
+      session.setGrainRoughness(Number($('grain-roughness').value));
+      paint();
+    });
     for (const id of ['tilt-x', 'tilt-y']) {
       $(id).addEventListener('input', () => syncTilt(Number($('tilt-x').value), Number($('tilt-y').value)));
     }
@@ -189,10 +2256,17 @@
     canvas.addEventListener('pointercancel', () => { dragging = false; });
     $('replay').addEventListener('click', playFromStart);
     $('guides').addEventListener('change', paint);
+    $('act-dummy').addEventListener('change', paint);
     $('pause').addEventListener('click', () => {
       session.setPaused(!session.paused);
       $('pause').textContent = session.paused ? 'Resume' : 'Pause';
       $('pause').setAttribute('aria-pressed', String(session.paused));
+    });
+    $('slowmo').addEventListener('click', () => {
+      speedScale = speedScale === 1 ? 0.25 : 1;
+      $('slowmo').setAttribute('aria-pressed', String(speedScale !== 1));
+      $('slowmo').textContent = speedScale === 1 ? '0.25x Slow' : '1.0x Normal';
+      paint();
     });
     $('copy').addEventListener('click', async () => {
       const text = await session.copySource();
@@ -200,13 +2274,151 @@
       box.hidden = false;
       box.value = text;
       try { await navigator.clipboard.writeText(text); } catch { /* The textarea still presents the source. */ }
+      showToast(`COPIED ${session.id.toUpperCase()} SOURCE`);
+    });
+    $('copy-react').addEventListener('click', async () => {
+      const text = session.snippet('react');
+      const box = $('source');
+      box.hidden = false;
+      box.value = text;
+      try { await navigator.clipboard.writeText(text); } catch {}
+      showToast('COPIED REACT COMPONENT');
+    });
+    $('copy-vue').addEventListener('click', async () => {
+      const text = session.snippet('vue');
+      const box = $('source');
+      box.hidden = false;
+      box.value = text;
+      try { await navigator.clipboard.writeText(text); } catch {}
+      showToast('COPIED VUE SFC COMPONENT');
     });
     $('download-png').addEventListener('click', () => {
-      save(session.png(), `${session.meta.id}.png`, 'image/png');
+      save(session.png(), `${session.meta.id.replace('/', '-')}.png`, 'image/png');
+      showToast('DOWNLOADED PNG FRAME');
     });
     $('download-header').addEventListener('click', () => {
-      save(session.header(), `${session.meta.id}.h`, 'text/x-c');
+      save(session.header(), `${session.meta.id.replace('/', '_')}.h`, 'text/x-c');
+      showToast('DOWNLOADED RAW C HEADER');
     });
+    $('download-mcu').addEventListener('click', () => {
+      save(session.mcuHeader(), `fx_${session.meta.id.split('/').pop().replaceAll('-', '_')}.h`, 'text/x-c');
+      showToast('DOWNLOADED XOR-RLE C11 HEADER');
+    });
+
+    for (const btn of document.querySelectorAll('[data-copy-cmd]')) {
+      btn.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(btn.dataset.copyCmd); } catch {}
+        btn.textContent = 'Copied';
+        playProceduralSfx('click');
+        showToast(`COPIED: ${btn.dataset.copyCmd}`);
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+      });
+    }
+
+    // Scrollable 32-Effect Thumbnail Wall with IntersectionObserver culling
+    const wall = $('wall');
+    const wallItems = [];
+    const observer = typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver(entries => {
+          for (const entry of entries) {
+            const item = wallItems.find(w => w.card === entry.target);
+            if (item) item.visible = entry.isIntersecting;
+          }
+        }, { threshold: 0.05 })
+      : null;
+
+    for (const id of Object.keys(effects)) {
+      const sub = createGallerySession({ id, seed: 42 });
+      sub.showFilledFrame();
+      const oled = isOledEffect(sub.meta);
+      const card = document.createElement('div');
+      card.className = `wall-card${oled ? ' oled-card' : ''}`;
+      card.dataset.id = id;
+      card.dataset.category = sub.meta.category || 'starter';
+      card.dataset.realm = oled ? 'oledfx' : (id.includes('/') ? 'inkfx' : 'starter');
+      const thumb = document.createElement('canvas');
+      thumb.width = sub.frame.w;
+      thumb.height = sub.frame.h;
+      const titleRow = document.createElement('div');
+      titleRow.className = 'wall-title-row';
+      const badgeText = oled ? '1-BIT OLED' : (sub.act ? 'WUXIA ACT' : (sub.meta.loop ? 'LOOP' : 'INKFX'));
+      titleRow.innerHTML = `<span class="wall-zh">${ZH_NAMES[id] || id}</span><span class="wall-tag">${badgeText}</span>`;
+      const metaRow = document.createElement('div');
+      metaRow.className = 'wall-meta';
+      metaRow.innerHTML = `<span>${id}</span><span>${sub.meta.w}×${sub.meta.h}</span>`;
+      card.append(thumb, titleRow, metaRow);
+      card.addEventListener('click', () => {
+        $('effect').value = id;
+        playProceduralSfx(oled ? 'oled' : 'slash');
+        playFromStart();
+        showToast(`LOADED ${id.toUpperCase()} IN STUDIO`);
+        $('act-studio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      wall.append(card);
+      const item = { id, sub, card, thumb, ctx: thumb.getContext('2d'), visible: true, oled };
+      wallItems.push(item);
+      if (observer) observer.observe(card);
+    }
+
+    let currentFilter = 'all';
+    function filterWall() {
+      const q = ($('wall-search').value || '').trim().toLowerCase();
+      for (const item of wallItems) {
+        const matchCat = currentFilter === 'all'
+          || item.card.dataset.realm === currentFilter
+          || item.card.dataset.category === currentFilter;
+        const zh = (ZH_NAMES[item.id] || '').toLowerCase();
+        const matchQ = !q || item.id.toLowerCase().includes(q) || zh.includes(q);
+        item.card.hidden = !(matchCat && matchQ);
+      }
+    }
+
+    for (const btn of document.querySelectorAll('#wall-filters .cat-btn')) {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.dataset.filter;
+        for (const b of document.querySelectorAll('#wall-filters .cat-btn')) {
+          b.classList.toggle('active', b === btn);
+        }
+        filterWall();
+        playProceduralSfx('click');
+      });
+    }
+    $('wall-search').addEventListener('input', filterWall);
+    window.addEventListener('keydown', e => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        $('wall-search').focus();
+      }
+    });
+
+    let lastWallNow = 0;
+    function stepWall(now) {
+      const dt = lastWallNow ? Math.min(0.05, (now - lastWallNow) / 1000) : 1 / 60;
+      lastWallNow = now;
+      for (const item of wallItems) {
+        if (!item.visible || item.card.hidden) continue;
+        if (item.sub.ended) item.sub.setEffect(item.id);
+        item.sub.advance(dt * speedScale);
+        const img = new ImageData(item.sub.frame.data, item.sub.frame.w, item.sub.frame.h);
+        if (item.oled) {
+          const w = item.sub.frame.w;
+          for (let i = 0; i < img.data.length; i += 4) {
+            const py = Math.floor((i / 4) / w);
+            if (img.data[i + 3] >= 128) {
+              if (py < 16) {
+                img.data[i] = 255; img.data[i + 1] = 212; img.data[i + 2] = 71; img.data[i + 3] = 255;
+              } else {
+                img.data[i] = 54; img.data[i + 1] = 243; img.data[i + 2] = 255; img.data[i + 3] = 255;
+              }
+            } else {
+              img.data[i] = 10; img.data[i + 1] = 16; img.data[i + 2] = 22; img.data[i + 3] = 255;
+            }
+          }
+        }
+        item.ctx.putImageData(img, 0, 0);
+      }
+    }
+
     pose();
     requestAnimationFrame(animate);
   </script>

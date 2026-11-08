@@ -1,35 +1,17 @@
-# PRD 03 implementation
+# Master PRD Suite Implementation (PRD 01 `inkfx` · PRD 02 `oledfx` · PRD 03 `fx-skill-kit`)
 
-All requested toolkit phases are implemented with pure ESM, Node built-ins, and no runtime npm packages.
+All three sections of the Master PRD Suite (`docs/PRD.md`) are implemented in pure ESM with Node built-ins and zero runtime npm dependencies.
 
-| Deliverable | Implementation |
-| --- | --- |
-| Six quality gates | Guarded seed-42 replay/hash, 1.5% border spill with transition exemption, last-playback MSE and centroid seam vs adjacent ×1.5, invisible/overfilled/dead-head/tail checks, warmed 300-step 120Hz timing, configurable domain plugins |
-| Scaffolding | category/name under src/fx, --loop/--sim, seeded palette-aware template, atomic catalog update |
-| Visual review | Annotated contact PNG/JSON and every-frame 12fps act strip; negative windup, hit-stop, recovery, bounds and phase labels |
-| Bakers | Exact transparent PNG atlas + JSON, zero-dependency GIF89a previews, nine-view tilt inspection, page-packed C header export |
-| MCP | Four tools, stdio JSON-RPC lifecycle/discovery/calls, image content, errors and sequential requests; no SDK |
-| Authoring guidance | Updated README, authoring contract, iron-rule skill and primitives/examples/baking references |
+| PRD Section | Deliverable | Implementation |
+| --- | --- | --- |
+| **PRD 01 (`inkfx`)** | Dual-buffer ink engine (`src/core/ink.js`) | `InkFrame` (`pigment`, `wetness`, `tint`, `paperGrain`), dry-brush (`feibai`) `stampDryBrush`/`stampInkStroke`/`stampInkDrop`, wet diffusion + dark fringe (`stepInkDiffusion`), 6-stop non-linear mineral color ramps (`songyan`, `zhusha`, `shiqing`, `nijin`) |
+| **PRD 01 (`inkfx`)** | Wuxia `act` & 6-category FX catalog (`16` effects in `src/fx/`) | `sword/sword-qi-slash`, `sword/cross-cleave`, `sword/myriad-swords`, `talisman/bagua-seal`, `talisman/cinnabar-burn`, `talisman/ink-chains`, `zen/bamboo-wind`, `zen/plum-blossom`, `zen/falling-sakura`, `ink-burst/heavy-impact`, `ink-burst/qi-surge`, `ink-burst/splash-guard`, `transitions/brush-sweep`, `transitions/ink-drop-wash`, `ui/vermilion-seal`, `ui/realm-breakthrough` |
+| **PRD 01 (`inkfx`)** | Engine sprite sheet baker (`tools/export-sheet.mjs`) | Transparent or Xuan-paper (`--paper`) PNG + JSON Atlas with `meta.inkfx.act` hit-stop and frameTags |
+| **PRD 02 (`oledfx`)** | 1-bit & RGB565 screen + Dithering (`src/core/oled.js`, `src/core/dither.js`) | Hardware profiles (`ssd1306-128x64`, `ssd1306-128x32`, `led-matrix-64x32`, `st7789-128x128`), `threshold` / `bayer4x4` (17-step ordered) / `checker` / `atkinson` dithering, parametric primitives (`fillRoundRect`, `fillCircle`, `arc`, `toFrame`), 16-bit `RGB565` (`packRgb565Frame`, `encodeRgb565XorRle`, `decodeRgb565XorRleStep`) |
+| **PRD 02 (`oledfx`)** | Micro-screen FX catalog (`14` effects across all 5 categories in `src/fx/`) | `eyes/happy-squint`, `eyes/curious-blink`, `eyes/cyber-charge`, `eyes/dizzy-spiral`, `weather/rain-storm`, `weather/sunny-orbit`, `weather/snow-drift`, `system/wifi-pulse`, `system/battery-charge`, `system/cpu-wave`, `pomodoro/hot-coffee`, `pomodoro/hourglass-flip`, `transitions/crt-off`, `transitions/venetian-blinds` |
+| **PRD 02 (`oledfx`)** | MCU compiler (`tools/export-mcu.mjs`) | 1-bit `XOR-Delta + RLE` compression (`< 3.7 KB`, ~90%+ compression) + zero-malloc C11 inline decoder `oledfx_step_frame`, 16-bit `RGB565` raw & RLE (`oledfx_step_rgb565`), plus `xbm` and `adafruit` bitmap modes |
+| **PRD 03 (`fx-skill-kit`)** | Agentic feedback loop (`new`, `check`, `render`, `act`, `showcase`, `mcp-server`, `gallery`) | CHK-01..06 quality gates, annotated contact sheets & 12fps act strips, `6×4` simultaneous showcase grid GIF (`records/showcase-grid.gif`), 4-tool stdio MCP server, scrollable `IntersectionObserver` Gallery with Xuan-paper & SSD1306 dual-zone OLED simulator |
 
-## Validation
+## Validation Summary (`records/verification.json`)
 
-Both examples passed strict CLI checks with the working ink-entropy domain plugin (non-loop seam is explicitly skipped for pulse-dot). Full machine-readable evidence is in [verification.json](../records/verification.json). Limits: p95 <1.5ms, max <3ms.
-
-| Asset | p95 | max | Result |
-| --- | --- | --- | --- |
-| pulse-dot.js | 0.699ms | 0.749ms | PASS |
-| orbit-loop.js | 0.042ms | 0.100ms | PASS |
-
-Tests cover all six gates, scaffold/catalog behavior, fixed-120Hz Sim state across display rates, dense act timelines and phases, exact PNG atlas pixels, independent GIF decoding, palette/tilt propagation, C mask packing, all four MCP tools and JSON-RPC stream framing. A real stdio smoke session exercised initialization, discovery and all four tools. A generated C header passed cc C11 syntax checking. Functional tests skip incidental timing to avoid scheduler-related flakes; explicit budget tests cover strict thresholds and real slow-frame failures.
-
-## Visual review
-
-Round 1: inspected pulse contact F000–F030 and orbit act F000–F024. The pulse retains a soft fringe and distinct flecks through F024–F028, with a short blank endpoint. The orbit stays clear of the edge, preserves its origin and returns to its initial phase. Bounds and guides remain separate from export pixels.
-
-Round 2: regenerated after removing per-pixel color-array allocation in the drawing primitive, then inspected pulse act F000–F012 and the zhusha orbit contact F000–F060. Fade and motion continuity remain intact; the palette changes pigment while preserving timing and silhouette. No visual source correction was needed.
-
-Nine PNG/GIF review artifacts plus diagnostic JSON were copied to /workspace/fx-projects/shots/fx-skill-kit/.
-
-## Format limits
-
-GIF uses a 216-color palette, centisecond timing, transparency for empty pixels, and paper-composited partial alpha; literal LZW favors a small implementation over file size. PNG atlases preserve original RGBA. C export is an uncompressed 1-bit alpha mask, not the oledfx hardware compression pipeline. Catalog search ranks words locally without embeddings. MCP is local stdio only and executes trusted effect/config modules. See [MCP.md](MCP.md).
+All **32** catalog effects (`2` Starter + `16` InkFX + `14` OLEDFX) pass strict CLI checks (`CHK-01` through `CHK-06`, `seed=42`, `p95 < 1.5ms`, `max < 3.0ms`), domain plugins (`inkfx/entropy`, `oledfx/shimmer` = `0.00%`, `oledfx/rle-budget` `< 4 KB`), and visual contact-sheet review.

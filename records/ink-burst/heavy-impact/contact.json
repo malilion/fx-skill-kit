@@ -1,0 +1,654 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "ink-burst/heavy-impact",
+    "category": "ink-burst",
+    "duration": 0.8,
+    "loop": false,
+    "sim": true,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80,
+    "defaultPalette": [
+      "#f4efe6",
+      "#c9c2b8",
+      "#7d766d",
+      "#3b3734",
+      "#161412",
+      "#b82921"
+    ]
+  },
+  "act": {
+    "windup": 0.15,
+    "poses": [
+      [
+        -0.15,
+        "GATHER_FORCE"
+      ],
+      [
+        0,
+        "IMPACT_CORE",
+        "snap"
+      ],
+      [
+        0.12,
+        "SHOCK_RING"
+      ],
+      [
+        0.65,
+        "MIST_SETTLE"
+      ]
+    ],
+    "hits": [
+      {
+        "t": 0.02,
+        "freeze": 0.14,
+        "shakeAmp": 4,
+        "inkSplash": 32
+      }
+    ],
+    "recovery": 0.1
+  },
+  "timeline": {
+    "start": -0.15,
+    "end": 0.9,
+    "fixedFps": false
+  },
+  "seed": 42,
+  "requestedFps": 30,
+  "dt": 0.0328125,
+  "simulationHz": 120,
+  "effectOptions": {},
+  "hash": "bd20c96e5e07d701c49aba0ccb8d0cb3d84d21d8488abd615caf603b2fe94cb0",
+  "frameCount": 33,
+  "sheet": {
+    "w": 800,
+    "h": 1072,
+    "columns": 4,
+    "cellW": 192,
+    "cellH": 248,
+    "headerH": 64,
+    "selected": [
+      0,
+      2,
+      4,
+      6,
+      9,
+      11,
+      13,
+      15,
+      17,
+      19,
+      21,
+      23,
+      26,
+      28,
+      30,
+      32
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": -0.15,
+      "simulationTime": -0.15,
+      "fillRatio": 0.0168359375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 69,
+        "y": 69,
+        "w": 24,
+        "h": 23
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 1.6835937499999998,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": -0.1171875,
+      "simulationTime": -0.125,
+      "fillRatio": 0.013125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 70,
+        "y": 69,
+        "w": 22,
+        "h": 22
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 1.3125,
+      "contactCell": null
+    },
+    {
+      "index": 2,
+      "time": -0.08437499999999999,
+      "simulationTime": -0.09166666666666666,
+      "fillRatio": 0.0098046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 72,
+        "y": 71,
+        "w": 18,
+        "h": 19
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 0.9804687499999999,
+      "contactCell": 1
+    },
+    {
+      "index": 3,
+      "time": -0.05156249999999998,
+      "simulationTime": -0.058333333333333334,
+      "fillRatio": 0.00640625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 73,
+        "y": 73,
+        "w": 15,
+        "h": 15
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 0.640625,
+      "contactCell": null
+    },
+    {
+      "index": 4,
+      "time": -0.01874999999999999,
+      "simulationTime": -0.024999999999999994,
+      "fillRatio": 0.0038671875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 75,
+        "y": 75,
+        "w": 11,
+        "h": 11
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 0.38671875,
+      "contactCell": 2
+    },
+    {
+      "index": 5,
+      "time": 0.014062500000000006,
+      "simulationTime": 0.008333333333333331,
+      "fillRatio": 0.0316796875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 64,
+        "y": 64,
+        "w": 33,
+        "h": 33
+      },
+      "phase": "ACTIVE",
+      "pose": "IMPACT_CORE",
+      "fillPercent": 3.16796875,
+      "contactCell": null
+    },
+    {
+      "index": 6,
+      "time": 0.04687500000000003,
+      "simulationTime": 0.041666666666666685,
+      "fillRatio": 0.05375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 59,
+        "y": 59,
+        "w": 43,
+        "h": 43
+      },
+      "phase": "FREEZE",
+      "pose": "IMPACT_CORE",
+      "fillPercent": 5.375,
+      "contactCell": 3
+    },
+    {
+      "index": 7,
+      "time": 0.07968750000000002,
+      "simulationTime": 0.07500000000000001,
+      "fillRatio": 0.0548828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 56,
+        "y": 56,
+        "w": 49,
+        "h": 49
+      },
+      "phase": "FREEZE",
+      "pose": "IMPACT_CORE",
+      "fillPercent": 5.48828125,
+      "contactCell": null
+    },
+    {
+      "index": 8,
+      "time": 0.11250000000000002,
+      "simulationTime": 0.10833333333333336,
+      "fillRatio": 0.055390625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 53,
+        "y": 53,
+        "w": 54,
+        "h": 55
+      },
+      "phase": "FREEZE",
+      "pose": "IMPACT_CORE",
+      "fillPercent": 5.5390625,
+      "contactCell": null
+    },
+    {
+      "index": 9,
+      "time": 0.14531250000000004,
+      "simulationTime": 0.1416666666666667,
+      "fillRatio": 0.0546484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 51,
+        "y": 52,
+        "w": 59,
+        "h": 58
+      },
+      "phase": "FREEZE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.46484375,
+      "contactCell": 4
+    },
+    {
+      "index": 10,
+      "time": 0.178125,
+      "simulationTime": 0.17500000000000002,
+      "fillRatio": 0.0540234375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 49,
+        "y": 50,
+        "w": 62,
+        "h": 62
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.40234375,
+      "contactCell": null
+    },
+    {
+      "index": 11,
+      "time": 0.21093750000000003,
+      "simulationTime": 0.20833333333333334,
+      "fillRatio": 0.05703125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 49,
+        "y": 48,
+        "w": 63,
+        "h": 65
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.703125,
+      "contactCell": 5
+    },
+    {
+      "index": 12,
+      "time": 0.24375000000000005,
+      "simulationTime": 0.24166666666666667,
+      "fillRatio": 0.056796875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 47,
+        "y": 47,
+        "w": 67,
+        "h": 67
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.6796875,
+      "contactCell": null
+    },
+    {
+      "index": 13,
+      "time": 0.27656250000000004,
+      "simulationTime": 0.275,
+      "fillRatio": 0.0549609375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 46,
+        "y": 46,
+        "w": 69,
+        "h": 69
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.49609375,
+      "contactCell": 6
+    },
+    {
+      "index": 14,
+      "time": 0.30937500000000007,
+      "simulationTime": 0.30833333333333335,
+      "fillRatio": 0.0523046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 45,
+        "y": 45,
+        "w": 71,
+        "h": 71
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.23046875,
+      "contactCell": null
+    },
+    {
+      "index": 15,
+      "time": 0.3421875,
+      "simulationTime": 0.3416666666666667,
+      "fillRatio": 0.048984375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 43,
+        "y": 43,
+        "w": 75,
+        "h": 75
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 4.8984375,
+      "contactCell": 7
+    },
+    {
+      "index": 16,
+      "time": 0.375,
+      "simulationTime": 0.375,
+      "fillRatio": 0.045234375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 42,
+        "y": 42,
+        "w": 77,
+        "h": 76
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 4.5234375,
+      "contactCell": null
+    },
+    {
+      "index": 17,
+      "time": 0.4078125,
+      "simulationTime": 0.4,
+      "fillRatio": 0.043046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 41,
+        "y": 41,
+        "w": 79,
+        "h": 79
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 4.3046875,
+      "contactCell": 8
+    },
+    {
+      "index": 18,
+      "time": 0.44062500000000004,
+      "simulationTime": 0.43333333333333335,
+      "fillRatio": 0.03890625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 41,
+        "y": 41,
+        "w": 79,
+        "h": 80
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 3.8906250000000004,
+      "contactCell": null
+    },
+    {
+      "index": 19,
+      "time": 0.47343749999999996,
+      "simulationTime": 0.4666666666666667,
+      "fillRatio": 0.0361328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 40,
+        "y": 40,
+        "w": 81,
+        "h": 81
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 3.61328125,
+      "contactCell": 9
+    },
+    {
+      "index": 20,
+      "time": 0.50625,
+      "simulationTime": 0.5,
+      "fillRatio": 0.0335546875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 39,
+        "y": 39,
+        "w": 83,
+        "h": 83
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 3.35546875,
+      "contactCell": null
+    },
+    {
+      "index": 21,
+      "time": 0.5390625,
+      "simulationTime": 0.5333333333333333,
+      "fillRatio": 0.0305859375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 38,
+        "y": 38,
+        "w": 85,
+        "h": 85
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 3.05859375,
+      "contactCell": 10
+    },
+    {
+      "index": 22,
+      "time": 0.571875,
+      "simulationTime": 0.5666666666666667,
+      "fillRatio": 0.02796875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 38,
+        "y": 38,
+        "w": 85,
+        "h": 85
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 2.796875,
+      "contactCell": null
+    },
+    {
+      "index": 23,
+      "time": 0.6046875,
+      "simulationTime": 0.6,
+      "fillRatio": 0.0248046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 37,
+        "y": 37,
+        "w": 87,
+        "h": 87
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 2.48046875,
+      "contactCell": 11
+    },
+    {
+      "index": 24,
+      "time": 0.6375000000000001,
+      "simulationTime": 0.6333333333333333,
+      "fillRatio": 0.0219140625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 36,
+        "y": 36,
+        "w": 89,
+        "h": 89
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 2.19140625,
+      "contactCell": null
+    },
+    {
+      "index": 25,
+      "time": 0.6703125,
+      "simulationTime": 0.6666666666666666,
+      "fillRatio": 0.019375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 36,
+        "w": 90,
+        "h": 90
+      },
+      "phase": "ACTIVE",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.9375,
+      "contactCell": null
+    },
+    {
+      "index": 26,
+      "time": 0.703125,
+      "simulationTime": 0.7,
+      "fillRatio": 0.0164453125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 34,
+        "w": 91,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.64453125,
+      "contactCell": 12
+    },
+    {
+      "index": 27,
+      "time": 0.7359375,
+      "simulationTime": 0.7333333333333333,
+      "fillRatio": 0.0131640625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 94,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.31640625,
+      "contactCell": null
+    },
+    {
+      "index": 28,
+      "time": 0.76875,
+      "simulationTime": 0.7666666666666666,
+      "fillRatio": 0.010390625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.0390625,
+      "contactCell": 13
+    },
+    {
+      "index": 29,
+      "time": 0.8015625000000001,
+      "simulationTime": 0.7999999999999999,
+      "fillRatio": 0.0103125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "RECOVERY",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.03125,
+      "contactCell": null
+    },
+    {
+      "index": 30,
+      "time": 0.834375,
+      "simulationTime": 0.8333333333333333,
+      "fillRatio": 0.0103125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "RECOVERY",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.03125,
+      "contactCell": 14
+    },
+    {
+      "index": 31,
+      "time": 0.8671875000000001,
+      "simulationTime": 0.8666666666666666,
+      "fillRatio": 0.0103125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "RECOVERY",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.03125,
+      "contactCell": null
+    },
+    {
+      "index": 32,
+      "time": 0.9,
+      "simulationTime": 0.9,
+      "fillRatio": 0.0103125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "RECOVERY",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.03125,
+      "contactCell": 15
+    }
+  ]
+}
