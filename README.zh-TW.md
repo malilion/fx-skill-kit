@@ -11,6 +11,11 @@
   <a href="docs/MCP.md">🔌 MCP 伺服器協定</a>
 </p>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0"></a>
+</p>
+
+
 ---
 
 **零依賴程序化特效全套件：東方水墨與武俠引擎 (`inkfx`)、嵌入式 1-bit 與 RGB565 微螢幕編譯庫 (`oledfx`)、六大確定性品質守門員 (`CHK-01..06`)、Contact Sheet 視覺自檢與四個 stdio MCP 工具 (`fx-skill-kit`)。**
@@ -115,3 +120,12 @@ npm run act -- ui/my-pulse --seed 42
 ![好奇眨眼分格圖](records/eyes/curious-blink/contact.png)
 
 中繼資料、緩衝區、種子與檢查契約見 [AUTHORING.md](docs/AUTHORING.md)。AI Agent 請遵循 [FX 撰寫技能](skills/fx-authoring/SKILL.md) 執行視覺自檢閉環。
+
+---
+
+## 授權（License）
+
+Copyright 2026 Malilion。
+
+以 [Apache License, Version 2.0](LICENSE) 授權。歸屬說明見 [NOTICE](NOTICE)。
+

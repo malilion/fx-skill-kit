@@ -11,6 +11,11 @@
   <a href="docs/MCP.md">🔌 MCP Protocol</a>
 </p>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0"></a>
+</p>
+
+
 ---
 
 **Zero-dependency procedural FX suite: Eastern Wuxia ink engine (`inkfx`), 1-bit & RGB565 MCU compiler (`oledfx`), six deterministic quality gates (`CHK-01..06`), contact-sheet visual review, and four stdio MCP tools (`fx-skill-kit`).**
@@ -115,3 +120,12 @@ Start the stdio MCP server with `npm run mcp` (or configure your agent client to
 ![Curious Blink contact sheet](records/eyes/curious-blink/contact.png)
 
 See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and check contracts. Coding agents can follow [the FX authoring skill](skills/fx-authoring/SKILL.md) to keep visual inspection in the loop.
+
+---
+
+## License
+
+Copyright 2026 Malilion.
+
+Licensed under the [Apache License, Version 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.
+
