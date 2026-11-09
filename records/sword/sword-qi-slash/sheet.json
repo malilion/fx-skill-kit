@@ -1,0 +1,960 @@
+{
+  "frames": [
+    {
+      "filename": "sword/sword-qi-slash/0000",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.4,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0001",
+      "frame": {
+        "x": 160,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.36710526315789477,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0002",
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.3342105263157895,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0003",
+      "frame": {
+        "x": 480,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.3013157894736842,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0004",
+      "frame": {
+        "x": 0,
+        "y": 160,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.268421052631579,
+      "duration": 32.89473684210528
+    },
+    {
+      "filename": "sword/sword-qi-slash/0005",
+      "frame": {
+        "x": 160,
+        "y": 160,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.23552631578947372,
+      "duration": 32.89473684210528
+    },
+    {
+      "filename": "sword/sword-qi-slash/0006",
+      "frame": {
+        "x": 320,
+        "y": 160,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.20263157894736844,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0007",
+      "frame": {
+        "x": 480,
+        "y": 160,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.16973684210526319,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0008",
+      "frame": {
+        "x": 0,
+        "y": 320,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.13684210526315793,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0009",
+      "frame": {
+        "x": 160,
+        "y": 320,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.10394736842105268,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0010",
+      "frame": {
+        "x": 320,
+        "y": 320,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.07105263157894742,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0011",
+      "frame": {
+        "x": 480,
+        "y": 320,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.03815789473684217,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0012",
+      "frame": {
+        "x": 0,
+        "y": 480,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": -0.0052631578947368585,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0013",
+      "frame": {
+        "x": 160,
+        "y": 480,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.027631578947368396,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0014",
+      "frame": {
+        "x": 320,
+        "y": 480,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.06052631578947365,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0015",
+      "frame": {
+        "x": 480,
+        "y": 480,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.0934210526315789,
+      "duration": 32.89473684210525
+    },
+    {
+      "filename": "sword/sword-qi-slash/0016",
+      "frame": {
+        "x": 0,
+        "y": 640,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.12631578947368416,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0017",
+      "frame": {
+        "x": 160,
+        "y": 640,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.15921052631578947,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0018",
+      "frame": {
+        "x": 320,
+        "y": 640,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.19210526315789467,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0019",
+      "frame": {
+        "x": 480,
+        "y": 640,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.22499999999999998,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0020",
+      "frame": {
+        "x": 0,
+        "y": 800,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.2578947368421052,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0021",
+      "frame": {
+        "x": 160,
+        "y": 800,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.2907894736842105,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0022",
+      "frame": {
+        "x": 320,
+        "y": 800,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.3236842105263157,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0023",
+      "frame": {
+        "x": 480,
+        "y": 800,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.356578947368421,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0024",
+      "frame": {
+        "x": 0,
+        "y": 960,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.3894736842105263,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0025",
+      "frame": {
+        "x": 160,
+        "y": 960,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.4223684210526315,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0026",
+      "frame": {
+        "x": 320,
+        "y": 960,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.4552631578947368,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0027",
+      "frame": {
+        "x": 480,
+        "y": 960,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.488157894736842,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0028",
+      "frame": {
+        "x": 0,
+        "y": 1120,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.5210526315789473,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0029",
+      "frame": {
+        "x": 160,
+        "y": 1120,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.5539473684210525,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0030",
+      "frame": {
+        "x": 320,
+        "y": 1120,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.5868421052631578,
+      "duration": 32.894736842105196
+    },
+    {
+      "filename": "sword/sword-qi-slash/0031",
+      "frame": {
+        "x": 480,
+        "y": 1120,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.619736842105263,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0032",
+      "frame": {
+        "x": 0,
+        "y": 1280,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.6526315789473683,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0033",
+      "frame": {
+        "x": 160,
+        "y": 1280,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.6855263157894737,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0034",
+      "frame": {
+        "x": 320,
+        "y": 1280,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.718421052631579,
+      "duration": 32.89473684210509
+    },
+    {
+      "filename": "sword/sword-qi-slash/0035",
+      "frame": {
+        "x": 480,
+        "y": 1280,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.751315789473684,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0036",
+      "frame": {
+        "x": 0,
+        "y": 1440,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.7842105263157894,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0037",
+      "frame": {
+        "x": 160,
+        "y": 1440,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.8171052631578947,
+      "duration": 32.89473684210531
+    },
+    {
+      "filename": "sword/sword-qi-slash/0038",
+      "frame": {
+        "x": 320,
+        "y": 1440,
+        "w": 160,
+        "h": 160
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 160
+      },
+      "time": 0.85,
+      "duration": 32.89473684210531
+    }
+  ],
+  "meta": {
+    "app": "fx-skill-kit",
+    "image": "sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 640,
+      "h": 1600
+    },
+    "scale": "1",
+    "effect": "sword/sword-qi-slash",
+    "seed": 42,
+    "fps": 30,
+    "loop": false,
+    "origin": {
+      "x": 80,
+      "y": 80
+    },
+    "act": {
+      "windup": 0.4,
+      "poses": [
+        [
+          -0.4,
+          "SHEATH_CROUCH"
+        ],
+        [
+          -0.08,
+          "EYE_GLINT",
+          "snap"
+        ],
+        [
+          0,
+          "DRAW_CUT",
+          "snap"
+        ],
+        [
+          0.08,
+          "FOLLOW_HOLD"
+        ],
+        [
+          0.65,
+          "STAND_RECOVER"
+        ]
+      ],
+      "hits": [
+        {
+          "t": 0.04,
+          "freeze": 0.15,
+          "shakeAmp": 3,
+          "inkSplash": 24
+        }
+      ],
+      "recovery": 0.1
+    },
+    "timeline": {
+      "start": -0.4,
+      "end": 0.85,
+      "fixedFps": false
+    }
+  }
+}

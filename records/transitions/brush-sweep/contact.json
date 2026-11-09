@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "transitions/brush-sweep",
+    "category": "transitions",
+    "duration": 0.9,
+    "loop": false,
+    "sim": false,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80,
+    "defaultPalette": [
+      "#f4efe6",
+      "#c9c2b8",
+      "#7d766d",
+      "#3b3734",
+      "#161412",
+      "#b82921"
+    ]
+  },
+  "timeline": {
+    "start": 0,
+    "end": 0.9,
+    "fixedFps": false
+  },
+  "seed": 42,
+  "requestedFps": 30,
+  "dt": 0.03333333333333333,
+  "simulationHz": null,
+  "effectOptions": {},
+  "hash": "7b7c4e525821418d93f63cc8981d9d962a14024d9450b4f54ac3dbca45854a06",
+  "frameCount": 28,
+  "sheet": {
+    "w": 800,
+    "h": 1072,
+    "columns": 4,
+    "cellW": 192,
+    "cellH": 248,
+    "headerH": 64,
+    "selected": [
+      0,
+      2,
+      4,
+      5,
+      7,
+      9,
+      11,
+      13,
+      14,
+      16,
+      18,
+      20,
+      22,
+      23,
+      25,
+      27
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": 0,
+      "fillRatio": 0.0419140625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 47,
+        "h": 27
+      },
+      "fillPercent": 4.19140625,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": 0.03333333333333333,
+      "fillRatio": 0.0921484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 49,
+        "h": 57
+      },
+      "fillPercent": 9.21484375,
+      "contactCell": null
+    },
+    {
+      "index": 2,
+      "time": 0.06666666666666667,
+      "fillRatio": 0.0921484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 49,
+        "h": 57
+      },
+      "fillPercent": 9.21484375,
+      "contactCell": 1
+    },
+    {
+      "index": 3,
+      "time": 0.1,
+      "fillRatio": 0.1404296875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 49,
+        "h": 88
+      },
+      "fillPercent": 14.042968750000002,
+      "contactCell": null
+    },
+    {
+      "index": 4,
+      "time": 0.13333333333333333,
+      "fillRatio": 0.1894140625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 54,
+        "h": 114
+      },
+      "fillPercent": 18.94140625,
+      "contactCell": 2
+    },
+    {
+      "index": 5,
+      "time": 0.16666666666666666,
+      "fillRatio": 0.19453125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 60,
+        "h": 114
+      },
+      "fillPercent": 19.453125,
+      "contactCell": 3
+    },
+    {
+      "index": 6,
+      "time": 0.2,
+      "fillRatio": 0.2075,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 66,
+        "h": 114
+      },
+      "fillPercent": 20.75,
+      "contactCell": null
+    },
+    {
+      "index": 7,
+      "time": 0.23333333333333334,
+      "fillRatio": 0.22296875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 78,
+        "h": 114
+      },
+      "fillPercent": 22.296875,
+      "contactCell": 4
+    },
+    {
+      "index": 8,
+      "time": 0.26666666666666666,
+      "fillRatio": 0.2485546875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 85,
+        "h": 114
+      },
+      "fillPercent": 24.85546875,
+      "contactCell": null
+    },
+    {
+      "index": 9,
+      "time": 0.3,
+      "fillRatio": 0.2768359375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 92,
+        "h": 114
+      },
+      "fillPercent": 27.68359375,
+      "contactCell": 5
+    },
+    {
+      "index": 10,
+      "time": 0.3333333333333333,
+      "fillRatio": 0.2977734375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 97,
+        "h": 114
+      },
+      "fillPercent": 29.77734375,
+      "contactCell": null
+    },
+    {
+      "index": 11,
+      "time": 0.36666666666666664,
+      "fillRatio": 0.319765625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 104,
+        "h": 114
+      },
+      "fillPercent": 31.9765625,
+      "contactCell": 6
+    },
+    {
+      "index": 12,
+      "time": 0.4,
+      "fillRatio": 0.34640625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 111,
+        "h": 114
+      },
+      "fillPercent": 34.640625,
+      "contactCell": null
+    },
+    {
+      "index": 13,
+      "time": 0.43333333333333335,
+      "fillRatio": 0.3722265625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 122,
+        "h": 114
+      },
+      "fillPercent": 37.22265625,
+      "contactCell": 7
+    },
+    {
+      "index": 14,
+      "time": 0.4666666666666667,
+      "fillRatio": 0.3905078125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 129,
+        "h": 114
+      },
+      "fillPercent": 39.05078125,
+      "contactCell": 8
+    },
+    {
+      "index": 15,
+      "time": 0.5,
+      "fillRatio": 0.4113671875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 136,
+        "h": 114
+      },
+      "fillPercent": 41.13671875,
+      "contactCell": null
+    },
+    {
+      "index": 16,
+      "time": 0.5333333333333333,
+      "fillRatio": 0.431328125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 140,
+        "h": 114
+      },
+      "fillPercent": 43.1328125,
+      "contactCell": 9
+    },
+    {
+      "index": 17,
+      "time": 0.5666666666666667,
+      "fillRatio": 0.448984375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 147,
+        "h": 114
+      },
+      "fillPercent": 44.8984375,
+      "contactCell": null
+    },
+    {
+      "index": 18,
+      "time": 0.6,
+      "fillRatio": 0.47265625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 153,
+        "h": 114
+      },
+      "fillPercent": 47.265625,
+      "contactCell": 10
+    },
+    {
+      "index": 19,
+      "time": 0.6333333333333333,
+      "fillRatio": 0.4798046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 25,
+        "w": 158,
+        "h": 114
+      },
+      "fillPercent": 47.98046875,
+      "contactCell": null
+    },
+    {
+      "index": 20,
+      "time": 0.6666666666666666,
+      "fillRatio": 0.4702734375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 26,
+        "w": 158,
+        "h": 112
+      },
+      "fillPercent": 47.02734375,
+      "contactCell": 11
+    },
+    {
+      "index": 21,
+      "time": 0.7,
+      "fillRatio": 0.460234375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 26,
+        "w": 158,
+        "h": 112
+      },
+      "fillPercent": 46.0234375,
+      "contactCell": null
+    },
+    {
+      "index": 22,
+      "time": 0.7333333333333333,
+      "fillRatio": 0.443984375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 26,
+        "w": 158,
+        "h": 111
+      },
+      "fillPercent": 44.3984375,
+      "contactCell": 12
+    },
+    {
+      "index": 23,
+      "time": 0.7666666666666666,
+      "fillRatio": 0.4287109375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 27,
+        "w": 158,
+        "h": 110
+      },
+      "fillPercent": 42.87109375,
+      "contactCell": 13
+    },
+    {
+      "index": 24,
+      "time": 0.8,
+      "fillRatio": 0.413515625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 27,
+        "w": 158,
+        "h": 110
+      },
+      "fillPercent": 41.3515625,
+      "contactCell": null
+    },
+    {
+      "index": 25,
+      "time": 0.8333333333333334,
+      "fillRatio": 0.3890234375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 28,
+        "w": 158,
+        "h": 108
+      },
+      "fillPercent": 38.90234375,
+      "contactCell": 14
+    },
+    {
+      "index": 26,
+      "time": 0.8666666666666667,
+      "fillRatio": 0.365390625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 28,
+        "w": 158,
+        "h": 107
+      },
+      "fillPercent": 36.5390625,
+      "contactCell": null
+    },
+    {
+      "index": 27,
+      "time": 0.9,
+      "fillRatio": 0.3637890625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 1,
+        "y": 28,
+        "w": 158,
+        "h": 107
+      },
+      "fillPercent": 36.37890625,
+      "contactCell": 15
+    }
+  ]
+}

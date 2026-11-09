@@ -1,0 +1,733 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "sword/cross-cleave",
+    "category": "sword",
+    "duration": 0.85,
+    "loop": false,
+    "sim": true,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80,
+    "defaultPalette": [
+      "#f4efe6",
+      "#dfb8b0",
+      "#a85249",
+      "#63201b",
+      "#1c1211",
+      "#c83228"
+    ]
+  },
+  "act": {
+    "windup": 0.25,
+    "poses": [
+      [
+        -0.25,
+        "TWIN_READY"
+      ],
+      [
+        0,
+        "FIRST_SLASH",
+        "snap"
+      ],
+      [
+        0.14,
+        "SECOND_SLASH",
+        "snap"
+      ],
+      [
+        0.24,
+        "CROSS_LOCK"
+      ],
+      [
+        0.72,
+        "SHEATH_END"
+      ]
+    ],
+    "hits": [
+      {
+        "t": 0.04,
+        "freeze": 0.08,
+        "shakeAmp": 2,
+        "inkSplash": 16
+      },
+      {
+        "t": 0.18,
+        "freeze": 0.14,
+        "shakeAmp": 4,
+        "inkSplash": 28
+      }
+    ],
+    "recovery": 0.1
+  },
+  "timeline": {
+    "start": -0.25,
+    "end": 0.95,
+    "fixedFps": false
+  },
+  "seed": 42,
+  "requestedFps": 30,
+  "dt": 0.03333333333333333,
+  "simulationHz": 120,
+  "effectOptions": {},
+  "hash": "a3a80b2cb23777cf3b3c2ecc777f3d7fd2d6825c86d2b7e06a7324179bdd0f41",
+  "frameCount": 37,
+  "sheet": {
+    "w": 800,
+    "h": 1072,
+    "columns": 4,
+    "cellW": 192,
+    "cellH": 248,
+    "headerH": 64,
+    "selected": [
+      0,
+      2,
+      5,
+      7,
+      10,
+      12,
+      14,
+      17,
+      19,
+      22,
+      24,
+      26,
+      29,
+      31,
+      34,
+      36
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": -0.25,
+      "simulationTime": -0.25,
+      "fillRatio": 0.0017578125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 54,
+        "y": 56,
+        "w": 53,
+        "h": 5
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.17578125,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": -0.21666666666666667,
+      "simulationTime": -0.21666666666666667,
+      "fillRatio": 0.0026953125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 53,
+        "y": 55,
+        "w": 55,
+        "h": 7
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.26953125,
+      "contactCell": null
+    },
+    {
+      "index": 2,
+      "time": -0.18333333333333335,
+      "simulationTime": -0.18333333333333335,
+      "fillRatio": 0.0033984375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 53,
+        "y": 55,
+        "w": 55,
+        "h": 7
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.33984375,
+      "contactCell": 1
+    },
+    {
+      "index": 3,
+      "time": -0.15,
+      "simulationTime": -0.15,
+      "fillRatio": 0.00453125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 54,
+        "w": 57,
+        "h": 9
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.45312499999999994,
+      "contactCell": null
+    },
+    {
+      "index": 4,
+      "time": -0.11666666666666667,
+      "simulationTime": -0.11666666666666667,
+      "fillRatio": 0.0054296875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 52,
+        "y": 54,
+        "w": 57,
+        "h": 9
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.54296875,
+      "contactCell": null
+    },
+    {
+      "index": 5,
+      "time": -0.08333333333333334,
+      "simulationTime": -0.08333333333333334,
+      "fillRatio": 0.006953125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 51,
+        "y": 53,
+        "w": 59,
+        "h": 11
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.6953125,
+      "contactCell": 2
+    },
+    {
+      "index": 6,
+      "time": -0.04999999999999999,
+      "simulationTime": -0.04999999999999999,
+      "fillRatio": 0.0080859375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 51,
+        "y": 53,
+        "w": 59,
+        "h": 12
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.8085937499999999,
+      "contactCell": null
+    },
+    {
+      "index": 7,
+      "time": -0.016666666666666663,
+      "simulationTime": -0.016666666666666663,
+      "fillRatio": 0.00953125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 50,
+        "y": 52,
+        "w": 61,
+        "h": 13
+      },
+      "phase": "WINDUP",
+      "pose": "TWIN_READY",
+      "fillPercent": 0.953125,
+      "contactCell": 3
+    },
+    {
+      "index": 8,
+      "time": 0.016666666666666663,
+      "simulationTime": 0.016666666666666663,
+      "fillRatio": 0.0139453125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 32,
+        "h": 36
+      },
+      "phase": "ACTIVE",
+      "pose": "FIRST_SLASH",
+      "fillPercent": 1.39453125,
+      "contactCell": null
+    },
+    {
+      "index": 9,
+      "time": 0.04999999999999999,
+      "simulationTime": 0.04999999999999999,
+      "fillRatio": 0.0308984375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 58,
+        "h": 60
+      },
+      "phase": "FREEZE",
+      "pose": "FIRST_SLASH",
+      "fillPercent": 3.08984375,
+      "contactCell": null
+    },
+    {
+      "index": 10,
+      "time": 0.08333333333333331,
+      "simulationTime": 0.08333333333333331,
+      "fillRatio": 0.04125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 80,
+        "h": 76
+      },
+      "phase": "FREEZE",
+      "pose": "FIRST_SLASH",
+      "fillPercent": 4.125,
+      "contactCell": 4
+    },
+    {
+      "index": 11,
+      "time": 0.11666666666666664,
+      "simulationTime": 0.11666666666666664,
+      "fillRatio": 0.0491015625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "FREEZE",
+      "pose": "FIRST_SLASH",
+      "fillPercent": 4.91015625,
+      "contactCell": null
+    },
+    {
+      "index": 12,
+      "time": 0.15000000000000002,
+      "simulationTime": 0.15000000000000002,
+      "fillRatio": 0.0698046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "ACTIVE",
+      "pose": "SECOND_SLASH",
+      "fillPercent": 6.98046875,
+      "contactCell": 5
+    },
+    {
+      "index": 13,
+      "time": 0.18333333333333335,
+      "simulationTime": 0.18333333333333335,
+      "fillRatio": 0.0794921875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "FREEZE",
+      "pose": "SECOND_SLASH",
+      "fillPercent": 7.949218750000001,
+      "contactCell": null
+    },
+    {
+      "index": 14,
+      "time": 0.21666666666666667,
+      "simulationTime": 0.21666666666666667,
+      "fillRatio": 0.0898828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "FREEZE",
+      "pose": "SECOND_SLASH",
+      "fillPercent": 8.98828125,
+      "contactCell": 6
+    },
+    {
+      "index": 15,
+      "time": 0.25,
+      "simulationTime": 0.25,
+      "fillRatio": 0.09078125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "FREEZE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 9.078125,
+      "contactCell": null
+    },
+    {
+      "index": 16,
+      "time": 0.2833333333333333,
+      "simulationTime": 0.2833333333333333,
+      "fillRatio": 0.0919921875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "FREEZE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 9.19921875,
+      "contactCell": null
+    },
+    {
+      "index": 17,
+      "time": 0.31666666666666665,
+      "simulationTime": 0.31666666666666665,
+      "fillRatio": 0.09046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 39,
+        "w": 91,
+        "h": 83
+      },
+      "phase": "FREEZE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 9.046875,
+      "contactCell": 7
+    },
+    {
+      "index": 18,
+      "time": 0.35,
+      "simulationTime": 0.35,
+      "fillRatio": 0.0878515625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 92,
+        "h": 88
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 8.78515625,
+      "contactCell": null
+    },
+    {
+      "index": 19,
+      "time": 0.3833333333333333,
+      "simulationTime": 0.3833333333333333,
+      "fillRatio": 0.0855859375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 29,
+        "y": 29,
+        "w": 97,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 8.55859375,
+      "contactCell": 8
+    },
+    {
+      "index": 20,
+      "time": 0.41666666666666663,
+      "simulationTime": 0.41666666666666663,
+      "fillRatio": 0.083671875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 24,
+        "y": 24,
+        "w": 102,
+        "h": 100
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 8.3671875,
+      "contactCell": null
+    },
+    {
+      "index": 21,
+      "time": 0.44999999999999996,
+      "simulationTime": 0.44999999999999996,
+      "fillRatio": 0.0806640625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 22,
+        "y": 23,
+        "w": 105,
+        "h": 104
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 8.06640625,
+      "contactCell": null
+    },
+    {
+      "index": 22,
+      "time": 0.4833333333333333,
+      "simulationTime": 0.4833333333333333,
+      "fillRatio": 0.077890625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 22,
+        "y": 23,
+        "w": 108,
+        "h": 107
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 7.789062500000001,
+      "contactCell": 9
+    },
+    {
+      "index": 23,
+      "time": 0.5166666666666666,
+      "simulationTime": 0.5166666666666667,
+      "fillRatio": 0.0751953125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 109,
+        "h": 110
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 7.51953125,
+      "contactCell": null
+    },
+    {
+      "index": 24,
+      "time": 0.55,
+      "simulationTime": 0.55,
+      "fillRatio": 0.0719140625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 112,
+        "h": 112
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 7.19140625,
+      "contactCell": 10
+    },
+    {
+      "index": 25,
+      "time": 0.5833333333333334,
+      "simulationTime": 0.5833333333333334,
+      "fillRatio": 0.0691015625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 114,
+        "h": 114
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 6.910156250000001,
+      "contactCell": null
+    },
+    {
+      "index": 26,
+      "time": 0.6166666666666667,
+      "simulationTime": 0.6166666666666667,
+      "fillRatio": 0.0665625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 115,
+        "h": 115
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 6.65625,
+      "contactCell": 11
+    },
+    {
+      "index": 27,
+      "time": 0.65,
+      "simulationTime": 0.65,
+      "fillRatio": 0.06296875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 115,
+        "h": 114
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 6.296875,
+      "contactCell": null
+    },
+    {
+      "index": 28,
+      "time": 0.6833333333333333,
+      "simulationTime": 0.6833333333333333,
+      "fillRatio": 0.060234375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 22,
+        "y": 23,
+        "w": 117,
+        "h": 115
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 6.0234375,
+      "contactCell": null
+    },
+    {
+      "index": 29,
+      "time": 0.7166666666666667,
+      "simulationTime": 0.7166666666666667,
+      "fillRatio": 0.05765625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 22,
+        "y": 23,
+        "w": 117,
+        "h": 115
+      },
+      "phase": "ACTIVE",
+      "pose": "CROSS_LOCK",
+      "fillPercent": 5.765625,
+      "contactCell": 12
+    },
+    {
+      "index": 30,
+      "time": 0.75,
+      "simulationTime": 0.75,
+      "fillRatio": 0.0546484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "ACTIVE",
+      "pose": "SHEATH_END",
+      "fillPercent": 5.46484375,
+      "contactCell": null
+    },
+    {
+      "index": 31,
+      "time": 0.7833333333333332,
+      "simulationTime": 0.7833333333333334,
+      "fillRatio": 0.05203125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "ACTIVE",
+      "pose": "SHEATH_END",
+      "fillPercent": 5.203125,
+      "contactCell": 13
+    },
+    {
+      "index": 32,
+      "time": 0.8166666666666667,
+      "simulationTime": 0.8166666666666667,
+      "fillRatio": 0.0498828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "ACTIVE",
+      "pose": "SHEATH_END",
+      "fillPercent": 4.98828125,
+      "contactCell": null
+    },
+    {
+      "index": 33,
+      "time": 0.8500000000000001,
+      "simulationTime": 0.8500000000000001,
+      "fillRatio": 0.048828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "RECOVERY",
+      "pose": "SHEATH_END",
+      "fillPercent": 4.8828125,
+      "contactCell": null
+    },
+    {
+      "index": 34,
+      "time": 0.8833333333333333,
+      "simulationTime": 0.8833333333333333,
+      "fillRatio": 0.048828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "RECOVERY",
+      "pose": "SHEATH_END",
+      "fillPercent": 4.8828125,
+      "contactCell": 14
+    },
+    {
+      "index": 35,
+      "time": 0.9166666666666667,
+      "simulationTime": 0.9166666666666667,
+      "fillRatio": 0.048828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "RECOVERY",
+      "pose": "SHEATH_END",
+      "fillPercent": 4.8828125,
+      "contactCell": null
+    },
+    {
+      "index": 36,
+      "time": 0.95,
+      "simulationTime": 0.95,
+      "fillRatio": 0.048828125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 23,
+        "y": 23,
+        "w": 116,
+        "h": 115
+      },
+      "phase": "RECOVERY",
+      "pose": "SHEATH_END",
+      "fillPercent": 4.8828125,
+      "contactCell": 15
+    }
+  ]
+}

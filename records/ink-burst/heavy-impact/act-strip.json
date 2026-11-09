@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "id": "ink-burst/heavy-impact",
+    "category": "ink-burst",
+    "duration": 0.8,
+    "loop": false,
+    "sim": true,
+    "w": 160,
+    "h": 160,
+    "ox": 80,
+    "oy": 80,
+    "defaultPalette": [
+      "#f4efe6",
+      "#c9c2b8",
+      "#7d766d",
+      "#3b3734",
+      "#161412",
+      "#b82921"
+    ]
+  },
+  "act": {
+    "windup": 0.15,
+    "poses": [
+      [
+        -0.15,
+        "GATHER_FORCE"
+      ],
+      [
+        0,
+        "IMPACT_CORE",
+        "snap"
+      ],
+      [
+        0.12,
+        "SHOCK_RING"
+      ],
+      [
+        0.65,
+        "MIST_SETTLE"
+      ]
+    ],
+    "hits": [
+      {
+        "t": 0.02,
+        "freeze": 0.14,
+        "shakeAmp": 4,
+        "inkSplash": 32
+      }
+    ],
+    "recovery": 0.1
+  },
+  "timeline": {
+    "start": -0.15,
+    "end": 0.9,
+    "fixedFps": true
+  },
+  "seed": 42,
+  "requestedFps": 12,
+  "dt": 0.08333333333333333,
+  "simulationHz": 120,
+  "effectOptions": {},
+  "hash": "e69ec9962a466cb2fb81f16e4fa36490f12fee9fbf07b5322f3c9946c0d5bedd",
+  "frameCount": 14,
+  "sheet": {
+    "w": 1184,
+    "h": 824,
+    "columns": 6,
+    "cellW": 192,
+    "cellH": 248,
+    "headerH": 64,
+    "selected": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "time": -0.15,
+      "simulationTime": -0.15,
+      "fillRatio": 0.0168359375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 69,
+        "y": 69,
+        "w": 24,
+        "h": 23
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 1.6835937499999998,
+      "contactCell": 0
+    },
+    {
+      "index": 1,
+      "time": -0.06666666666666667,
+      "simulationTime": -0.06666666666666667,
+      "fillRatio": 0.0071875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 73,
+        "y": 72,
+        "w": 15,
+        "h": 16
+      },
+      "phase": "WINDUP",
+      "pose": "GATHER_FORCE",
+      "fillPercent": 0.71875,
+      "contactCell": 1
+    },
+    {
+      "index": 2,
+      "time": 0.016666666666666663,
+      "simulationTime": 0.016666666666666663,
+      "fillRatio": 0.0401171875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 62,
+        "y": 62,
+        "w": 37,
+        "h": 37
+      },
+      "phase": "ACTIVE",
+      "pose": "IMPACT_CORE",
+      "fillPercent": 4.01171875,
+      "contactCell": 2
+    },
+    {
+      "index": 3,
+      "time": 0.1,
+      "simulationTime": 0.1,
+      "fillRatio": 0.055625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 54,
+        "y": 54,
+        "w": 53,
+        "h": 53
+      },
+      "phase": "FREEZE",
+      "pose": "IMPACT_CORE",
+      "fillPercent": 5.5625,
+      "contactCell": 3
+    },
+    {
+      "index": 4,
+      "time": 0.18333333333333332,
+      "simulationTime": 0.18333333333333332,
+      "fillRatio": 0.05484375,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 49,
+        "y": 49,
+        "w": 63,
+        "h": 62
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.484375,
+      "contactCell": 4
+    },
+    {
+      "index": 5,
+      "time": 0.2666666666666666,
+      "simulationTime": 0.2666666666666667,
+      "fillRatio": 0.0551171875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 46,
+        "y": 46,
+        "w": 69,
+        "h": 69
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 5.51171875,
+      "contactCell": 5
+    },
+    {
+      "index": 6,
+      "time": 0.35,
+      "simulationTime": 0.35,
+      "fillRatio": 0.04796875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 43,
+        "y": 43,
+        "w": 75,
+        "h": 75
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 4.796875,
+      "contactCell": 6
+    },
+    {
+      "index": 7,
+      "time": 0.43333333333333324,
+      "simulationTime": 0.43333333333333335,
+      "fillRatio": 0.03890625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 41,
+        "y": 41,
+        "w": 79,
+        "h": 80
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 3.8906250000000004,
+      "contactCell": 7
+    },
+    {
+      "index": 8,
+      "time": 0.5166666666666666,
+      "simulationTime": 0.5166666666666666,
+      "fillRatio": 0.0320703125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 39,
+        "y": 39,
+        "w": 83,
+        "h": 83
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 3.2070312500000004,
+      "contactCell": 8
+    },
+    {
+      "index": 9,
+      "time": 0.6,
+      "simulationTime": 0.6,
+      "fillRatio": 0.0248046875,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 37,
+        "y": 37,
+        "w": 87,
+        "h": 87
+      },
+      "phase": "ACTIVE",
+      "pose": "SHOCK_RING",
+      "fillPercent": 2.48046875,
+      "contactCell": 9
+    },
+    {
+      "index": 10,
+      "time": 0.6833333333333332,
+      "simulationTime": 0.6833333333333333,
+      "fillRatio": 0.0175,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 35,
+        "y": 35,
+        "w": 91,
+        "h": 91
+      },
+      "phase": "ACTIVE",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.7500000000000002,
+      "contactCell": 10
+    },
+    {
+      "index": 11,
+      "time": 0.7666666666666666,
+      "simulationTime": 0.7666666666666666,
+      "fillRatio": 0.010390625,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "ACTIVE",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.0390625,
+      "contactCell": 11
+    },
+    {
+      "index": 12,
+      "time": 0.85,
+      "simulationTime": 0.85,
+      "fillRatio": 0.0103125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "RECOVERY",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.03125,
+      "contactCell": 12
+    },
+    {
+      "index": 13,
+      "time": 0.9,
+      "simulationTime": 0.9,
+      "fillRatio": 0.0103125,
+      "edgeRatio": 0,
+      "bounds": {
+        "x": 34,
+        "y": 34,
+        "w": 93,
+        "h": 93
+      },
+      "phase": "RECOVERY",
+      "pose": "MIST_SETTLE",
+      "fillPercent": 1.03125,
+      "contactCell": 13
+    }
+  ]
+}

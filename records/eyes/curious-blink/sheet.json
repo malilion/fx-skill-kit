@@ -1,0 +1,1407 @@
+{
+  "frames": [
+    {
+      "filename": "eyes/curious-blink/0000",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0,
+      "duration": 33.333333333333336
+    },
+    {
+      "filename": "eyes/curious-blink/0001",
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.03333333333333333,
+      "duration": 33.333333333333336
+    },
+    {
+      "filename": "eyes/curious-blink/0002",
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.06666666666666667,
+      "duration": 33.33333333333334
+    },
+    {
+      "filename": "eyes/curious-blink/0003",
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.1,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0004",
+      "frame": {
+        "x": 0,
+        "y": 64,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.13333333333333333,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0005",
+      "frame": {
+        "x": 128,
+        "y": 64,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.16666666666666666,
+      "duration": 33.33333333333336
+    },
+    {
+      "filename": "eyes/curious-blink/0006",
+      "frame": {
+        "x": 256,
+        "y": 64,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.2,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0007",
+      "frame": {
+        "x": 384,
+        "y": 64,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.23333333333333334,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0008",
+      "frame": {
+        "x": 0,
+        "y": 128,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.26666666666666666,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0009",
+      "frame": {
+        "x": 128,
+        "y": 128,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.3,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0010",
+      "frame": {
+        "x": 256,
+        "y": 128,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.3333333333333333,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0011",
+      "frame": {
+        "x": 384,
+        "y": 128,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.36666666666666664,
+      "duration": 33.33333333333338
+    },
+    {
+      "filename": "eyes/curious-blink/0012",
+      "frame": {
+        "x": 0,
+        "y": 192,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.4,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0013",
+      "frame": {
+        "x": 128,
+        "y": 192,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.43333333333333335,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0014",
+      "frame": {
+        "x": 256,
+        "y": 192,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.4666666666666667,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0015",
+      "frame": {
+        "x": 384,
+        "y": 192,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.5,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0016",
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.5333333333333333,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0017",
+      "frame": {
+        "x": 128,
+        "y": 256,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.5666666666666667,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0018",
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.6,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0019",
+      "frame": {
+        "x": 384,
+        "y": 256,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.6333333333333333,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0020",
+      "frame": {
+        "x": 0,
+        "y": 320,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.6666666666666666,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0021",
+      "frame": {
+        "x": 128,
+        "y": 320,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.7,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0022",
+      "frame": {
+        "x": 256,
+        "y": 320,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.7333333333333333,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0023",
+      "frame": {
+        "x": 384,
+        "y": 320,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.7666666666666666,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0024",
+      "frame": {
+        "x": 0,
+        "y": 384,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.8,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0025",
+      "frame": {
+        "x": 128,
+        "y": 384,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.8333333333333334,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0026",
+      "frame": {
+        "x": 256,
+        "y": 384,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.8666666666666667,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0027",
+      "frame": {
+        "x": 384,
+        "y": 384,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.9,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0028",
+      "frame": {
+        "x": 0,
+        "y": 448,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.9333333333333333,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0029",
+      "frame": {
+        "x": 128,
+        "y": 448,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 0.9666666666666667,
+      "duration": 33.33333333333333
+    },
+    {
+      "filename": "eyes/curious-blink/0030",
+      "frame": {
+        "x": 256,
+        "y": 448,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0031",
+      "frame": {
+        "x": 384,
+        "y": 448,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.0333333333333332,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0032",
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.0666666666666667,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0033",
+      "frame": {
+        "x": 128,
+        "y": 512,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.1,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0034",
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.1333333333333333,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0035",
+      "frame": {
+        "x": 384,
+        "y": 512,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.1666666666666667,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0036",
+      "frame": {
+        "x": 0,
+        "y": 576,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.2,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0037",
+      "frame": {
+        "x": 128,
+        "y": 576,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.2333333333333334,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0038",
+      "frame": {
+        "x": 256,
+        "y": 576,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.2666666666666666,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0039",
+      "frame": {
+        "x": 384,
+        "y": 576,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.3,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0040",
+      "frame": {
+        "x": 0,
+        "y": 640,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.3333333333333333,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0041",
+      "frame": {
+        "x": 128,
+        "y": 640,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.3666666666666667,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0042",
+      "frame": {
+        "x": 256,
+        "y": 640,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.4,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0043",
+      "frame": {
+        "x": 384,
+        "y": 640,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.4333333333333333,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0044",
+      "frame": {
+        "x": 0,
+        "y": 704,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.4666666666666666,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0045",
+      "frame": {
+        "x": 128,
+        "y": 704,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.5,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0046",
+      "frame": {
+        "x": 256,
+        "y": 704,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.5333333333333332,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0047",
+      "frame": {
+        "x": 384,
+        "y": 704,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.5666666666666667,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0048",
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.6,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0049",
+      "frame": {
+        "x": 128,
+        "y": 768,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.6333333333333333,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0050",
+      "frame": {
+        "x": 256,
+        "y": 768,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.6666666666666667,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0051",
+      "frame": {
+        "x": 384,
+        "y": 768,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.7,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0052",
+      "frame": {
+        "x": 0,
+        "y": 832,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.7333333333333334,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0053",
+      "frame": {
+        "x": 128,
+        "y": 832,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.7666666666666666,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0054",
+      "frame": {
+        "x": 256,
+        "y": 832,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.8,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0055",
+      "frame": {
+        "x": 384,
+        "y": 832,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.8333333333333333,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0056",
+      "frame": {
+        "x": 0,
+        "y": 896,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.8666666666666667,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0057",
+      "frame": {
+        "x": 128,
+        "y": 896,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.9,
+      "duration": 33.333333333333435
+    },
+    {
+      "filename": "eyes/curious-blink/0058",
+      "frame": {
+        "x": 256,
+        "y": 896,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.9333333333333333,
+      "duration": 33.333333333333215
+    },
+    {
+      "filename": "eyes/curious-blink/0059",
+      "frame": {
+        "x": 384,
+        "y": 896,
+        "w": 128,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 64
+      },
+      "time": 1.9666666666666666,
+      "duration": 33.333333333333435
+    }
+  ],
+  "meta": {
+    "app": "fx-skill-kit",
+    "image": "sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 512,
+      "h": 960
+    },
+    "scale": "1",
+    "effect": "eyes/curious-blink",
+    "seed": 42,
+    "fps": 30,
+    "loop": true,
+    "origin": {
+      "x": 64,
+      "y": 32
+    },
+    "timeline": {
+      "start": 0,
+      "end": 2,
+      "fixedFps": false
+    }
+  }
+}
