@@ -6,7 +6,6 @@
   <a href="README.md">🇬🇧 English</a> ·
   <strong>🇹🇼 繁體中文</strong> ·
   <a href="https://malilion.github.io/fx-skill-kit/gallery/">🌐 GitHub Pages 線上展示館</a> ·
-  <a href="docs/IMPLEMENTATION.md">📐 完整實作報告</a> ·
   <a href="docs/AUTHORING.md">✍️ 特效撰寫契約</a> ·
   <a href="docs/MCP.md">🔌 MCP 伺服器協定</a>
 </p>
@@ -25,7 +24,7 @@
 
 ## 🌐 GitHub Pages 線上雙界策展館與工作台
 
-- **線上旗艦展示網址**：**[https://malilion.github.io/fx-skill-kit/gallery/](https://malilion.github.io/fx-skill-kit/gallery/)** *（程式碼儲存庫維持 `Private` 私有狀態，透過 GitHub Actions 自動驗證私有狀態並部署靜態 ESM 展示頁）*
+- **線上旗艦展示網址**：**[https://malilion.github.io/fx-skill-kit/gallery/](https://malilion.github.io/fx-skill-kit/gallery/)** *（透過 GitHub Actions 部署靜態 ESM 展示頁）*
 - **五幕式「雙界策展（東方宣紙古籍 × 賽博硬體實驗室）」互動架構（支援獨立章節分頁與圖鑑分頁）**：
   1. **`01 STAGE` · 雙界共鳴互動主舞台**：左界宣紙畫布支援即時揮毫體驗「飛白與水暈（`Pigment + Wetness`）」雙緩衝物理與朱砂拔刀斬；右界擬真 0.96" I²C SSD1306 PCB 硬體模組中的機器雙眼即時凝視並追蹤游標，雙界點擊跨界共鳴。
   2. **`02 ANATOMY` · 水墨物理 × 1-Bit 演算法即時解剖劇場**：左軌即時拆解水墨四層緩衝（`01 Pigment 墨色`、`02 Wetness 水暈`、`03 Paper 宣紙紋`、`04 Composite 礦物合成`）與六階非線性礦物色階（`清·淡·重·濃·焦·點綴`）；右軌同步對照 `Bayer 4×4`、`Checker`、`Atkinson` 與 `Frame[t] ^ Frame[t-1]` **XOR-Delta 跨幀差分熱力圖**。

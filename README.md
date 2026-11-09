@@ -6,7 +6,6 @@
   <strong>🇬🇧 English</strong> ·
   <a href="README.zh-TW.md">🇹🇼 繁體中文</a> ·
   <a href="https://malilion.github.io/fx-skill-kit/gallery/">🌐 Live GitHub Pages Gallery</a> ·
-  <a href="docs/IMPLEMENTATION.md">📐 Implementation Report</a> ·
   <a href="docs/AUTHORING.md">✍️ Authoring Contract</a> ·
   <a href="docs/MCP.md">🔌 MCP Protocol</a>
 </p>
@@ -25,7 +24,7 @@ For procedural-asset developers, game creators, embedded makers, and coding-agen
 
 ## 🌐 Live Interactive Gallery (GitHub Pages)
 
-- **Flagship Dual-Realm Atelier**: **[https://malilion.github.io/fx-skill-kit/gallery/](https://malilion.github.io/fx-skill-kit/gallery/)** *(Repository kept `Private`; static ESM bundle deployed via GitHub Actions Pages)*
+- **Flagship Dual-Realm Atelier**: **[https://malilion.github.io/fx-skill-kit/gallery/](https://malilion.github.io/fx-skill-kit/gallery/)** *(Static ESM gallery deployed via GitHub Actions Pages)*
 - **5-Act Editorial & Studio Architecture (with Paginated Views)**:
   1. **`01 STAGE` · Split-Realm Interactive Stage**: Live Xuan-paper dry-brush (`feibai`) + wet diffusion canvas on the left, paired with a skeuomorphic `128×64` SSD1306 I²C PCB breakout module whose robot eyes track your cursor and resonate with cross-realm slashes.
   2. **`02 ANATOMY` · Physics & Algorithm Deconstruction Theater**: Real-time 4-layer InkFX buffer decomposition (`01 Pigment`, `02 Wetness`, `03 Paper Grain`, `04 Composite`) + 6-stop non-linear mineral ramps (`清·淡·重·濃·焦·點綴`), alongside 4-way 1-bit dithering (`Bayer 4×4`, `Checker`, `Atkinson`, `XOR-Delta Frame[t] ^ Frame[t-1]` heatmap) and ESP32 Flash budget gauge.
