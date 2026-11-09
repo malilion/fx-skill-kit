@@ -30,7 +30,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
+      - name: Verify repository remains private
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          test "$(gh api "repos/${REPO}" --jq .private)" = true
       - name: Stage browser assets without a build
         run: |
           mkdir -p _site
@@ -45,9 +51,9 @@ jobs:
           <a href="./gallery/">Open the fx-skill-kit gallery</a>
           </html>
           HTML
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
       - name: Deploy GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4

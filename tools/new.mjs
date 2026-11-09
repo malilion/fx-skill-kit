@@ -4,8 +4,9 @@ import { validId } from '../src/core/run.js';
 import { isMain, parseArgs } from './cli.mjs';
 
 let catalogWrites = 0;
+const forbiddenIds = new Set(['constructor', 'prototype', '__proto__', 'toString', 'valueOf']);
 export async function scaffold(id, outDir = 'src/fx', { loop = false, sim = false, catalogFile = 'src/catalog.json' } = {}) {
-  if (!validId(id)) throw new Error('id must be lowercase kebab-case or category/name');
+  if (!validId(id) || forbiddenIds.has(id.split('/').pop())) throw new Error('id must be lowercase kebab-case or category/name');
   const file = resolve(outDir, `${id}.js`);
   const category = id.includes('/') ? id.slice(0, id.lastIndexOf('/')) : null;
   let catalog;

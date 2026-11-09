@@ -7,14 +7,17 @@ export function isMain(url) {
   return Boolean(process.argv[1]) && url === pathToFileURL(resolve(process.argv[1])).href;
 }
 
+const forbiddenKeys = new Set(['__proto__', 'constructor', 'prototype']);
+
 export function parseArgs(args, allowed, flags = []) {
   const files = [];
-  const options = {};
+  const options = Object.create(null);
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === '--help' || arg === '-h') { options.help = true; continue; }
     if (!arg.startsWith('--')) { files.push(arg); continue; }
     const key = arg.slice(2);
+    if (forbiddenKeys.has(key)) throw new Error(`Forbidden option: ${arg}`);
     if (flags.includes(key)) { options[key] = true; continue; }
     if (!allowed.includes(key)) throw new Error(`Unknown option: ${arg}`);
     if (args[i + 1] === undefined || args[i + 1].startsWith('--')) throw new Error(`Missing value for ${arg}`);

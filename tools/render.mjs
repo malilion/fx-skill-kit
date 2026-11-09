@@ -145,11 +145,16 @@ export async function main(args = process.argv.slice(2), { log = console.log } =
   for (const file of targets) {
     // With multiple inputs, --out is a parent directory; never overwrite another sheet.
     const outDir = options.out && (targets.length === 1 ? options.out : join(options.out, String(targets.indexOf(file))));
+    let palette = options.palette;
+    if (typeof palette === 'string' && palette.startsWith('[')) {
+      try { palette = JSON.parse(palette); }
+      catch { throw new Error('Invalid JSON passed to --palette'); }
+    }
     const result = await renderFX(await resolveFXFile(file), {
       seed: numberOption(options, 'seed', 1), fps: numberOption(options, 'fps', 30),
       count: numberOption(options, 'frames', 16), columns: numberOption(options, 'columns', 4), outDir,
       sheet: options.sheet, gif: options.gif, multiAngle: options['multi-angle'],
-      palette: options.palette?.startsWith('[') ? JSON.parse(options.palette) : options.palette,
+      palette,
     });
     log(`Rendered ${file}\n  ${[result.png, result.json, result.sprite?.png, result.sprite?.json, result.gif, result.angles?.png, result.angles?.json].filter(Boolean).join('\n  ')}`);
   }

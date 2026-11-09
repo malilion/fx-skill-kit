@@ -14,12 +14,12 @@
     "end": 1,
     "fixedFps": false
   },
-  "seed": 42,
+  "seed": 1,
   "requestedFps": 30,
   "dt": 0.03333333333333333,
   "simulationHz": null,
   "effectOptions": {},
-  "hash": "cd29cb02b31dc0275418cc99cde0f0c4f512f146d677e09b6baac0c4a54f72a0",
+  "hash": "75ae6046b8da6928f2ac962219f034b9fcb1fca0d1ed00f7ef38ff65b1b03138",
   "frameCount": 31,
   "sheet": {
     "w": 800,
@@ -452,15 +452,15 @@
     {
       "index": 29,
       "time": 0.9666666666666667,
-      "fillRatio": 0.24171875,
+      "fillRatio": 0.2421875,
       "edgeRatio": 0,
       "bounds": {
         "x": 36,
         "y": 36,
-        "w": 88,
+        "w": 92,
         "h": 88
       },
-      "fillPercent": 24.171875,
+      "fillPercent": 24.21875,
       "contactCell": null
     },
     {

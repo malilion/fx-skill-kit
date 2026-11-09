@@ -4,6 +4,7 @@ import { isMain } from './cli.mjs';
 import { renderFX } from './render.mjs';
 import { checkFX } from './check.mjs';
 import { exportAsset } from './export.mjs';
+import { validId } from '../src/core/run.js';
 
 const string = { type: 'string' };
 const palette = { anyOf: [string, { type: 'array', minItems: 1, items: string }] };
@@ -20,18 +21,20 @@ export const toolSchemas = [
 ];
 const textResult = value => ({ content: [{ type: 'text', text: JSON.stringify(value) }] });
 const invalid = message => Object.assign(new Error(message), { code: -32602 });
+const forbiddenKeys = new Set(['__proto__', 'constructor', 'prototype']);
+
 function validate(name, args) {
   const tool = toolSchemas.find(tool => tool.name === name);
   if (!tool) throw invalid(`Unknown tool: ${name}`);
   if (!args || typeof args !== 'object' || Array.isArray(args)) throw invalid('arguments must be an object');
-  for (const key of tool.inputSchema.required) if (!(key in args)) throw invalid(`Missing ${key}`);
+  for (const key of tool.inputSchema.required) if (!Object.hasOwn(args, key)) throw invalid(`Missing ${key}`);
   for (const [key, value] of Object.entries(args)) {
+    if (forbiddenKeys.has(key) || !Object.hasOwn(tool.inputSchema.properties, key)) throw invalid(`Unknown argument: ${key}`);
     const field = tool.inputSchema.properties[key];
-    if (!field) throw invalid(`Unknown argument: ${key}`);
     if (field.enum ? !field.enum.includes(value) : key === 'palette'
       ? !(typeof value === 'string' || Array.isArray(value) && value.length > 0 && value.every(c => typeof c === 'string'))
       : typeof value !== 'string') throw invalid(`Invalid ${key}`);
-    if (key === 'effect_id' && !value.trim()) throw invalid('effect_id must not be empty');
+    if (key === 'effect_id' && (!validId(value) || !value.trim())) throw invalid('effect_id must be a valid FX identifier');
   }
 }
 
@@ -63,7 +66,8 @@ export function createHandler(options = {}) {
   let initialized = false, ready = false;
   return async message => {
     if (!message || Array.isArray(message) || message.jsonrpc !== '2.0' || typeof message.method !== 'string' ||
-        ('id' in message && !(typeof message.id === 'string' || typeof message.id === 'number' && Number.isFinite(message.id)))) {
+        ('id' in message && !(typeof message.id === 'string' || typeof message.id === 'number' && Number.isFinite(message.id))) ||
+        ('params' in message && message.params !== undefined && (typeof message.params !== 'object' || message.params === null || Array.isArray(message.params)))) {
       return { jsonrpc: '2.0', id: null, error: { code: -32600, message: 'Invalid Request' } };
     }
     const { id, method, params = {} } = message;

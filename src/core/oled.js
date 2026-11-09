@@ -323,8 +323,9 @@ export function encodeXorRle(frames, w, h) {
   };
 }
 
-// Reference JS mirror of the zero-malloc C decoder `oledfx_step_frame`.
-export function decodeXorRleStep(fb, data, offsets, frameIdx, stride = fb.length) {
+// Reference JS mirror of the zero-malloc C decoder `oledfx_step_frame` in PRD 02 Section 2.5.
+export function decodeXorRleStep(fb, data, offsets, frameIdx, stride = fb?.length ?? 0) {
+  if (!fb || frameIdx < 0 || frameIdx >= offsets.length) return fb;
   let pos = offsets[frameIdx];
   let out = 0;
   if (frameIdx === 0) fb.fill(0);
@@ -392,6 +393,7 @@ static const ${offsetType} ${symbol}_OFFSETS[${frames.length}] PROGMEM = { ${off
 
 // Zero-malloc decoder: applies XOR delta directly onto the ${encoded.stride}-byte display buffer.
 static inline void oledfx_step_frame(uint8_t *fb_${encoded.stride}, uint16_t frame_idx) {
+  if (!fb_${encoded.stride} || frame_idx >= ${frames.length}u) return;
   ${offsetType} pos = ${readOffset}(&${symbol}_OFFSETS[frame_idx]);
   uint16_t out = 0;
   if (frame_idx == 0) {
@@ -546,7 +548,8 @@ export function encodeRgb565XorRle(frames, w, h) {
   };
 }
 
-export function decodeRgb565XorRleStep(fb16, data, offsets, frameIdx, pixelsPerFrame = fb16.length) {
+export function decodeRgb565XorRleStep(fb16, data, offsets, frameIdx, pixelsPerFrame = fb16?.length ?? 0) {
+  if (!fb16 || frameIdx < 0 || frameIdx >= offsets.length) return fb16;
   let pos = offsets[frameIdx];
   let out = 0;
   if (frameIdx === 0) fb16.fill(0);
@@ -640,6 +643,7 @@ static const uint32_t ${symbol}_RGB565_OFFSETS[${frames.length}] PROGMEM = { ${o
 
 // Zero-malloc RGB565 XOR-RLE decoder for ST7789 / SSD1351 / HUB75 16-bit framebuffers.
 static inline void oledfx_step_rgb565(uint16_t *fb_px, uint16_t frame_idx) {
+  if (!fb_px || frame_idx >= ${frames.length}u) return;
   uint32_t pos = pgm_read_dword(&${symbol}_RGB565_OFFSETS[frame_idx]);
   uint32_t out = 0;
   if (frame_idx == 0) {

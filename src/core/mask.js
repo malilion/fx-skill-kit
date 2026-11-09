@@ -16,7 +16,7 @@ export function packAlphaMask(frames, w, h) {
 
 export function formatCHeader({ id, w, h, frames, dt, seed }) {
   const data = packAlphaMask(frames, w, h);
-  const symbol = `FX_${String(id).replaceAll(/[^a-z0-9]/g, '_').toUpperCase()}`;
+  const symbol = `FX_${String(id).replaceAll(/[^a-z0-9]/gi, '_').toUpperCase()}`;
   const stride = data.length / frames.length;
   const rows = Array.from({ length: Math.ceil(data.length / 16) }, (_, i) => {
     const hex = Array.from(data.subarray(i * 16, (i + 1) * 16), b => `0x${b.toString(16).padStart(2, '0')}`);

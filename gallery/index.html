@@ -7,1492 +7,595 @@
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="./favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="./logo.png">
-  <style>
-    :root {
-      color-scheme: light;
-      --bg-canvas: #f3ede1;
-      --bg-paper: #faf6ee;
-      --bg-elevated: #ebe2d1;
-      --bg-oled: #060b0f;
-      --bg-oled-card: #0a1219;
-      --ink-deep: #141311;
-      --ink-body: #3b3732;
-      --ink-muted: #6c655c;
-      --border-hairline: rgba(20, 19, 17, 0.13);
-      --border-strong: rgba(20, 19, 17, 0.28);
-      --cinnabar: #b82921;
-      --cinnabar-soft: rgba(184, 41, 33, 0.11);
-      --shiqing: #245c69;
-      --nijin: #c69a35;
-      --oled-cyan: #36f3ff;
-      --oled-amber: #ffd447;
-      --shadow-soft: 0 20px 50px rgba(20, 17, 13, 0.07);
-      --shadow-oled: 0 26px 64px rgba(0, 0, 0, 0.52), inset 0 0 40px rgba(54, 243, 255, 0.09);
-      --font-serif: "Songti TC", "Noto Serif TC", "PMingLiU", "STSong", "Hiragino Mincho ProN", Georgia, serif;
-      --font-sans: -apple-system, BlinkMacSystemFont, "PingFang TC", "Helvetica Neue", "Inter", system-ui, sans-serif;
-      --font-mono: "SF Mono", "JetBrains Mono", "Menlo", ui-monospace, monospace;
-      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    body[data-realm="oled"] {
-      color-scheme: dark;
-      --bg-canvas: #05090d;
-      --bg-paper: #0b1219;
-      --bg-elevated: #101b24;
-      --ink-deep: #edf8ff;
-      --ink-body: #a5c3d4;
-      --ink-muted: #628294;
-      --border-hairline: rgba(54, 243, 255, 0.15);
-      --border-strong: rgba(54, 243, 255, 0.34);
-      --cinnabar: #36f3ff;
-      --cinnabar-soft: rgba(54, 243, 255, 0.12);
-      --shadow-soft: 0 22px 58px rgba(0, 0, 0, 0.6);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: var(--font-sans);
-      color: var(--ink-deep);
-      background-color: var(--bg-canvas);
-      background-image:
-        radial-gradient(circle at 12% 6%, rgba(184, 41, 33, 0.05), transparent 36%),
-        radial-gradient(circle at 88% 20%, rgba(36, 92, 105, 0.06), transparent 40%);
-      transition: background-color 0.55s var(--ease-out-expo), color 0.45s var(--ease-out-expo);
-      overflow-x: hidden;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* Tactile Xuan paper micro-grain */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.028;
-      background-image:
-        repeating-linear-gradient(0deg, #000 0, #000 1px, transparent 1px, transparent 3px),
-        repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 4px);
-    }
-
-    /* Scroll Reveal Choreography */
-    [data-reveal] {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-    }
-    [data-reveal].revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      [data-reveal] { opacity: 1; transform: none; transition: none; }
-    }
-
-    /* Custom Dual-Realm Cursor Follower */
-    #cursor-probe {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 36px;
-      height: 36px;
-      margin: -18px 0 0 -18px;
-      border-radius: 50%;
-      border: 1px solid var(--cinnabar);
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0;
-      transition: width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo),
-                  border-radius 0.25s var(--ease-out-expo), border-color 0.25s, box-shadow 0.25s, opacity 0.25s;
-      display: grid;
-      place-items: center;
-    }
-    #cursor-probe::after {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--cinnabar);
-      transition: all 0.2s;
-    }
-    #cursor-probe[data-mode="oled"] {
-      border-radius: 3px;
-      border-color: var(--oled-cyan);
-      box-shadow: 0 0 14px rgba(54, 243, 255, 0.38);
-    }
-    #cursor-probe[data-mode="oled"]::after {
-      border-radius: 0;
-      width: 6px;
-      height: 6px;
-      background: var(--oled-amber);
-    }
-    @media (hover: none), (pointer: coarse) {
-      #cursor-probe { display: none; }
-    }
-
-    /* Toast Notification Banner */
-    #toast-banner {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 1050;
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-      font: 600 11px/1.3 var(--font-mono);
-      letter-spacing: 0.05em;
-      padding: 10px 16px;
-      border-radius: 999px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
-      opacity: 0;
-      transform: translateY(12px);
-      pointer-events: none;
-      transition: opacity 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
-    }
-    #toast-banner.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Sticky Editorial Topbar */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 90;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: color-mix(in srgb, var(--bg-canvas) 85%, transparent);
-      border-bottom: 1px solid var(--border-hairline);
-      padding: 12px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .brand-cluster {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-    }
-    .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
-    }
-    .brand-title {
-      font: 700 12px/1.1 var(--font-mono);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .brand-sub {
-      font: 10px/1.3 var(--font-mono);
-      color: var(--ink-muted);
-      display: block;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: var(--ink-body);
-      font: 600 11px/1 var(--font-mono);
-      letter-spacing: 0.06em;
-      padding: 7px 11px;
-      border-radius: 6px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-links a:hover {
-      background: var(--cinnabar-soft);
-      color: var(--cinnabar);
-    }
-    .nav-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .pill-group {
-      display: inline-flex;
-      border: 1px solid var(--border-hairline);
-      border-radius: 999px;
-      padding: 2px;
-      background: var(--bg-paper);
-    }
-    .pill-btn {
-      border: 0;
-      background: transparent;
-      color: var(--ink-body);
-      font: 600 11px/1 var(--font-mono);
-      padding: 6px 11px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s, transform 0.2s var(--ease-out-expo);
-    }
-    .pill-btn[aria-pressed="true"], .pill-btn.active {
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-    }
-
-    main {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 32px 108px;
-    }
-
-    /* Swiss-Editorial Section Layout & Architectural Numerals */
-    .act-section {
-      padding: 84px 0 44px;
-      border-top: 1px solid var(--border-hairline);
-      position: relative;
-    }
-    .act-section::before, .act-section::after {
-      content: "+";
-      position: absolute;
-      top: -8px;
-      font: 400 13px/1 var(--font-mono);
-      color: var(--ink-muted);
-      opacity: 0.55;
-    }
-    .act-section::before { left: 0; }
-    .act-section::after { right: 0; }
-    .act-section:first-of-type {
-      border-top: 0;
-      padding-top: 40px;
-    }
-    .act-section:first-of-type::before,
-    .act-section:first-of-type::after { display: none; }
-
-    .act-eyebrow {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font: 600 11px/1.4 var(--font-mono);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--cinnabar);
-      margin-bottom: 18px;
-    }
-    .act-eyebrow span.index-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .act-eyebrow span.index-tag::before {
-      content: "";
-      display: inline-block;
-      width: 22px;
-      height: 1.5px;
-      background: currentColor;
-    }
-
-    .editorial-lead-grid {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 24px;
-      align-items: baseline;
-      margin-bottom: 28px;
-    }
-    .arch-numeral {
-      font-family: var(--font-serif);
-      font-size: clamp(44px, 4.8vw, 68px);
-      font-weight: 400;
-      line-height: 0.9;
-      letter-spacing: -0.04em;
-      color: var(--cinnabar);
-      opacity: 0.85;
-      user-select: none;
-    }
-    .editorial-lead-grid h2 {
-      font-family: var(--font-serif);
-      font-size: clamp(26px, 3vw, 38px);
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      margin: 0 0 10px;
-    }
-    .editorial-lead-grid p {
-      font-size: 15px;
-      line-height: 1.68;
-      color: var(--ink-body);
-      max-width: 70ch;
-      margin: 0;
-    }
-
-    /* ACT I: HERO & SPLIT-REALM INTERACTIVE STAGE */
-    .hero-header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 36px;
-      align-items: end;
-      margin-bottom: 32px;
-    }
-    .hero-headline {
-      font-family: var(--font-serif);
-      font-size: clamp(40px, 5.8vw, 82px);
-      font-weight: 600;
-      line-height: 1.03;
-      letter-spacing: -0.038em;
-      margin: 0 0 18px;
-    }
-    .hero-headline .en-sub {
-      display: block;
-      font-family: var(--font-sans);
-      font-size: clamp(17px, 2vw, 25px);
-      font-weight: 400;
-      letter-spacing: -0.018em;
-      color: var(--ink-body);
-      margin-top: 12px;
-      line-height: 1.35;
-    }
-    .hero-lead {
-      font-size: 15px;
-      line-height: 1.72;
-      color: var(--ink-body);
-      max-width: 68ch;
-      margin: 0;
-    }
-    .vermilion-stamp {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 88px;
-      height: 88px;
-      border: 2.5px solid #b82921;
-      border-radius: 6px;
-      padding: 6px;
-      color: #b82921;
-      background: rgba(184, 41, 33, 0.055);
-      font-family: var(--font-serif);
-      font-weight: 700;
-      font-size: 14px;
-      line-height: 1.22;
-      letter-spacing: 0.14em;
-      text-align: center;
-      transform: rotate(-3deg);
-      box-shadow: inset 0 0 0 1.5px rgba(184, 41, 33, 0.35), 0 8px 20px rgba(184, 41, 33, 0.12);
-      user-select: none;
-      cursor: pointer;
-      transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s;
-    }
-    .vermilion-stamp:hover {
-      transform: rotate(0deg) scale(1.06);
-      box-shadow: inset 0 0 0 1.5px rgba(184, 41, 33, 0.55), 0 12px 28px rgba(184, 41, 33, 0.22);
-    }
-
-    /* Split-Realm Interactive Stage */
-    .split-stage {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1.06fr 0.94fr;
-      border: 1px solid var(--border-strong);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      background: var(--bg-paper);
-    }
-    .resonance-bridge {
-      position: absolute;
-      top: 50%;
-      left: 53%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-      border: 2px solid var(--bg-canvas);
-      display: grid;
-      place-items: center;
-      font: 700 11px var(--font-mono);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
-      pointer-events: none;
-      transition: transform 0.35s var(--ease-out-expo), background-color 0.3s;
-    }
-    .resonance-bridge.pulsing {
-      transform: translate(-50%, -50%) scale(1.32);
-      background: var(--cinnabar);
-    }
-    .realm-pane {
-      position: relative;
-      padding: 26px 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 360px;
-    }
-    .realm-pane.ink-pane {
-      background: linear-gradient(135deg, #fbf7ef, #ede4d3);
-      color: #181614;
-      border-right: 1px solid var(--border-strong);
-    }
-    .realm-pane.oled-pane {
-      background:
-        radial-gradient(circle at 50% 42%, rgba(26, 82, 106, 0.28), transparent 72%),
-        #060b0f;
-      color: #e4f7ff;
-    }
-    .pane-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font: 600 11px/1.2 var(--font-mono);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      z-index: 2;
-    }
-    .ink-pane .pane-top { color: #5a5248; }
-    .oled-pane .pane-top { color: #6ec2d6; }
-    .pane-badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-    }
-    .ink-pane .pane-badge {
-      background: rgba(184, 41, 33, 0.11);
-      color: #b82921;
-      border: 1px solid rgba(184, 41, 33, 0.3);
-    }
-    .oled-pane .pane-badge {
-      background: rgba(54, 243, 255, 0.12);
-      color: var(--oled-cyan);
-      border: 1px solid rgba(54, 243, 255, 0.3);
-    }
-    .hero-canvas-wrap {
-      display: grid;
-      place-items: center;
-      margin: 16px 0;
-      position: relative;
-    }
-    canvas#hero-ink-canvas {
-      width: 100%;
-      max-width: 440px;
-      height: 220px;
-      border-radius: 8px;
-      border: 1px solid rgba(24, 22, 20, 0.16);
-      background: #f6f1e6;
-      cursor: crosshair;
-      box-shadow: inset 0 0 28px rgba(120, 100, 74, 0.09);
-    }
-    /* Realistic SSD1306 0.96" I2C Breakout PCB Module */
-    .pcb-module {
-      background: linear-gradient(180deg, #0f3329, #09221b);
-      border: 2px solid #236652;
-      border-radius: 10px;
-      padding: 14px 18px 16px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.68), inset 0 0 0 1px rgba(255, 212, 71, 0.2);
-      position: relative;
-      width: 100%;
-      max-width: 368px;
-    }
-    .pcb-hole {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #060b0f;
-      border: 2px solid #d9b44a;
-    }
-    .pcb-hole.tl { top: 6px; left: 6px; }
-    .pcb-hole.tr { top: 6px; right: 6px; }
-    .pcb-hole.bl { bottom: 6px; left: 6px; }
-    .pcb-hole.br { bottom: 6px; right: 6px; }
-    .pcb-pins {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 10px;
-      font: 600 9px/1 var(--font-mono);
-      color: #ebd07a;
-    }
-    .pcb-pin {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .pcb-pin::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #e8c14a;
-      border: 1.5px solid #785c12;
-      display: inline-block;
-    }
-    .oled-glass {
-      background: #030609;
-      border: 1.5px solid #283d4b;
-      border-radius: 4px;
-      padding: 6px;
-      position: relative;
-      box-shadow: inset 0 0 24px rgba(54, 243, 255, 0.15);
-    }
-    canvas#hero-oled-canvas {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 2 / 1;
-      image-rendering: pixelated;
-      display: block;
-      cursor: crosshair;
-    }
-    .pcb-silkscreen {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 8px;
-      padding: 0 8px;
-      font: 600 9px/1 var(--font-mono);
-      color: rgba(235, 208, 122, 0.8);
-      letter-spacing: 0.08em;
-    }
-    .pane-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font: 11px/1.4 var(--font-mono);
-      opacity: 0.86;
-      flex-wrap: wrap;
-    }
-
-    /* Telemetry Ribbon */
-    .telemetry-ribbon {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border-hairline);
-      border: 1px solid var(--border-hairline);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 20px;
-    }
-    .telemetry-cell {
-      background: var(--bg-paper);
-      padding: 16px 20px;
-    }
-    .telemetry-val {
-      font: 700 21px/1.15 var(--font-mono);
-      color: var(--ink-deep);
-    }
-    .telemetry-lbl {
-      font: 11px/1.4 var(--font-mono);
-      color: var(--ink-muted);
-      margin-top: 4px;
-    }
-
-    /* ACT II: PHYSICS & ALGORITHM DECONSTRUCTION THEATER */
-    .deconstruct-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .lab-card {
-      border: 1px solid var(--border-strong);
-      border-radius: 14px;
-      padding: 26px;
-      background: var(--bg-paper);
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-    }
-    .lab-card.oled-lab {
-      background: #070d13;
-      color: #e4f6ff;
-      border-color: #1f3948;
-    }
-    .lab-title {
-      font-family: var(--font-serif);
-      font-size: 21px;
-      margin: 0 0 6px;
-    }
-    .lab-desc {
-      font-size: 13px;
-      line-height: 1.58;
-      color: var(--ink-muted);
-      margin: 0;
-    }
-    .lab-card.oled-lab .lab-desc { color: #84a8bc; }
-    .layer-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-    .layer-box {
-      border: 1px solid var(--border-hairline);
-      border-radius: 8px;
-      padding: 8px;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.38);
-    }
-    .lab-card.oled-lab .layer-box {
-      background: #0c161f;
-      border-color: rgba(54, 243, 255, 0.18);
-    }
-    .layer-box canvas {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      image-rendering: pixelated;
-      border-radius: 4px;
-      display: block;
-      margin-bottom: 6px;
-    }
-    .layer-box.wide-oled canvas {
-      aspect-ratio: 2 / 1;
-    }
-    .layer-caption {
-      font: 600 10px/1.2 var(--font-mono);
-      letter-spacing: 0.04em;
-      display: block;
-    }
-    .lab-controls-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .swatch-bar {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .mineral-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border-hairline);
-      background: var(--bg-canvas);
-      color: var(--ink-deep);
-      font: 600 11px/1 var(--font-mono);
-      cursor: pointer;
-    }
-    .mineral-chip.active {
-      border-color: var(--cinnabar);
-      background: var(--cinnabar-soft);
-    }
-    .mineral-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .ramp-stops {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 4px;
-      padding-top: 4px;
-    }
-    .ramp-stop {
-      height: 18px;
-      border-radius: 4px;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font: 600 9px var(--font-mono);
-    }
-    .rle-meter {
-      background: #0c1721;
-      border: 1px solid rgba(54, 243, 255, 0.22);
-      border-radius: 8px;
-      padding: 11px 14px;
-      font: 11px/1.5 var(--font-mono);
-      color: #9bd7e8;
-    }
-    .rle-bar-track {
-      height: 6px;
-      background: #172a38;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 6px;
-    }
-    .rle-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--oled-amber), var(--oled-cyan));
-      width: 6.8%;
-    }
-
-    /* ACT III: CURATED 32-EFFECT EXHIBITION WALL */
-    .filter-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 6px 0 22px;
-    }
-    .category-pills {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .cat-btn {
-      font: 600 11px/1 var(--font-mono);
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border-hairline);
-      background: var(--bg-paper);
-      color: var(--ink-body);
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-    .cat-btn:hover, .cat-btn.active {
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-      border-color: var(--ink-deep);
-    }
-    .search-box {
-      min-width: 240px;
-      font: 12px var(--font-mono);
-      padding: 7px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-paper);
-      color: var(--ink-deep);
-    }
-    .wall-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(224px, 1fr));
-      gap: 16px;
-    }
-    .wall-card {
-      border: 1px solid var(--border-hairline);
-      border-radius: 12px;
-      padding: 14px;
-      background: var(--bg-paper);
-      cursor: pointer;
-      transition: transform 0.24s var(--ease-out-expo), border-color 0.22s, box-shadow 0.24s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-    }
-    .wall-card:hover, .wall-card.active {
-      border-color: var(--cinnabar);
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-soft);
-    }
-    .wall-card.oled-card {
-      background: var(--bg-oled-card);
-      color: #d8f3ff;
-      border-color: #1f3644;
-    }
-    .wall-card.oled-card:hover, .wall-card.oled-card.active {
-      border-color: var(--oled-cyan);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.52), 0 0 18px rgba(54, 243, 255, 0.22);
-    }
-    .wall-card canvas {
-      width: 148px;
-      height: 148px;
-      image-rendering: pixelated;
-      border-radius: 6px;
-    }
-    .wall-card.oled-card canvas {
-      width: 168px;
-      height: 84px;
-      margin: 32px 0;
-      border: 1px solid rgba(54, 243, 255, 0.22);
-    }
-    .wall-title-row {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .wall-zh {
-      font-family: var(--font-serif);
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .wall-tag {
-      font: 600 9px/1 var(--font-mono);
-      padding: 3px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      background: var(--cinnabar-soft);
-      color: var(--cinnabar);
-    }
-    .wall-card.oled-card .wall-tag {
-      background: rgba(54, 243, 255, 0.12);
-      color: var(--oled-cyan);
-    }
-    .wall-meta {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      font: 11px var(--font-mono);
-      opacity: 0.75;
-    }
-    .pagination-bar {
-      margin-top: 22px;
-      padding: 12px 16px;
-      border: 1px solid var(--border-hairline);
-      border-radius: 12px;
-      background: var(--bg-paper);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      font: 600 11px/1 var(--font-mono);
-    }
-    .page-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .page-btn {
-      font: 600 11px/1 var(--font-mono);
-      padding: 6px 11px;
-      border-radius: 8px;
-      border: 1px solid var(--border-hairline);
-      background: var(--bg-canvas);
-      color: var(--ink-body);
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-    .page-btn:hover:not(:disabled), .page-btn.active {
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-      border-color: var(--ink-deep);
-    }
-    .page-btn:disabled {
-      opacity: 0.38;
-      cursor: not-allowed;
-    }
-    .nav-links button.chapter-tab {
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--ink-body);
-      font: 600 11px/1 var(--font-mono);
-      letter-spacing: 0.06em;
-      padding: 7px 11px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
-    }
-    .nav-links button.chapter-tab:hover {
-      background: var(--cinnabar-soft);
-      color: var(--cinnabar);
-    }
-    .nav-links button.chapter-tab.active {
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-      border-color: var(--ink-deep);
-    }
-    .chapter-pager {
-      margin-top: 36px;
-      padding-top: 18px;
-      border-top: 1px dashed var(--border-hairline);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      font: 600 11px/1.2 var(--font-mono);
-    }
-
-    /* ACT IV: STUDIO WORKBENCH & HARDWARE SIMULATOR */
-    .workspace {
-      display: grid;
-      grid-template-columns: 1fr 370px;
-      gap: 28px;
-      margin: 12px 0 36px;
-      align-items: start;
-    }
-    .stage-container {
-      border: 1px solid var(--border-strong);
-      border-radius: 16px;
-      background: var(--bg-paper);
-      padding: 22px;
-      box-shadow: var(--shadow-soft);
-    }
-    .stage-chrome-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font: 600 10px/1.2 var(--font-mono);
-      letter-spacing: 0.08em;
-      color: var(--ink-muted);
-      margin-bottom: 12px;
-      padding: 0 4px;
-    }
-    .stage {
-      position: relative;
-      display: grid;
-      place-items: center;
-      min-height: 430px;
-      border: 1px solid rgba(24, 22, 20, 0.16);
-      border-radius: 12px;
-      background:
-        linear-gradient(0deg, rgba(184, 41, 33, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(184, 41, 33, 0.035) 1px, transparent 1px),
-        #fbf8f1;
-      background-size: 32px 32px, 32px 32px, 100% 100%;
-      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-      padding: 28px;
-    }
-    .stage.oled-shell {
-      background:
-        radial-gradient(circle at 50% 50%, rgba(16, 56, 74, 0.38), #05090d 76%);
-      border-color: #214052;
-      box-shadow: var(--shadow-oled);
-    }
-    canvas#preview {
-      width: 320px;
-      height: 320px;
-      max-width: 100%;
-      image-rendering: pixelated;
-      touch-action: none;
-      cursor: grab;
-      border-radius: 4px;
-    }
-    .stage.oled-shell canvas#preview {
-      width: 384px;
-      height: 192px;
-      filter: drop-shadow(0 0 10px rgba(72, 220, 255, 0.45));
-    }
-    .act-timeline-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-top: 14px;
-      font: 600 10px/1.2 var(--font-mono);
-    }
-    .phase-pill {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border-hairline);
-      text-align: center;
-      opacity: 0.55;
-      transition: all 0.15s;
-    }
-    .phase-pill.active {
-      opacity: 1;
-      border-color: var(--cinnabar);
-      background: var(--cinnabar-soft);
-      color: var(--cinnabar);
-    }
-    .perf-meter-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 12px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-hairline);
-      background: var(--bg-canvas);
-      font: 10px/1.3 var(--font-mono);
-      color: var(--ink-muted);
-    }
-    canvas#perf-sparkline {
-      width: 140px;
-      height: 22px;
-      border-radius: 3px;
-    }
-
-    aside.inspector-panel {
-      border: 1px solid var(--border-strong);
-      border-radius: 16px;
-      padding: 22px;
-      background: var(--bg-paper);
-      box-shadow: var(--shadow-soft);
-    }
-    label, legend {
-      display: block;
-      font: 600 11px/1.3 var(--font-mono);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin: 0 0 6px;
-      color: var(--ink-body);
-    }
-    fieldset {
-      border: 1px solid var(--border-hairline);
-      border-radius: 10px;
-      margin: 0 0 14px;
-      padding: 12px;
-    }
-    input, select, button, textarea {
-      font: inherit;
-      font-size: 12px;
-      border: 1px solid var(--border-strong);
-      border-radius: 7px;
-      padding: 8px 10px;
-      background: var(--bg-canvas);
-      color: var(--ink-deep);
-      transition: border-color 0.18s, transform 0.18s var(--ease-out-expo), background 0.18s;
-    }
-    input[type=number], select { width: 100%; margin-bottom: 12px; }
-    input[type=range] { width: 100%; margin: 0 0 8px; padding: 0; accent-color: var(--cinnabar); }
-    .actions, .downloads { display: flex; gap: 6px; margin: 4px 0 12px; flex-wrap: wrap; }
-    button { cursor: pointer; flex: 1 1 auto; font-family: var(--font-mono); font-weight: 600; }
-    button:hover { border-color: var(--cinnabar); background: var(--cinnabar-soft); }
-    button[aria-pressed="true"] {
-      background: var(--ink-deep);
-      color: var(--bg-paper);
-    }
-    #status {
-      font: 11px/1.6 var(--font-mono);
-      display: block;
-      margin: 12px 0 0;
-      padding: 10px;
-      border-radius: 8px;
-      background: var(--bg-canvas);
-      border: 1px solid var(--border-hairline);
-    }
-    #source {
-      width: 100%;
-      min-height: 9rem;
-      font: 11px/1.45 var(--font-mono);
-      margin-top: 8px;
-    }
-    .checks-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-    .checks-row label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 0;
-      font: 400 12px var(--font-sans);
-      text-transform: none;
-    }
-
-    /* ACT V: AGENTIC LOOP & MCP TERMINAL */
-    .pipeline-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 24px;
-    }
-    .gate-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .gate-card {
-      border: 1px solid var(--border-hairline);
-      border-radius: 10px;
-      padding: 16px;
-      background: var(--bg-paper);
-    }
-    .gate-id {
-      font: 700 11px var(--font-mono);
-      color: var(--cinnabar);
-    }
-    .gate-title {
-      font-weight: 600;
-      font-size: 14px;
-      margin: 5px 0;
-    }
-    .gate-meta {
-      font: 11px/1.48 var(--font-mono);
-      color: var(--ink-muted);
-    }
-    .terminal-card {
-      background: #0a1016;
-      color: #d7ecf7;
-      border: 1px solid #223746;
-      border-radius: 12px;
-      padding: 22px;
-      font: 12px/1.65 var(--font-mono);
-    }
-    .terminal-cmd {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      background: #101b25;
-      border: 1px solid #22384a;
-      border-radius: 6px;
-      padding: 8px 10px;
-      margin-bottom: 8px;
-      color: #7bf0ff;
-    }
-    .terminal-cmd code {
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-    .terminal-cmd button {
-      flex: 0 0 auto;
-      padding: 4px 9px;
-      font-size: 10px;
-      background: #1b2e3d;
-      color: #fff;
-      border-color: #345670;
-    }
-
-    .editorial-footer {
-      margin-top: 72px;
-      padding-top: 28px;
-      border-top: 1px solid var(--border-strong);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 14px;
-      font: 11px/1.5 var(--font-mono);
-      color: var(--ink-muted);
-    }
-
-    .note, #file-notice {
-      border-top: 1px solid var(--border-hairline);
-      padding-top: 20px;
-      font-size: 13px;
-      color: var(--ink-muted);
-    }
-    #file-notice {
-      border: 1px solid #a74f3f;
-      border-radius: 8px;
-      padding: 12px 14px;
-      background: #f8ebe4;
-      color: #6b3228;
-      margin: 16px 0;
-    }
-    a { color: var(--cinnabar); }
-
-    @media (max-width: 980px) {
-      .hero-header, .split-stage, .deconstruct-grid, .workspace, .pipeline-grid, .editorial-lead-grid {
-        grid-template-columns: 1fr;
+  <!-- Tailwind CSS via Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-realm="oled"]'],
+      theme: {
+        extend: {
+          colors: {
+            canvas: 'var(--bg-canvas)',
+            paper: 'var(--bg-paper)',
+            elevated: 'var(--bg-elevated)',
+            cinnabar: {
+              DEFAULT: 'var(--cinnabar)',
+              soft: 'var(--cinnabar-soft)',
+            },
+            shiqing: 'var(--shiqing)',
+            nijin: 'var(--nijin)',
+            'oled-cyan': 'var(--oled-cyan)',
+            'oled-amber': 'var(--oled-amber)',
+            'ink-deep': 'var(--ink-deep)',
+            'ink-body': 'var(--ink-body)',
+            'ink-muted': 'var(--ink-muted)',
+            'border-hairline': 'var(--border-hairline)',
+            'border-strong': 'var(--border-strong)',
+            oled: {
+              bg: '#060b0f',
+              card: '#0a1219',
+              elevated: '#101b24',
+              lab: '#070d13',
+              box: '#0c161f',
+              border: '#1f3644',
+            }
+          },
+          fontFamily: {
+            serif: ['"Songti TC"', '"Noto Serif TC"', '"PMingLiU"', '"STSong"', '"Hiragino Mincho ProN"', 'Georgia', 'serif'],
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"PingFang TC"', '"Helvetica Neue"', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['"SF Mono"', '"JetBrains Mono"', 'Menlo', 'ui-monospace', 'monospace'],
+          },
+          boxShadow: {
+            soft: 'var(--shadow-soft)',
+            oled: 'var(--shadow-oled)',
+          }
+        }
       }
-      .resonance-bridge { display: none; }
-      .realm-pane.ink-pane {
-        border-right: 0;
-        border-bottom: 1px solid var(--border-strong);
+    };
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      :root {
+        color-scheme: light;
+        --bg-canvas: #f3ede1;
+        --bg-paper: #faf6ee;
+        --bg-elevated: #ebe2d1;
+        --bg-oled: #060b0f;
+        --bg-oled-card: #0a1219;
+        --ink-deep: #141311;
+        --ink-body: #3b3732;
+        --ink-muted: #6c655c;
+        --border-hairline: rgba(20, 19, 17, 0.13);
+        --border-strong: rgba(20, 19, 17, 0.28);
+        --cinnabar: #b82921;
+        --cinnabar-soft: rgba(184, 41, 33, 0.11);
+        --shiqing: #245c69;
+        --nijin: #c69a35;
+        --oled-cyan: #36f3ff;
+        --oled-amber: #ffd447;
+        --shadow-soft: 0 20px 50px rgba(20, 17, 13, 0.07);
+        --shadow-oled: 0 26px 64px rgba(0, 0, 0, 0.52), inset 0 0 40px rgba(54, 243, 255, 0.09);
       }
-      .telemetry-ribbon {
-        grid-template-columns: repeat(2, 1fr);
+
+      body[data-realm="oled"] {
+        color-scheme: dark;
+        --bg-canvas: #05090d;
+        --bg-paper: #0b1219;
+        --bg-elevated: #101b24;
+        --ink-deep: #edf8ff;
+        --ink-body: #a5c3d4;
+        --ink-muted: #628294;
+        --border-hairline: rgba(54, 243, 255, 0.15);
+        --border-strong: rgba(54, 243, 255, 0.34);
+        --cinnabar: #36f3ff;
+        --cinnabar-soft: rgba(54, 243, 255, 0.12);
+        --shadow-soft: 0 22px 58px rgba(0, 0, 0, 0.6);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--bg-canvas);
+        color: var(--ink-deep);
+        background-image:
+          radial-gradient(circle at 12% 6%, rgba(184, 41, 33, 0.05), transparent 36%),
+          radial-gradient(circle at 88% 20%, rgba(36, 92, 105, 0.06), transparent 40%);
+        transition: background-color 0.55s cubic-bezier(0.16, 1, 0.3, 1), color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        font-variant-numeric: tabular-nums;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 999;
+        opacity: 0.028;
+        background-image:
+          repeating-linear-gradient(0deg, #000 0, #000 1px, transparent 1px, transparent 3px),
+          repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 4px);
       }
     }
-    @media (max-width: 600px) {
-      main { padding: 0 16px 64px; }
-      .topbar { padding: 10px 16px; }
-      .layer-strip, .gate-list { grid-template-columns: repeat(2, 1fr); }
+
+    @layer components {
+      /* Scroll Reveal */
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      [data-reveal].revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        [data-reveal] { opacity: 1; transform: none; transition: none; }
+      }
+
+      /* Custom Dual-Realm Cursor Probe */
+      #cursor-probe {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 36px;
+        height: 36px;
+        margin: -18px 0 0 -18px;
+        border-radius: 50%;
+        border: 1px solid var(--cinnabar);
+        pointer-events: none;
+        z-index: 1000;
+        opacity: 0;
+        transition: width 0.25s, height 0.25s, border-radius 0.25s, border-color 0.25s, box-shadow 0.25s, opacity 0.25s;
+        display: grid;
+        place-items: center;
+      }
+      #cursor-probe::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--cinnabar);
+        transition: all 0.2s;
+      }
+      #cursor-probe[data-mode="oled"] {
+        border-radius: 3px;
+        border-color: var(--oled-cyan);
+        box-shadow: 0 0 14px rgba(54, 243, 255, 0.38);
+      }
+      #cursor-probe[data-mode="oled"]::after {
+        border-radius: 0;
+        width: 6px;
+        height: 6px;
+        background: var(--oled-amber);
+      }
+      @media (hover: none), (pointer: coarse) {
+        #cursor-probe { display: none; }
+      }
+
+      /* Toast Notification */
+      #toast-banner.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Section corner marks */
+      .act-section::before, .act-section::after {
+        content: "+";
+        position: absolute;
+        top: -8px;
+        font: 400 13px/1 monospace;
+        color: var(--ink-muted);
+        opacity: 0.55;
+      }
+      .act-section::before { left: 0; }
+      .act-section::after { right: 0; }
+      .act-section:first-of-type::before,
+      .act-section:first-of-type::after { display: none; }
+
+      /* Resonance bridge pulse */
+      .resonance-bridge.pulsing {
+        transform: translate(-50%, -50%) scale(1.32);
+        background: var(--cinnabar);
+      }
+
+      /* Active pill & button states */
+      .pill-btn[aria-pressed="true"], .pill-btn.active,
+      .cat-btn.active, .page-btn.active,
+      button.chapter-tab.active {
+        background: var(--ink-deep);
+        color: var(--bg-paper);
+        border-color: var(--ink-deep);
+        opacity: 1;
+      }
+      .mineral-chip.active {
+        border-color: var(--cinnabar);
+        background: var(--cinnabar-soft);
+      }
+      .phase-pill.active {
+        opacity: 1;
+        border-color: var(--cinnabar);
+        background: var(--cinnabar-soft);
+        color: var(--cinnabar);
+      }
+
+      /* Stage preview styling */
+      .stage {
+        background:
+          linear-gradient(0deg, rgba(184, 41, 33, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(184, 41, 33, 0.035) 1px, transparent 1px),
+          #fbf8f1;
+        background-size: 32px 32px, 32px 32px, 100% 100%;
+      }
+      .stage.oled-shell {
+        background: radial-gradient(circle at 50% 50%, rgba(16, 56, 74, 0.38), #05090d 76%);
+        border-color: #214052;
+        box-shadow: var(--shadow-oled);
+      }
+      .stage.oled-shell canvas#preview {
+        width: 384px;
+        height: 192px;
+        filter: drop-shadow(0 0 10px rgba(72, 220, 255, 0.45));
+      }
+
+      /* 32-Effect Wall Cards */
+      .wall-card {
+        @apply border border-border-hairline rounded-xl p-3.5 bg-paper cursor-pointer transition-all flex flex-col items-center gap-2.5 relative;
+      }
+      .wall-card:hover, .wall-card.active {
+        border-color: var(--cinnabar);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-soft);
+      }
+      .wall-card.oled-card {
+        background: #0a1219;
+        color: #d8f3ff;
+        border-color: #1f3644;
+      }
+      .wall-card.oled-card:hover, .wall-card.oled-card.active {
+        border-color: var(--oled-cyan);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.52), 0 0 18px rgba(54, 243, 255, 0.22);
+      }
+      .wall-card canvas {
+        width: 148px;
+        height: 148px;
+        image-rendering: pixelated;
+        border-radius: 6px;
+      }
+      .wall-card.oled-card canvas {
+        width: 168px;
+        height: 84px;
+        margin: 32px 0;
+        border: 1px solid rgba(54, 243, 255, 0.22);
+      }
+      .wall-title-row {
+        @apply w-full flex justify-between items-baseline gap-1.5;
+      }
+      .wall-zh {
+        @apply font-serif font-semibold text-sm;
+      }
+      .wall-tag {
+        @apply font-mono font-semibold text-[9px] px-1.5 py-0.5 rounded uppercase bg-cinnabar/10 text-cinnabar;
+      }
+      .wall-card.oled-card .wall-tag {
+        background: rgba(54, 243, 255, 0.12);
+        color: var(--oled-cyan);
+      }
+      .wall-meta {
+        @apply w-full flex justify-between font-mono text-xs opacity-75;
+      }
     }
   </style>
 </head>
 <body data-realm="ink" data-lang="bi">
   <div id="cursor-probe" aria-hidden="true"></div>
-  <div id="toast-banner" role="status" aria-live="polite">COPIED TO CLIPBOARD</div>
+  <div id="toast-banner" class="fixed bottom-6 right-6 z-[1050] bg-ink-deep text-paper font-mono font-semibold text-xs py-2.5 px-4 rounded-full shadow-2xl opacity-0 translate-y-3 pointer-events-none transition-all duration-300" role="status" aria-live="polite">COPIED TO CLIPBOARD</div>
 
-  <header class="topbar">
-    <a class="brand-cluster" href="#act-hero">
-      <img class="brand-logo" src="./logo.svg" width="34" height="34" alt="fx-skill-kit">
+  <header class="topbar sticky top-0 z-[90] backdrop-blur-md bg-canvas/85 border-b border-border-hairline px-4 md:px-8 py-3 flex items-center justify-between gap-4 flex-wrap">
+    <a class="brand-cluster flex items-center gap-3 no-underline text-inherit" href="#act-hero">
+      <img class="brand-logo w-[34px] h-[34px] rounded-lg shadow-md" src="./logo.svg" width="34" height="34" alt="fx-skill-kit">
       <div>
-        <span class="brand-title">fx-skill-kit · inkfx × oledfx</span>
-        <span class="brand-sub">N° 01–32 · Zero-Dependency Procedural FX Atelier</span>
+        <span class="brand-title font-mono font-bold text-xs tracking-wider uppercase block">fx-skill-kit · inkfx × oledfx</span>
+        <span class="brand-sub font-mono text-[10px] text-ink-muted block">N° 01–32 · Zero-Dependency Procedural FX Atelier</span>
       </div>
     </a>
 
-    <nav class="nav-links" id="chapter-tabs" aria-label="Primary chapters">
-      <button type="button" class="chapter-tab active" data-chapter="all">ALL 全覽</button>
-      <button type="button" class="chapter-tab" data-chapter="act-hero">01 STAGE</button>
-      <button type="button" class="chapter-tab" data-chapter="act-deconstruct">02 ANATOMY</button>
-      <button type="button" class="chapter-tab" data-chapter="act-archive">03 ARCHIVE (32)</button>
-      <button type="button" class="chapter-tab" data-chapter="act-studio">04 STUDIO</button>
-      <button type="button" class="chapter-tab" data-chapter="act-pipeline">05 MCP LOOP</button>
+    <nav class="nav-links flex items-center gap-1 flex-wrap" id="chapter-tabs" aria-label="Primary chapters">
+      <button type="button" class="chapter-tab font-mono font-semibold text-xs py-1.5 px-3 rounded-md transition-all active cursor-pointer border border-transparent hover:bg-cinnabar/10 hover:text-cinnabar" data-chapter="all">ALL 全覽</button>
+      <button type="button" class="chapter-tab font-mono font-semibold text-xs py-1.5 px-3 rounded-md transition-all cursor-pointer border border-transparent hover:bg-cinnabar/10 hover:text-cinnabar" data-chapter="act-hero">01 STAGE</button>
+      <button type="button" class="chapter-tab font-mono font-semibold text-xs py-1.5 px-3 rounded-md transition-all cursor-pointer border border-transparent hover:bg-cinnabar/10 hover:text-cinnabar" data-chapter="act-deconstruct">02 ANATOMY</button>
+      <button type="button" class="chapter-tab font-mono font-semibold text-xs py-1.5 px-3 rounded-md transition-all cursor-pointer border border-transparent hover:bg-cinnabar/10 hover:text-cinnabar" data-chapter="act-archive">03 ARCHIVE (32)</button>
+      <button type="button" class="chapter-tab font-mono font-semibold text-xs py-1.5 px-3 rounded-md transition-all cursor-pointer border border-transparent hover:bg-cinnabar/10 hover:text-cinnabar" data-chapter="act-studio">04 STUDIO</button>
+      <button type="button" class="chapter-tab font-mono font-semibold text-xs py-1.5 px-3 rounded-md transition-all cursor-pointer border border-transparent hover:bg-cinnabar/10 hover:text-cinnabar" data-chapter="act-pipeline">05 MCP LOOP</button>
     </nav>
 
-    <div class="nav-controls">
-      <div class="pill-group" role="group" aria-label="Realm atmosphere">
-        <button type="button" class="pill-btn active" data-set-realm="ink" data-magnetic>宣紙 INK</button>
-        <button type="button" class="pill-btn" data-set-realm="oled" data-magnetic>晶格 OLED</button>
+    <div class="nav-controls flex items-center gap-2 flex-wrap">
+      <div class="pill-group inline-flex border border-border-hairline rounded-full p-0.5 bg-paper" role="group" aria-label="Realm atmosphere">
+        <button type="button" class="pill-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full cursor-pointer transition-all active" data-set-realm="ink" data-magnetic>宣紙 INK</button>
+        <button type="button" class="pill-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full cursor-pointer transition-all" data-set-realm="oled" data-magnetic>晶格 OLED</button>
       </div>
-      <div class="pill-group" role="group" aria-label="Language mode">
-        <button type="button" class="pill-btn active" data-set-lang="bi">中/EN</button>
-        <button type="button" class="pill-btn" data-set-lang="zh">繁中</button>
-        <button type="button" class="pill-btn" data-set-lang="en">EN</button>
+      <div class="pill-group inline-flex border border-border-hairline rounded-full p-0.5 bg-paper" role="group" aria-label="Language mode">
+        <button type="button" class="pill-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full cursor-pointer transition-all active" data-set-lang="bi">中/EN</button>
+        <button type="button" class="pill-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full cursor-pointer transition-all" data-set-lang="zh">繁中</button>
+        <button type="button" class="pill-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full cursor-pointer transition-all" data-set-lang="en">EN</button>
       </div>
-      <button type="button" id="sfx-toggle" class="pill-btn" aria-pressed="false" style="border:1px solid var(--border-strong);" data-magnetic>SFX: OFF</button>
+      <button type="button" id="sfx-toggle" class="pill-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full cursor-pointer transition-all border border-border-strong" aria-pressed="false" data-magnetic>SFX: OFF</button>
     </div>
   </header>
 
-  <main>
-    <p id="file-notice">Opened via a file: URL. Effect modules do not load from disk. From the repository root run npm run gallery and open http://127.0.0.1:8080/gallery/.</p>
+  <main class="max-w-[1320px] mx-auto px-4 md:px-8 pb-28">
+    <p id="file-notice" class="border border-[#a74f3f] rounded-lg p-3 bg-[#f8ebe4] text-[#6b3228] my-4 text-xs font-mono">Opened via a file: URL. Effect modules do not load from disk. From the repository root run npm run gallery and open http://127.0.0.1:8080/gallery/.</p>
 
     <!-- ACT I: SPLIT-REALM INTERACTIVE HERO -->
-    <section class="act-section revealed" id="act-hero" data-reveal>
-      <div class="act-eyebrow">
-        <span class="index-tag">ACT I · DUAL-REALM INTERACTIVE STAGE</span>
+    <section class="act-section py-14 md:py-20 border-t-0 relative revealed" id="act-hero" data-reveal>
+      <div class="act-eyebrow flex items-center justify-between gap-3 font-mono font-semibold text-[11px] tracking-widest uppercase text-cinnabar mb-4">
+        <span class="index-tag inline-flex items-center gap-2">ACT I · DUAL-REALM INTERACTIVE STAGE</span>
         <span>SEED=42 · 120HZ SIM · ZERO NPM DEPENDENCIES</span>
       </div>
 
-      <div class="hero-header">
+      <div class="hero-header grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-9 items-end mb-8">
         <div>
-          <h1 class="hero-headline">
+          <h1 class="hero-headline font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.03] tracking-tight mb-4">
             <span data-i18n-bi="墨韻千秋，晶格萬象。" data-i18n-zh="墨韻千秋，晶格萬象。" data-i18n-en="Calligraphic Ink. 1-Bit Silicon.">墨韻千秋，晶格萬象。</span>
-            <span class="en-sub" data-i18n-bi="Procedural Eastern Ink Wash (inkfx), 1-Bit &amp; RGB565 Embedded Compiler (oledfx), and Visual Agentic Loop (fx-skill-kit)." data-i18n-zh="程序化東方水墨武俠引擎（inkfx）、嵌入式 1-Bit 與 RGB565 微螢幕編譯庫（oledfx）與 AI 視覺自檢閉環工具鏈。" data-i18n-en="Deterministic Eastern Ink Physics (inkfx), 1-Bit &amp; RGB565 Microcontroller Compiler (oledfx), and Visual Agentic Loop.">Procedural Eastern Ink Wash (inkfx), 1-Bit &amp; RGB565 Embedded Compiler (oledfx), and Visual Agentic Loop (fx-skill-kit).</span>
+            <span class="en-sub block font-sans text-lg sm:text-xl md:text-2xl font-normal tracking-normal text-ink-body mt-3 leading-snug" data-i18n-bi="Procedural Eastern Ink Wash (inkfx), 1-Bit &amp; RGB565 Embedded Compiler (oledfx), and Visual Agentic Loop (fx-skill-kit)." data-i18n-zh="程序化東方水墨武俠引擎（inkfx）、嵌入式 1-Bit 與 RGB565 微螢幕編譯庫（oledfx）與 AI 視覺自檢閉環工具鏈。" data-i18n-en="Deterministic Eastern Ink Physics (inkfx), 1-Bit &amp; RGB565 Microcontroller Compiler (oledfx), and Visual Agentic Loop.">Procedural Eastern Ink Wash (inkfx), 1-Bit &amp; RGB565 Embedded Compiler (oledfx), and Visual Agentic Loop (fx-skill-kit).</span>
           </h1>
-          <p class="hero-lead" data-i18n-bi="在左側宣紙揮毫體驗「飛白與水暈（Pigment + Wetness）」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。" data-i18n-zh="在左側宣紙揮毫體驗「飛白與水暈」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。" data-i18n-en="Sweep your cursor across the left Xuan-paper scroll to paint live dry-brush feibai and wet ink diffusion, while the 128×64 SSD1306 OLED robot eyes on the right track your gaze in real time. Click either realm to trigger a cross-realm Wuxia slash and 1-bit shockwave.">
+          <p class="hero-lead text-sm sm:text-base leading-relaxed text-ink-body max-w-[68ch] m-0" data-i18n-bi="在左側宣紙揮毫體驗「飛白與水暈（Pigment + Wetness）」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。" data-i18n-zh="在左側宣紙揮毫體驗「飛白與水暈」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。" data-i18n-en="Sweep your cursor across the left Xuan-paper scroll to paint live dry-brush feibai and wet ink diffusion, while the 128×64 SSD1306 OLED robot eyes on the right track your gaze in real time. Click either realm to trigger a cross-realm Wuxia slash and 1-bit shockwave.">
             在左側宣紙揮毫體驗「飛白與水暈（Pigment + Wetness）」雙緩衝物理筆觸，右側實體 SSD1306 128×64 螢幕的機器雙眼將即時凝視並追蹤您的游標——點擊任一領域即可觸發武俠拔刀斬與 1-Bit 閃電震波共鳴。
           </p>
         </div>
-        <div class="vermilion-stamp" id="hero-seal-btn" data-magnetic title="點擊蓋下朱砂印記 · Click to unleash cross-realm slash">
+        <div class="vermilion-stamp inline-flex flex-col items-center justify-center w-[88px] h-[88px] border-[2.5px] border-cinnabar rounded-md p-1.5 text-cinnabar bg-cinnabar/5 font-serif font-bold text-sm leading-tight tracking-widest text-center cursor-pointer select-none -rotate-3 transition-transform hover:scale-105 hover:rotate-0" id="hero-seal-btn" data-magnetic title="點擊蓋下朱砂印記 · Click to unleash cross-realm slash">
           程序<br>水墨<br>真跡
         </div>
       </div>
 
-      <div class="split-stage">
-        <div class="resonance-bridge" id="resonance-bridge" title="Cross-Realm Resonance">⇄</div>
+      <div class="split-stage relative grid grid-cols-1 lg:grid-cols-[1.06fr_0.94fr] border border-border-strong rounded-2xl overflow-hidden shadow-soft bg-paper">
+        <div class="resonance-bridge absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-ink-deep text-paper border-2 border-canvas grid place-items-center font-mono font-bold text-xs shadow-lg pointer-events-none transition-transform" id="resonance-bridge" title="Cross-Realm Resonance">⇄</div>
 
-        <div class="realm-pane ink-pane" id="hero-ink-pane">
-          <div class="pane-top">
+        <div class="realm-pane ink-pane relative p-6 md:p-7 flex flex-col justify-between min-h-[360px] bg-gradient-to-br from-[#fbf7ef] to-[#ede4d3] text-[#181614] border-b lg:border-b-0 lg:border-r border-border-strong" id="hero-ink-pane">
+          <div class="pane-top flex justify-between items-center gap-2 font-mono font-semibold text-xs tracking-wider uppercase text-[#5a5248]">
             <span>REALM 01 // INKFX · 東方水墨武道場</span>
-            <span class="pane-badge">PIGMENT + WETNESS</span>
+            <span class="pane-badge px-2 py-1 rounded text-[10px] bg-cinnabar/10 text-cinnabar border border-cinnabar/30">PIGMENT + WETNESS</span>
           </div>
-          <div class="hero-canvas-wrap">
-            <canvas id="hero-ink-canvas" width="360" height="200" aria-label="Interactive Xuan paper brush canvas"></canvas>
+          <div class="hero-canvas-wrap grid place-items-center my-4 relative">
+            <canvas id="hero-ink-canvas" width="360" height="200" class="w-full max-w-[440px] h-[220px] rounded-lg border border-black/15 bg-[#f6f1e6] cursor-crosshair shadow-inner" aria-label="Interactive Xuan paper brush canvas"></canvas>
           </div>
-          <div class="pane-footer">
+          <div class="pane-footer flex justify-between items-center gap-2.5 font-mono text-xs opacity-85 flex-wrap">
             <span data-i18n-bi="游標移動揮毫 · 點擊釋放「朱砂十字斬」" data-i18n-zh="游標移動揮毫 · 點擊釋放「朱砂十字斬」" data-i18n-en="Move cursor to paint ink · Click for Cinnabar Cross Slash">游標移動揮毫 · 點擊釋放「朱砂十字斬」</span>
             <span id="hero-ink-telemetry">FEIBAI: ACTIVE · RAMPS: 6-STOP</span>
           </div>
         </div>
 
-        <div class="realm-pane oled-pane" id="hero-oled-pane">
-          <div class="pane-top">
+        <div class="realm-pane oled-pane relative p-6 md:p-7 flex flex-col justify-between min-h-[360px] bg-[#060b0f] text-[#e4f7ff]" id="hero-oled-pane">
+          <div class="pane-top flex justify-between items-center gap-2 font-mono font-semibold text-xs tracking-wider uppercase text-[#6ec2d6]">
             <span>REALM 02 // OLEDFX · SSD1306 128×64 暗房</span>
-            <span class="pane-badge">XOR-RLE &lt; 3.5 KB</span>
+            <span class="pane-badge px-2 py-1 rounded text-[10px] bg-oled-cyan/10 text-oled-cyan border border-oled-cyan/30">XOR-RLE &lt; 3.5 KB</span>
           </div>
-          <div class="hero-canvas-wrap">
-            <div class="pcb-module">
-              <span class="pcb-hole tl"></span>
-              <span class="pcb-hole tr"></span>
-              <span class="pcb-hole bl"></span>
-              <span class="pcb-hole br"></span>
-              <div class="pcb-pins">
-                <span class="pcb-pin">GND</span>
-                <span class="pcb-pin">VCC</span>
-                <span class="pcb-pin">SCL</span>
-                <span class="pcb-pin">SDA</span>
+          <div class="hero-canvas-wrap grid place-items-center my-4 relative">
+            <div class="pcb-module bg-gradient-to-b from-[#0f3329] to-[#09221b] border-2 border-[#236652] rounded-xl p-3.5 md:p-4 shadow-2xl relative w-full max-w-[368px]">
+              <span class="pcb-hole tl absolute w-2.5 h-2.5 rounded-full bg-[#060b0f] border-2 border-[#d9b44a] top-1.5 left-1.5"></span>
+              <span class="pcb-hole tr absolute w-2.5 h-2.5 rounded-full bg-[#060b0f] border-2 border-[#d9b44a] top-1.5 right-1.5"></span>
+              <span class="pcb-hole bl absolute w-2.5 h-2.5 rounded-full bg-[#060b0f] border-2 border-[#d9b44a] bottom-1.5 left-1.5"></span>
+              <span class="pcb-hole br absolute w-2.5 h-2.5 rounded-full bg-[#060b0f] border-2 border-[#d9b44a] bottom-1.5 right-1.5"></span>
+              <div class="pcb-pins flex justify-center gap-4 mb-2.5 font-mono font-semibold text-[9px] text-[#ebd07a]">
+                <span class="pcb-pin inline-flex items-center gap-1">GND</span>
+                <span class="pcb-pin inline-flex items-center gap-1">VCC</span>
+                <span class="pcb-pin inline-flex items-center gap-1">SCL</span>
+                <span class="pcb-pin inline-flex items-center gap-1">SDA</span>
               </div>
-              <div class="oled-glass">
-                <canvas id="hero-oled-canvas" width="128" height="64" aria-label="Interactive SSD1306 128x64 OLED eye tracker"></canvas>
+              <div class="oled-glass bg-[#030609] border border-[#283d4b] rounded p-1.5 relative shadow-inner">
+                <canvas id="hero-oled-canvas" width="128" height="64" class="w-full h-auto aspect-[2/1] [image-rendering:pixelated] block cursor-crosshair" aria-label="Interactive SSD1306 128x64 OLED eye tracker"></canvas>
               </div>
-              <div class="pcb-silkscreen">
+              <div class="pcb-silkscreen flex justify-between mt-2 px-2 font-mono font-semibold text-[9px] text-[#ebd07a]/80 tracking-wider">
                 <span>0.96" I2C OLED · 0x3C</span>
                 <span>DUAL-ZONE Y/C</span>
               </div>
             </div>
           </div>
-          <div class="pane-footer">
+          <div class="pane-footer flex justify-between items-center gap-2.5 font-mono text-xs opacity-85 flex-wrap">
             <span data-i18n-bi="雙眼即時追蹤游標 · 點擊觸發「1-Bit 電離充能」" data-i18n-zh="雙眼即時追蹤游標 · 點擊觸發「1-Bit 電離充能」" data-i18n-en="Eyes track cursor · Click to trigger 1-Bit Cyber Surge">雙眼即時追蹤游標 · 點擊觸發「1-Bit 電離充能」</span>
             <span id="hero-oled-telemetry">GAZE: (0.00, 0.00) · BAYER 4×4</span>
           </div>
         </div>
       </div>
 
-      <div class="telemetry-ribbon">
-        <div class="telemetry-cell">
-          <div class="telemetry-val">32 Effects</div>
-          <div class="telemetry-lbl">16 InkFX · 14 OLEDFX · 2 Starter</div>
+      <div class="telemetry-ribbon grid grid-cols-2 md:grid-cols-4 gap-px bg-border-hairline border border-border-hairline rounded-xl overflow-hidden mt-5">
+        <div class="telemetry-cell bg-paper p-4 md:p-5">
+          <div class="telemetry-val font-mono font-bold text-xl text-ink-deep">32 Effects</div>
+          <div class="telemetry-lbl font-mono text-xs text-ink-muted mt-1">16 InkFX · 14 OLEDFX · 2 Starter</div>
         </div>
-        <div class="telemetry-cell">
-          <div class="telemetry-val">0.05–0.73 ms</div>
-          <div class="telemetry-lbl">p95 Frame Budget @ 120Hz (Limit &lt; 1.5ms)</div>
+        <div class="telemetry-cell bg-paper p-4 md:p-5">
+          <div class="telemetry-val font-mono font-bold text-xl text-ink-deep">0.05–0.73 ms</div>
+          <div class="telemetry-lbl font-mono text-xs text-ink-muted mt-1">p95 Frame Budget @ 120Hz (Limit &lt; 1.5ms)</div>
         </div>
-        <div class="telemetry-cell">
-          <div class="telemetry-val">93.2% Saved</div>
-          <div class="telemetry-lbl">48 KB Raw → 1.3–3.6 KB XOR-RLE C11 Header</div>
+        <div class="telemetry-cell bg-paper p-4 md:p-5">
+          <div class="telemetry-val font-mono font-bold text-xl text-ink-deep">93.2% Saved</div>
+          <div class="telemetry-lbl font-mono text-xs text-ink-muted mt-1">48 KB Raw → 1.3–3.6 KB XOR-RLE C11 Header</div>
         </div>
-        <div class="telemetry-cell">
-          <div class="telemetry-val">CHK 01–06</div>
-          <div class="telemetry-lbl">Determinism · Edge · Seam · Entropy · Shimmer</div>
+        <div class="telemetry-cell bg-paper p-4 md:p-5">
+          <div class="telemetry-val font-mono font-bold text-xl text-ink-deep">CHK 01–06</div>
+          <div class="telemetry-lbl font-mono text-xs text-ink-muted mt-1">Determinism · Edge · Seam · Entropy · Shimmer</div>
         </div>
       </div>
     </section>
 
     <!-- ACT II: ALGORITHM & PHYSICS DECONSTRUCTION THEATER -->
-    <section class="act-section" id="act-deconstruct" data-reveal>
-      <div class="act-eyebrow">
-        <span class="index-tag">ACT II · PHYSICS &amp; ALGORITHM ANATOMY</span>
+    <section class="act-section py-16 md:py-20 border-t border-border-hairline relative" id="act-deconstruct" data-reveal>
+      <div class="act-eyebrow flex items-center justify-between gap-3 font-mono font-semibold text-[11px] tracking-widest uppercase text-cinnabar mb-4">
+        <span class="index-tag inline-flex items-center gap-2">ACT II · PHYSICS &amp; ALGORITHM ANATOMY</span>
         <span>DUAL-BUFFER INK DIFFUSION × 1-BIT BAYER &amp; XOR-DELTA RLE</span>
       </div>
 
-      <div class="editorial-lead-grid">
-        <div class="arch-numeral">02</div>
+      <div class="editorial-lead-grid grid grid-cols-1 md:grid-cols-[110px_1fr] gap-6 items-baseline mb-7">
+        <div class="arch-numeral font-serif text-5xl md:text-7xl font-normal leading-none tracking-tighter text-cinnabar opacity-85 select-none">02</div>
         <div>
-          <h2 data-i18n-bi="水墨物理雙緩衝 × 微螢幕位元差分即時解剖" data-i18n-zh="水墨物理雙緩衝 × 微螢幕位元差分即時解剖" data-i18n-en="Dual-Buffer Ink Physics &amp; 1-Bit XOR-RLE Deconstruction">水墨物理雙緩衝 × 微螢幕位元差分即時解剖</h2>
-          <p data-i18n-bi="拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白（Feibai）」與濃墨邊界「水暈（Dark Fringe）」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。" data-i18n-zh="拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白」與濃墨邊界「水暈」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。" data-i18n-en="Inspect the mathematical anatomy behind every frame: on the left, see how paper grain valleys intercept dry-brush pigment (feibai) while wetness deposits dark fringes; on the right, compare 1-bit dithering matrices and frame-to-frame XOR-Delta compression.">拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白（Feibai）」與濃墨邊界「水暈（Dark Fringe）」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。</p>
+          <h2 class="font-serif text-2xl sm:text-3xl font-semibold tracking-tight mb-2.5" data-i18n-bi="水墨物理雙緩衝 × 微螢幕位元差分即時解剖" data-i18n-zh="水墨物理雙緩衝 × 微螢幕位元差分即時解剖" data-i18n-en="Dual-Buffer Ink Physics &amp; 1-Bit XOR-RLE Deconstruction">水墨物理雙緩衝 × 微螢幕位元差分即時解剖</h2>
+          <p class="text-sm sm:text-base leading-relaxed text-ink-body max-w-[70ch] m-0" data-i18n-bi="拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白（Feibai）」與濃墨邊界「水暈（Dark Fringe）」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。" data-i18n-zh="拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白」與濃墨邊界「水暈」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。" data-i18n-en="Inspect the mathematical anatomy behind every frame: on the left, see how paper grain valleys intercept dry-brush pigment (feibai) while wetness deposits dark fringes; on the right, compare 1-bit dithering matrices and frame-to-frame XOR-Delta compression.">拆解每一幀背後的數學結構：左側展示宣紙纖維如何攔截乾筆顏料形成「飛白（Feibai）」與濃墨邊界「水暈（Dark Fringe）」；右側對照四種 1-Bit 抖動矩陣與跨幀 XOR 差分的硬體壓縮原理。</p>
         </div>
       </div>
 
-      <div class="deconstruct-grid">
+      <div class="deconstruct-grid grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Track A: InkFX 4-Layer Anatomy -->
-        <div class="lab-card">
+        <div class="lab-card border border-border-strong rounded-2xl p-6 bg-paper shadow-soft flex flex-col justify-between gap-4">
           <div>
-            <h3 class="lab-title">① InkFX · 水墨三層物理與六階礦物色盤</h3>
-            <p class="lab-desc">拖曳飛白乾度滑桿或切換四大傳統礦物色盤，即時觀察 Pigment 濃度、Wetness 水暈與宣紙纖維高度圖如何交織出東方筆意。</p>
+            <h3 class="lab-title font-serif text-xl font-semibold mb-1.5">① InkFX · 水墨三層物理與六階礦物色盤</h3>
+            <p class="lab-desc text-xs leading-relaxed text-ink-muted m-0">拖曳飛白乾度滑桿或切換四大傳統礦物色盤，即時觀察 Pigment 濃度、Wetness 水暈與宣紙纖維高度圖如何交織出東方筆意。</p>
           </div>
-          <div class="layer-strip">
-            <div class="layer-box">
-              <canvas id="lab-ink-pigment" width="96" height="96"></canvas>
-              <span class="layer-caption">01 PIGMENT 墨色</span>
+          <div class="layer-strip grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="layer-box border border-border-hairline rounded-lg p-2 text-center bg-white/40">
+              <canvas id="lab-ink-pigment" width="96" height="96" class="w-full aspect-square [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">01 PIGMENT 墨色</span>
             </div>
-            <div class="layer-box">
-              <canvas id="lab-ink-wetness" width="96" height="96"></canvas>
-              <span class="layer-caption">02 WETNESS 水暈</span>
+            <div class="layer-box border border-border-hairline rounded-lg p-2 text-center bg-white/40">
+              <canvas id="lab-ink-wetness" width="96" height="96" class="w-full aspect-square [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">02 WETNESS 水暈</span>
             </div>
-            <div class="layer-box">
-              <canvas id="lab-ink-grain" width="96" height="96"></canvas>
-              <span class="layer-caption">03 PAPER 宣紙紋</span>
+            <div class="layer-box border border-border-hairline rounded-lg p-2 text-center bg-white/40">
+              <canvas id="lab-ink-grain" width="96" height="96" class="w-full aspect-square [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">03 PAPER 宣紙紋</span>
             </div>
-            <div class="layer-box">
-              <canvas id="lab-ink-final" width="96" height="96"></canvas>
-              <span class="layer-caption">04 COMPOSITE 合成</span>
+            <div class="layer-box border border-border-hairline rounded-lg p-2 text-center bg-white/40">
+              <canvas id="lab-ink-final" width="96" height="96" class="w-full aspect-square [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">04 COMPOSITE 合成</span>
             </div>
           </div>
-          <div class="lab-controls-row">
-            <div class="swatch-bar">
-              <button type="button" class="mineral-chip active" data-lab-mineral="zhusha"><span class="mineral-dot" style="background:#b82921"></span>朱砂 Zhusha</button>
-              <button type="button" class="mineral-chip" data-lab-mineral="songyan"><span class="mineral-dot" style="background:#1c1a17"></span>松煙 Songyan</button>
-              <button type="button" class="mineral-chip" data-lab-mineral="shiqing"><span class="mineral-dot" style="background:#245c69"></span>石青 Shiqing</button>
-              <button type="button" class="mineral-chip" data-lab-mineral="nijin"><span class="mineral-dot" style="background:#d4af37"></span>泥金 Nijin</button>
+          <div class="lab-controls-row flex justify-between items-center gap-3 flex-wrap">
+            <div class="swatch-bar flex gap-1.5 flex-wrap items-center">
+              <button type="button" class="mineral-chip inline-flex items-center gap-1.5 py-1.5 px-2.5 rounded-md border border-border-hairline bg-canvas font-mono font-semibold text-xs cursor-pointer active" data-lab-mineral="zhusha"><span class="mineral-dot w-2.5 h-2.5 rounded-full inline-block" style="background:#b82921"></span>朱砂 Zhusha</button>
+              <button type="button" class="mineral-chip inline-flex items-center gap-1.5 py-1.5 px-2.5 rounded-md border border-border-hairline bg-canvas font-mono font-semibold text-xs cursor-pointer" data-lab-mineral="songyan"><span class="mineral-dot w-2.5 h-2.5 rounded-full inline-block" style="background:#1c1a17"></span>松煙 Songyan</button>
+              <button type="button" class="mineral-chip inline-flex items-center gap-1.5 py-1.5 px-2.5 rounded-md border border-border-hairline bg-canvas font-mono font-semibold text-xs cursor-pointer" data-lab-mineral="shiqing"><span class="mineral-dot w-2.5 h-2.5 rounded-full inline-block" style="background:#245c69"></span>石青 Shiqing</button>
+              <button type="button" class="mineral-chip inline-flex items-center gap-1.5 py-1.5 px-2.5 rounded-md border border-border-hairline bg-canvas font-mono font-semibold text-xs cursor-pointer" data-lab-mineral="nijin"><span class="mineral-dot w-2.5 h-2.5 rounded-full inline-block" style="background:#d4af37"></span>泥金 Nijin</button>
             </div>
-            <label style="margin:0;display:flex;align-items:center;gap:6px;font-size:10px;">
+            <label class="m-0 flex items-center gap-1.5 text-[10px] font-mono">
               FEIBAI DRYNESS
-              <input id="lab-dryness" type="range" min="0.05" max="0.95" step="0.05" value="0.45" style="width:90px;margin:0;">
+              <input id="lab-dryness" type="range" min="0.05" max="0.95" step="0.05" value="0.45" class="w-[90px] m-0">
             </label>
           </div>
-          <div class="ramp-stops" id="lab-ramp-stops" aria-label="6-stop non-linear mineral color ramp"></div>
+          <div class="ramp-stops grid grid-cols-6 gap-1 pt-1" id="lab-ramp-stops" aria-label="6-stop non-linear mineral color ramp"></div>
         </div>
 
         <!-- Track B: OLEDFX Dither & XOR-RLE Anatomy -->
-        <div class="lab-card oled-lab">
+        <div class="lab-card oled-lab border border-[#1f3948] rounded-2xl p-6 bg-[#070d13] text-[#e4f6ff] shadow-soft flex flex-col justify-between gap-4">
           <div>
-            <h3 class="lab-title">② OLEDFX · 1-Bit 抖動矩陣與 XOR-RLE 差分熱力圖</h3>
-            <p class="lab-desc">Ordered Bayer 4×4 以固定空間門檻消除跨幀閃爍（Shimmer = 0.00%），並透過 `Frame[t] ^ Frame[t-1]` 將靜態背景化為連續零位元組。</p>
+            <h3 class="lab-title font-serif text-xl font-semibold mb-1.5">② OLEDFX · 1-Bit 抖動矩陣與 XOR-RLE 差分熱力圖</h3>
+            <p class="lab-desc text-xs leading-relaxed text-[#84a8bc] m-0">Ordered Bayer 4×4 以固定空間門檻消除跨幀閃爍（Shimmer = 0.00%），並透過 `Frame[t] ^ Frame[t-1]` 將靜態背景化為連續零位元組。</p>
           </div>
-          <div class="layer-strip">
-            <div class="layer-box wide-oled">
-              <canvas id="lab-oled-bayer" width="96" height="48"></canvas>
-              <span class="layer-caption">BAYER 4×4 (17階)</span>
+          <div class="layer-strip grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="layer-box wide-oled border border-oled-cyan/20 rounded-lg p-2 text-center bg-[#0c161f]">
+              <canvas id="lab-oled-bayer" width="96" height="48" class="w-full aspect-[2/1] [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">BAYER 4×4 (17階)</span>
             </div>
-            <div class="layer-box wide-oled">
-              <canvas id="lab-oled-checker" width="96" height="48"></canvas>
-              <span class="layer-caption">CHECKER 棋盤</span>
+            <div class="layer-box wide-oled border border-oled-cyan/20 rounded-lg p-2 text-center bg-[#0c161f]">
+              <canvas id="lab-oled-checker" width="96" height="48" class="w-full aspect-[2/1] [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">CHECKER 棋盤</span>
             </div>
-            <div class="layer-box wide-oled">
-              <canvas id="lab-oled-atkinson" width="96" height="48"></canvas>
-              <span class="layer-caption">ATKINSON 誤差擴散</span>
+            <div class="layer-box wide-oled border border-oled-cyan/20 rounded-lg p-2 text-center bg-[#0c161f]">
+              <canvas id="lab-oled-atkinson" width="96" height="48" class="w-full aspect-[2/1] [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">ATKINSON 誤差擴散</span>
             </div>
-            <div class="layer-box wide-oled">
-              <canvas id="lab-oled-xordelta" width="96" height="48"></canvas>
-              <span class="layer-caption">XOR-DELTA 差分幀</span>
+            <div class="layer-box wide-oled border border-oled-cyan/20 rounded-lg p-2 text-center bg-[#0c161f]">
+              <canvas id="lab-oled-xordelta" width="96" height="48" class="w-full aspect-[2/1] [image-rendering:pixelated] rounded block mb-1.5"></canvas>
+              <span class="layer-caption font-mono font-semibold text-[10px] tracking-wide block">XOR-DELTA 差分幀</span>
             </div>
           </div>
-          <div class="rle-meter">
-            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+          <div class="rle-meter bg-[#0c1721] border border-oled-cyan/25 rounded-lg p-3 font-mono text-xs leading-relaxed text-[#9bd7e8]">
+            <div class="flex justify-between flex-wrap gap-1.5">
               <span>ESP32 FLASH BUDGET (`eyes/curious-blink` · 48 Frames)</span>
-              <strong style="color:var(--oled-amber)">3,333 B / 49,152 B (93.2% SAVED)</strong>
+              <strong class="text-oled-amber">3,333 B / 49,152 B (93.2% SAVED)</strong>
             </div>
-            <div class="rle-bar-track"><div class="rle-bar-fill"></div></div>
+            <div class="rle-bar-track h-1.5 bg-[#172a38] rounded-full overflow-hidden mt-1.5"><div class="rle-bar-fill h-full bg-gradient-to-r from-oled-amber to-oled-cyan w-[6.8%]"></div></div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ACT III: LIVE 32-EFFECT EXHIBITION WALL -->
-    <section class="act-section" id="act-archive" data-reveal>
-      <div class="act-eyebrow">
-        <span class="index-tag">ACT III · CURATED 32-EFFECT EXHIBITION WALL</span>
+    <section class="act-section py-16 md:py-20 border-t border-border-hairline relative" id="act-archive" data-reveal>
+      <div class="act-eyebrow flex items-center justify-between gap-3 font-mono font-semibold text-[11px] tracking-widest uppercase text-cinnabar mb-4">
+        <span class="index-tag inline-flex items-center gap-2">ACT III · CURATED 32-EFFECT EXHIBITION WALL</span>
         <span>INTERSECTIONOBSERVER 60FPS LIVE CANVAS ARCHIVE</span>
       </div>
 
-      <div class="editorial-lead-grid">
-        <div class="arch-numeral">03</div>
+      <div class="editorial-lead-grid grid grid-cols-1 md:grid-cols-[110px_1fr] gap-6 items-baseline mb-7">
+        <div class="arch-numeral font-serif text-5xl md:text-7xl font-normal leading-none tracking-tighter text-cinnabar opacity-85 select-none">03</div>
         <div>
-          <h2 data-i18n-bi="全目錄 32 組特效策展圖鑑牆 (Live Scrollable Wall)" data-i18n-zh="全目錄 32 組特效策展圖鑑牆" data-i18n-en="Curated 32-Effect Live Exhibition Archive">全目錄 32 組特效策展圖鑑牆 (Live Scrollable Wall)</h2>
-          <p data-i18n-bi="點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。" data-i18n-zh="點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。" data-i18n-en="Select any card to load the effect into the Studio Workbench below, automatically matching Xuan-paper scroll or SSD1306 hardware simulation.">點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。</p>
+          <h2 class="font-serif text-2xl sm:text-3xl font-semibold tracking-tight mb-2.5" data-i18n-bi="全目錄 32 組特效策展圖鑑牆 (Live Scrollable Wall)" data-i18n-zh="全目錄 32 組特效策展圖鑑牆" data-i18n-en="Curated 32-Effect Live Exhibition Archive">全目錄 32 組特效策展圖鑑牆 (Live Scrollable Wall)</h2>
+          <p class="text-sm sm:text-base leading-relaxed text-ink-body max-w-[70ch] m-0" data-i18n-bi="點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。" data-i18n-zh="點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。" data-i18n-en="Select any card to load the effect into the Studio Workbench below, automatically matching Xuan-paper scroll or SSD1306 hardware simulation.">點選任一卡片即可將該特效載入下方 Studio 深度調校艙，並自動匹配宣紙卷軸或 SSD1306 硬體模擬環境。</p>
         </div>
       </div>
 
-      <div class="filter-toolbar">
-        <div class="category-pills" id="wall-filters">
-          <button type="button" class="cat-btn active" data-filter="all">ALL (32)</button>
-          <button type="button" class="cat-btn" data-filter="inkfx">INKFX 水墨 (16)</button>
-          <button type="button" class="cat-btn" data-filter="oledfx">OLEDFX 晶格 (14)</button>
-          <button type="button" class="cat-btn" data-filter="sword">SWORD 劍氣</button>
-          <button type="button" class="cat-btn" data-filter="talisman">TALISMAN 符籙</button>
-          <button type="button" class="cat-btn" data-filter="zen">ZEN 禪意</button>
-          <button type="button" class="cat-btn" data-filter="ink-burst">BURST 氣勁</button>
-          <button type="button" class="cat-btn" data-filter="eyes">EYES 雙眼</button>
-          <button type="button" class="cat-btn" data-filter="weather">WEATHER 天氣</button>
-          <button type="button" class="cat-btn" data-filter="system">SYSTEM 系統</button>
-          <button type="button" class="cat-btn" data-filter="pomodoro">POMODORO 專注</button>
-          <button type="button" class="cat-btn" data-filter="transitions">TRANSITIONS 轉場</button>
-          <button type="button" class="cat-btn" data-filter="ui">UI 印記</button>
+      <div class="filter-toolbar flex justify-between items-center gap-3 flex-wrap my-4">
+        <div class="category-pills flex gap-1.5 flex-wrap" id="wall-filters">
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all active" data-filter="all">ALL (32)</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="inkfx">INKFX 水墨 (16)</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="oledfx">OLEDFX 晶格 (14)</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="sword">SWORD 劍氣</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="talisman">TALISMAN 符籙</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="zen">ZEN 禪意</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="ink-burst">BURST 氣勁</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="eyes">EYES 雙眼</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="weather">WEATHER 天氣</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="system">SYSTEM 系統</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="pomodoro">POMODORO 專注</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="transitions">TRANSITIONS 轉場</button>
+          <button type="button" class="cat-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-full border border-border-hairline bg-paper text-ink-body cursor-pointer transition-all" data-filter="ui">UI 印記</button>
         </div>
-        <input type="search" id="wall-search" class="search-box" placeholder="搜尋特效 ID / 名稱 (⌘K)..." aria-label="Search effects">
+        <input type="search" id="wall-search" class="search-box min-w-[240px] font-mono text-xs py-2 px-3.5 rounded-full border border-border-strong bg-paper text-ink-deep outline-none focus:border-cinnabar" placeholder="搜尋特效 ID / 名稱 (⌘K)..." aria-label="Search effects">
       </div>
 
-      <div id="wall" class="wall-grid"></div>
+      <div id="wall" class="wall-grid grid grid-cols-[repeat(auto-fill,minmax(224px,1fr))] gap-4"></div>
 
-      <div class="pagination-bar" id="wall-pagination" aria-label="Archive pagination">
+      <div class="pagination-bar mt-6 p-3 md:p-4 border border-border-hairline rounded-xl bg-paper flex justify-between items-center gap-3 flex-wrap font-mono text-xs font-semibold" id="wall-pagination" aria-label="Archive pagination">
         <span id="wall-page-info">SHOWING 01–12 OF 32 EFFECTS · PAGE 1 / 3</span>
-        <div class="page-controls" id="wall-page-buttons"></div>
-        <div class="page-controls" aria-label="Cards per page">
-          <span style="opacity:0.7;margin-right:4px;">PER PAGE:</span>
-          <button type="button" class="page-btn" data-page-size="8">8</button>
-          <button type="button" class="page-btn active" data-page-size="12">12</button>
-          <button type="button" class="page-btn" data-page-size="32">ALL (32)</button>
+        <div class="page-controls flex items-center gap-1.5 flex-wrap" id="wall-page-buttons"></div>
+        <div class="page-controls flex items-center gap-1.5 flex-wrap" aria-label="Cards per page">
+          <span class="opacity-70 mr-1">PER PAGE:</span>
+          <button type="button" class="page-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-lg border border-border-hairline bg-canvas text-ink-body cursor-pointer transition-all" data-page-size="8">8</button>
+          <button type="button" class="page-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-lg border border-border-hairline bg-canvas text-ink-body cursor-pointer transition-all active" data-page-size="12">12</button>
+          <button type="button" class="page-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-lg border border-border-hairline bg-canvas text-ink-body cursor-pointer transition-all" data-page-size="32">ALL (32)</button>
         </div>
       </div>
     </section>
 
     <!-- ACT IV: STUDIO WORKBENCH & HARDWARE SIMULATOR -->
-    <section class="act-section" id="act-studio" data-reveal>
-      <div class="act-eyebrow">
-        <span class="index-tag">ACT IV · STUDIO INSPECTOR &amp; HARDWARE SIMULATOR</span>
+    <section class="act-section py-16 md:py-20 border-t border-border-hairline relative" id="act-studio" data-reveal>
+      <div class="act-eyebrow flex items-center justify-between gap-3 font-mono font-semibold text-[11px] tracking-widest uppercase text-cinnabar mb-4">
+        <span class="index-tag inline-flex items-center gap-2">ACT IV · STUDIO INSPECTOR &amp; HARDWARE SIMULATOR</span>
         <span>120HZ DETERMINISTIC STEPPER · WUXIA ACT DUMMY · C11 HEADER EXPORT</span>
       </div>
 
-      <div class="editorial-lead-grid">
-        <div class="arch-numeral">04</div>
+      <div class="editorial-lead-grid grid grid-cols-1 md:grid-cols-[110px_1fr] gap-6 items-baseline mb-7">
+        <div class="arch-numeral font-serif text-5xl md:text-7xl font-normal leading-none tracking-tighter text-cinnabar opacity-85 select-none">04</div>
         <div>
-          <h2 data-i18n-bi="深度調校艙與硬體模擬工作台 (Studio Workbench)" data-i18n-zh="深度調校艙與硬體模擬工作台" data-i18n-en="Interactive Studio Workbench &amp; Hardware Simulator">深度調校艙與硬體模擬工作台 (Studio Workbench)</h2>
-          <p data-i18n-bi="即時切換礦物色盤、宣紙纖維粗細、視角傾斜（Tilt / Look）、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。" data-i18n-zh="即時切換礦物色盤、宣紙纖維粗細、視角傾斜、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。" data-i18n-en="Switch mineral ramps, paper grain roughness, view tilt, and 0.25x slow-motion, then copy single-file JS / React / Vue snippets or download ESP32 C11 headers.">即時切換礦物色盤、宣紙纖維粗細、視角傾斜（Tilt / Look）、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。</p>
+          <h2 class="font-serif text-2xl sm:text-3xl font-semibold tracking-tight mb-2.5" data-i18n-bi="深度調校艙與硬體模擬工作台 (Studio Workbench)" data-i18n-zh="深度調校艙與硬體模擬工作台" data-i18n-en="Interactive Studio Workbench &amp; Hardware Simulator">深度調校艙與硬體模擬工作台 (Studio Workbench)</h2>
+          <p class="text-sm sm:text-base leading-relaxed text-ink-body max-w-[70ch] m-0" data-i18n-bi="即時切換礦物色盤、宣紙纖維粗細、視角傾斜（Tilt / Look）、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。" data-i18n-zh="即時切換礦物色盤、宣紙纖維粗細、視角傾斜、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。" data-i18n-en="Switch mineral ramps, paper grain roughness, view tilt, and 0.25x slow-motion, then copy single-file JS / React / Vue snippets or download ESP32 C11 headers.">即時切換礦物色盤、宣紙纖維粗細、視角傾斜（Tilt / Look）、0.25x 慢動作逐幀拆解，並一鍵複製單檔 JS / React / Vue 或下載 ESP32 C Header。</p>
         </div>
       </div>
 
-      <div class="workspace">
-        <div class="stage-container">
-          <div class="stage-chrome-bar">
+      <div class="workspace grid grid-cols-1 lg:grid-cols-[1fr_370px] gap-7 my-4 items-start">
+        <div class="stage-container border border-border-strong rounded-2xl bg-paper p-5 md:p-6 shadow-soft">
+          <div class="stage-chrome-bar flex justify-between items-center font-mono font-semibold text-[10px] tracking-wider text-ink-muted mb-3 px-1">
             <span id="stage-chrome-title">SCROLL MOUNT // XUAN PAPER 160×160</span>
             <span id="stage-chrome-spec">SAFE AREA 8% · ORIGIN CROSSHAIR</span>
           </div>
-          <div class="stage" id="stage">
-            <canvas id="preview" width="160" height="160" aria-label="Animated procedural effect preview"></canvas>
+          <div class="stage relative grid place-items-center min-h-[430px] border border-black/15 rounded-xl bg-[#fbf8f1] p-7 transition-all" id="stage">
+            <canvas id="preview" width="160" height="160" class="w-[320px] h-[320px] max-w-full [image-rendering:pixelated] touch-none cursor-grab rounded" aria-label="Animated procedural effect preview"></canvas>
           </div>
-          <div class="act-timeline-bar" id="act-timeline">
-            <div class="phase-pill" data-phase="WINDUP">01 WINDUP · 負時間蓄力</div>
-            <div class="phase-pill" data-phase="ACTIVE">02 ACTIVE · 招式釋放</div>
-            <div class="phase-pill" data-phase="FREEZE">03 FREEZE · 命中頓幀</div>
-            <div class="phase-pill" data-phase="RECOVERY">04 RECOVERY · 殘心收刀</div>
+          <div class="act-timeline-bar grid grid-cols-2 sm:grid-cols-4 gap-1.5 mt-3.5 font-mono font-semibold text-[10px]" id="act-timeline">
+            <div class="phase-pill p-2 rounded-md border border-border-hairline text-center opacity-55 transition-all" data-phase="WINDUP">01 WINDUP · 負時間蓄力</div>
+            <div class="phase-pill p-2 rounded-md border border-border-hairline text-center opacity-55 transition-all" data-phase="ACTIVE">02 ACTIVE · 招式釋放</div>
+            <div class="phase-pill p-2 rounded-md border border-border-hairline text-center opacity-55 transition-all" data-phase="FREEZE">03 FREEZE · 命中頓幀</div>
+            <div class="phase-pill p-2 rounded-md border border-border-hairline text-center opacity-55 transition-all" data-phase="RECOVERY">04 RECOVERY · 殘心收刀</div>
           </div>
-          <div class="perf-meter-row">
+          <div class="perf-meter-row flex items-center justify-between gap-3 mt-3 p-2.5 px-3 rounded-lg border border-border-hairline bg-canvas font-mono text-[10px] text-ink-muted">
             <span id="perf-readout">STEP BUDGET (120Hz): ~0.18ms &lt; 1.50ms (CHK-05 PASS)</span>
-            <canvas id="perf-sparkline" width="140" height="22" aria-label="Frame step time sparkline"></canvas>
+            <canvas id="perf-sparkline" width="140" height="22" class="w-[140px] h-[22px] rounded" aria-label="Frame step time sparkline"></canvas>
           </div>
         </div>
 
-        <aside class="inspector-panel">
-          <label for="effect">Effect (32 in catalog)</label>
-          <select id="effect">
+        <aside class="inspector-panel border border-border-strong rounded-2xl p-5 md:p-6 bg-paper shadow-soft">
+          <label for="effect" class="block font-mono font-semibold text-xs tracking-wider uppercase mb-1.5 text-ink-body">Effect (32 in catalog)</label>
+          <select id="effect" class="w-full mb-3 font-mono text-xs border border-border-strong rounded-md p-2 bg-canvas text-ink-deep outline-none focus:border-cinnabar">
             <optgroup label="Starter (fx-skill-kit)">
               <option value="pulse-dot">pulse-dot · ink bloom</option>
               <option value="orbit-loop">orbit-loop · particle trail</option>
@@ -1533,11 +636,11 @@
             </optgroup>
           </select>
 
-          <label for="seed">Seed</label>
-          <input id="seed" type="number" min="0" max="4294967295" step="1" value="1" required>
+          <label for="seed" class="block font-mono font-semibold text-xs tracking-wider uppercase mb-1.5 text-ink-body">Seed</label>
+          <input id="seed" type="number" min="0" max="4294967295" step="1" value="1" required class="w-full mb-3 font-mono text-xs border border-border-strong rounded-md p-2 bg-canvas text-ink-deep outline-none focus:border-cinnabar">
 
-          <label for="palette">Palette (Mineral Ramp)</label>
-          <select id="palette">
+          <label for="palette" class="block font-mono font-semibold text-xs tracking-wider uppercase mb-1.5 text-ink-body">Palette (Mineral Ramp)</label>
+          <select id="palette" class="w-full mb-3 font-mono text-xs border border-border-strong rounded-md p-2 bg-canvas text-ink-deep outline-none focus:border-cinnabar">
             <option value="">Effect default</option>
             <option value="songyan">Songyan · 松煙古墨</option>
             <option value="zhusha">Zhusha · 朱砂血墨</option>
@@ -1547,8 +650,8 @@
             <option value="gold">Gold (Classic)</option>
           </select>
 
-          <label for="oled-shell">Display Simulator Mode</label>
-          <select id="oled-shell">
+          <label for="oled-shell" class="block font-mono font-semibold text-xs tracking-wider uppercase mb-1.5 text-ink-body">Display Simulator Mode</label>
+          <select id="oled-shell" class="w-full mb-3 font-mono text-xs border border-border-strong rounded-md p-2 bg-canvas text-ink-deep outline-none focus:border-cinnabar">
             <option value="auto">Auto (Xuan Paper / OLED by category)</option>
             <option value="paper">Xuan Paper · 宣紙卷軸</option>
             <option value="ssd1306-cyan">SSD1306 Blue/Cyan Phosphor</option>
@@ -1556,126 +659,126 @@
             <option value="ssd1306-dual">SSD1306 Dual-Zone (上16px黃 + 下48px藍)</option>
           </select>
 
-          <fieldset>
-            <legend>View / tilt &amp; Paper grain</legend>
-            <label for="tilt-x">Tilt / Look X <output id="tilt-x-value">0.00</output></label>
-            <input id="tilt-x" type="range" min="-1" max="1" step="0.01" value="0">
-            <label for="tilt-y">Tilt / Look Y <output id="tilt-y-value">0.00</output></label>
-            <input id="tilt-y" type="range" min="-1" max="1" step="0.01" value="0">
-            <label for="grain-roughness">Paper Grain Roughness <output id="grain-value">1.00</output></label>
-            <input id="grain-roughness" type="range" min="0" max="2" step="0.05" value="1">
+          <fieldset class="border border-border-hairline rounded-lg p-3 mb-3.5">
+            <legend class="font-mono font-semibold text-xs tracking-wider uppercase px-1 text-ink-body">View / tilt &amp; Paper grain</legend>
+            <label for="tilt-x" class="font-mono text-xs flex justify-between mb-1">Tilt / Look X <output id="tilt-x-value">0.00</output></label>
+            <input id="tilt-x" type="range" min="-1" max="1" step="0.01" value="0" class="w-full mb-2 accent-cinnabar">
+            <label for="tilt-y" class="font-mono text-xs flex justify-between mb-1">Tilt / Look Y <output id="tilt-y-value">0.00</output></label>
+            <input id="tilt-y" type="range" min="-1" max="1" step="0.01" value="0" class="w-full mb-2 accent-cinnabar">
+            <label for="grain-roughness" class="font-mono text-xs flex justify-between mb-1">Paper Grain Roughness <output id="grain-value">1.00</output></label>
+            <input id="grain-roughness" type="range" min="0" max="2" step="0.05" value="1" class="w-full mb-1 accent-cinnabar">
           </fieldset>
 
-          <div class="actions">
-            <button id="replay" type="button" data-magnetic>Replay</button>
-            <button id="pause" type="button" aria-pressed="false" data-magnetic>Pause</button>
-            <button id="slowmo" type="button" aria-pressed="false" data-magnetic>0.25x Slow</button>
+          <div class="actions flex gap-1.5 my-2 mb-3 flex-wrap">
+            <button id="replay" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-3 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer" data-magnetic>Replay</button>
+            <button id="pause" type="button" aria-pressed="false" class="flex-1 font-mono font-semibold text-xs py-2 px-3 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer" data-magnetic>Pause</button>
+            <button id="slowmo" type="button" aria-pressed="false" class="flex-1 font-mono font-semibold text-xs py-2 px-3 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer" data-magnetic>0.25x Slow</button>
           </div>
 
-          <div class="downloads">
-            <button id="copy" type="button">Copy source</button>
-            <button id="copy-react" type="button">React</button>
-            <button id="copy-vue" type="button">Vue</button>
-            <button id="download-png" type="button">Download PNG</button>
-            <button id="download-header" type="button">Download C header</button>
-            <button id="download-mcu" type="button">XOR-RLE .h</button>
+          <div class="downloads flex gap-1.5 my-2 mb-3 flex-wrap">
+            <button id="copy" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-2.5 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer">Copy source</button>
+            <button id="copy-react" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-2.5 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer">React</button>
+            <button id="copy-vue" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-2.5 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer">Vue</button>
+            <button id="download-png" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-2.5 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer">Download PNG</button>
+            <button id="download-header" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-2.5 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer">Download C header</button>
+            <button id="download-mcu" type="button" class="flex-1 font-mono font-semibold text-xs py-2 px-2.5 border border-border-strong rounded-md bg-canvas hover:border-cinnabar hover:bg-cinnabar/10 transition-all cursor-pointer">XOR-RLE .h</button>
           </div>
 
-          <div class="checks-row">
-            <label><input id="guides" type="checkbox" checked> Show safe area &amp; origin</label>
-            <label><input id="act-dummy" type="checkbox" checked> Show Wuxia act dummy &amp; OLED pixel grid</label>
+          <div class="checks-row flex flex-col gap-1.5 mb-2.5 font-sans text-xs">
+            <label class="flex items-center gap-1.5 cursor-pointer"><input id="guides" type="checkbox" checked class="accent-cinnabar"> Show safe area &amp; origin</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input id="act-dummy" type="checkbox" checked class="accent-cinnabar"> Show Wuxia act dummy &amp; OLED pixel grid</label>
           </div>
 
-          <textarea id="source" readonly hidden aria-label="Copied effect source"></textarea>
-          <output id="status" aria-live="off">Loading effect…</output>
+          <textarea id="source" readonly hidden class="w-full min-h-[9rem] font-mono text-xs border border-border-strong rounded-md p-2 bg-canvas mt-2 text-ink-deep" aria-label="Copied effect source"></textarea>
+          <output id="status" class="block font-mono text-xs mt-3 p-2.5 rounded-lg bg-canvas border border-border-hairline" aria-live="off">Loading effect…</output>
         </aside>
       </div>
 
-      <p class="note">For frame-by-frame review, <a id="sheet" href="../records/pulse-dot/contact.png">open the contact sheet</a>. Learn to write your own in <a href="../docs/AUTHORING.md">the authoring contract</a>.</p>
+      <p class="note border-t border-border-hairline pt-5 text-xs text-ink-muted">For frame-by-frame review, <a id="sheet" class="text-cinnabar hover:underline" href="../records/pulse-dot/contact.png">open the contact sheet</a>. Learn to write your own in <a class="text-cinnabar hover:underline" href="../docs/AUTHORING.md">the authoring contract</a>.</p>
     </section>
 
     <!-- ACT V: AGENTIC LOOP & MCP TERMINAL -->
-    <section class="act-section" id="act-pipeline" data-reveal>
-      <div class="act-eyebrow">
-        <span class="index-tag">ACT V · AGENTIC FEEDBACK LOOP &amp; MCP SERVER</span>
+    <section class="act-section py-16 md:py-20 border-t border-border-hairline relative" id="act-pipeline" data-reveal>
+      <div class="act-eyebrow flex items-center justify-between gap-3 font-mono font-semibold text-[11px] tracking-widest uppercase text-cinnabar mb-4">
+        <span class="index-tag inline-flex items-center gap-2">ACT V · AGENTIC FEEDBACK LOOP &amp; MCP SERVER</span>
         <span>DRAFT → CHECK → RENDER → LOOK → REFINE</span>
       </div>
 
-      <div class="editorial-lead-grid">
-        <div class="arch-numeral">05</div>
+      <div class="editorial-lead-grid grid grid-cols-1 md:grid-cols-[110px_1fr] gap-6 items-baseline mb-7">
+        <div class="arch-numeral font-serif text-5xl md:text-7xl font-normal leading-none tracking-tighter text-cinnabar opacity-85 select-none">05</div>
         <div>
-          <h2 data-i18n-bi="AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈" data-i18n-zh="AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈" data-i18n-en="Agentic Visual Feedback Loop &amp; Zero-Dependency CLI">AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈</h2>
-          <p data-i18n-bi="透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。" data-i18n-zh="透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。" data-i18n-en="Six deterministic quality gates (CHK-01..06) and annotated contact sheets give humans and multimodal coding agents the exact same visual verification loop.">透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。</p>
+          <h2 class="font-serif text-2xl sm:text-3xl font-semibold tracking-tight mb-2.5" data-i18n-bi="AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈" data-i18n-zh="AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈" data-i18n-en="Agentic Visual Feedback Loop &amp; Zero-Dependency CLI">AI Agent 視覺自檢閉環與零依賴 CLI 工具鏈</h2>
+          <p class="text-sm sm:text-base leading-relaxed text-ink-body max-w-[70ch] m-0" data-i18n-bi="透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。" data-i18n-zh="透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。" data-i18n-en="Six deterministic quality gates (CHK-01..06) and annotated contact sheets give humans and multimodal coding agents the exact same visual verification loop.">透過 6 道工程守門員（CHK-01..06）與多模態 Contact Sheet 視覺審查，讓 Coding Agent 與人類設計師共享同一套確定性品質標準。</p>
         </div>
       </div>
 
-      <div class="pipeline-grid">
-        <div class="gate-list">
-          <div class="gate-card">
-            <div class="gate-id">CHK-01 · DETERMINISM</div>
-            <div class="gate-title">雙重採樣 SHA-256 一致性</div>
-            <div class="gate-meta">禁用 Math.random / Date.now；相同 seed=42 必須產出 100% 相同位元流。</div>
+      <div class="pipeline-grid grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-6">
+        <div class="gate-list grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="gate-card border border-border-hairline rounded-xl p-4 bg-paper">
+            <div class="gate-id font-mono font-bold text-xs text-cinnabar">CHK-01 · DETERMINISM</div>
+            <div class="gate-title font-semibold text-sm my-1.5">雙重採樣 SHA-256 一致性</div>
+            <div class="gate-meta font-mono text-xs leading-relaxed text-ink-muted">禁用 Math.random / Date.now；相同 seed=42 必須產出 100% 相同位元流。</div>
           </div>
-          <div class="gate-card">
-            <div class="gate-id">CHK-02 · EDGE SPILL</div>
-            <div class="gate-title">畫布邊界防裁切守門員</div>
-            <div class="gate-meta">非轉場特效邊界像素佔比 &lt; 1.5%（全目錄實測 0.000%）。</div>
+          <div class="gate-card border border-border-hairline rounded-xl p-4 bg-paper">
+            <div class="gate-id font-mono font-bold text-xs text-cinnabar">CHK-02 · EDGE SPILL</div>
+            <div class="gate-title font-semibold text-sm my-1.5">畫布邊界防裁切守門員</div>
+            <div class="gate-meta font-mono text-xs leading-relaxed text-ink-muted">非轉場特效邊界像素佔比 &lt; 1.5%（全目錄實測 0.000%）。</div>
           </div>
-          <div class="gate-card">
-            <div class="gate-id">CHK-03 · LOOP SEAM</div>
-            <div class="gate-title">循環接縫 MSE 與質心偏移</div>
-            <div class="gate-meta">首尾幀像素差與 Alpha 質心位移皆 &lt;= 1.5× 中位數相鄰幀。</div>
+          <div class="gate-card border border-border-hairline rounded-xl p-4 bg-paper">
+            <div class="gate-id font-mono font-bold text-xs text-cinnabar">CHK-03 · LOOP SEAM</div>
+            <div class="gate-title font-semibold text-sm my-1.5">循環接縫 MSE 與質心偏移</div>
+            <div class="gate-meta font-mono text-xs leading-relaxed text-ink-muted">首尾幀像素差與 Alpha 質心位移皆 &lt;= 1.5× 中位數相鄰幀。</div>
           </div>
-          <div class="gate-card">
-            <div class="gate-id">CHK-04 · DEAD FRAMES</div>
-            <div class="gate-title">空白首尾與過曝填充檢測</div>
-            <div class="gate-meta">排除負時間蓄力後，首尾空白 &lt;= 15%，峰值填充 &gt;= 0.2%。</div>
+          <div class="gate-card border border-border-hairline rounded-xl p-4 bg-paper">
+            <div class="gate-id font-mono font-bold text-xs text-cinnabar">CHK-04 · DEAD FRAMES</div>
+            <div class="gate-title font-semibold text-sm my-1.5">空白首尾與過曝填充檢測</div>
+            <div class="gate-meta font-mono text-xs leading-relaxed text-ink-muted">排除負時間蓄力後，首尾空白 &lt;= 15%，峰值填充 &gt;= 0.2%。</div>
           </div>
-          <div class="gate-card">
-            <div class="gate-id">CHK-05 · 120HZ BUDGET</div>
-            <div class="gate-title">300 步 120Hz 效能預算門檻</div>
-            <div class="gate-meta">360 步預熱後實測 p95 &lt; 1.5ms、max &lt; 3.0ms。</div>
+          <div class="gate-card border border-border-hairline rounded-xl p-4 bg-paper">
+            <div class="gate-id font-mono font-bold text-xs text-cinnabar">CHK-05 · 120HZ BUDGET</div>
+            <div class="gate-title font-semibold text-sm my-1.5">300 步 120Hz 效能預算門檻</div>
+            <div class="gate-meta font-mono text-xs leading-relaxed text-ink-muted">360 步預熱後實測 p95 &lt; 1.5ms、max &lt; 3.0ms。</div>
           </div>
-          <div class="gate-card">
-            <div class="gate-id">CHK-06 · DOMAIN PLUGINS</div>
-            <div class="gate-title">水墨資訊熵與 OLED 閃爍零容忍</div>
-            <div class="gate-meta">inkEntropy &gt;= 0.5 bits · oledShimmer = 0.00% · RLE &lt; 4KB。</div>
+          <div class="gate-card border border-border-hairline rounded-xl p-4 bg-paper">
+            <div class="gate-id font-mono font-bold text-xs text-cinnabar">CHK-06 · DOMAIN PLUGINS</div>
+            <div class="gate-title font-semibold text-sm my-1.5">水墨資訊熵與 OLED 閃爍零容忍</div>
+            <div class="gate-meta font-mono text-xs leading-relaxed text-ink-muted">inkEntropy &gt;= 0.5 bits · oledShimmer = 0.00% · RLE &lt; 4KB。</div>
           </div>
         </div>
 
-        <div class="terminal-card">
-          <div style="margin-bottom:10px;color:#8bb8cc;font-weight:600;">QUICK CLI &amp; STDIO MCP COMMANDS</div>
-          <div class="terminal-cmd">
-            <code>npm run check -- sword/sword-qi-slash --seed 42</code>
-            <button type="button" data-copy-cmd="npm run check -- sword/sword-qi-slash --seed 42">Copy</button>
+        <div class="terminal-card bg-[#0a1016] text-[#d7ecf7] border border-[#223746] rounded-xl p-5 md:p-6 font-mono text-xs leading-relaxed">
+          <div class="text-[#8bb8cc] font-semibold mb-2.5">QUICK CLI &amp; STDIO MCP COMMANDS</div>
+          <div class="terminal-cmd flex justify-between items-center gap-2 bg-[#101b25] border border-[#22384a] rounded-md p-2 mb-2 text-[#7bf0ff]">
+            <code class="overflow-x-auto whitespace-nowrap">npm run check -- sword/sword-qi-slash --seed 42</code>
+            <button type="button" class="shrink-0 px-2 py-1 text-[10px] bg-[#1b2e3d] text-white border border-[#345670] rounded cursor-pointer" data-copy-cmd="npm run check -- sword/sword-qi-slash --seed 42">Copy</button>
           </div>
-          <div class="terminal-cmd">
-            <code>npm run export-sheet -- sword/myriad-swords --palette zhusha --paper</code>
-            <button type="button" data-copy-cmd="npm run export-sheet -- sword/myriad-swords --palette zhusha --paper">Copy</button>
+          <div class="terminal-cmd flex justify-between items-center gap-2 bg-[#101b25] border border-[#22384a] rounded-md p-2 mb-2 text-[#7bf0ff]">
+            <code class="overflow-x-auto whitespace-nowrap">npm run export-sheet -- sword/myriad-swords --palette zhusha --paper</code>
+            <button type="button" class="shrink-0 px-2 py-1 text-[10px] bg-[#1b2e3d] text-white border border-[#345670] rounded cursor-pointer" data-copy-cmd="npm run export-sheet -- sword/myriad-swords --palette zhusha --paper">Copy</button>
           </div>
-          <div class="terminal-cmd">
-            <code>npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64</code>
-            <button type="button" data-copy-cmd="npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64">Copy</button>
+          <div class="terminal-cmd flex justify-between items-center gap-2 bg-[#101b25] border border-[#22384a] rounded-md p-2 mb-2 text-[#7bf0ff]">
+            <code class="overflow-x-auto whitespace-nowrap">npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64</code>
+            <button type="button" class="shrink-0 px-2 py-1 text-[10px] bg-[#1b2e3d] text-white border border-[#345670] rounded cursor-pointer" data-copy-cmd="npm run export-mcu -- eyes/curious-blink --profile ssd1306-128x64">Copy</button>
           </div>
-          <div class="terminal-cmd">
-            <code>npm run export-mcu -- sword/sword-qi-slash --profile st7789-128x128</code>
-            <button type="button" data-copy-cmd="npm run export-mcu -- sword/sword-qi-slash --profile st7789-128x128">Copy</button>
+          <div class="terminal-cmd flex justify-between items-center gap-2 bg-[#101b25] border border-[#22384a] rounded-md p-2 mb-2 text-[#7bf0ff]">
+            <code class="overflow-x-auto whitespace-nowrap">npm run export-mcu -- sword/sword-qi-slash --profile st7789-128x128</code>
+            <button type="button" class="shrink-0 px-2 py-1 text-[10px] bg-[#1b2e3d] text-white border border-[#345670] rounded cursor-pointer" data-copy-cmd="npm run export-mcu -- sword/sword-qi-slash --profile st7789-128x128">Copy</button>
           </div>
-          <div class="terminal-cmd" style="margin-bottom:0;">
-            <code>node tools/mcp-server.mjs</code>
-            <button type="button" data-copy-cmd="node tools/mcp-server.mjs">Copy</button>
+          <div class="terminal-cmd flex justify-between items-center gap-2 bg-[#101b25] border border-[#22384a] rounded-md p-2 mb-0 text-[#7bf0ff]">
+            <code class="overflow-x-auto whitespace-nowrap">node tools/mcp-server.mjs</code>
+            <button type="button" class="shrink-0 px-2 py-1 text-[10px] bg-[#1b2e3d] text-white border border-[#345670] rounded cursor-pointer" data-copy-cmd="node tools/mcp-server.mjs">Copy</button>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="chapter-pager" id="chapter-pager">
-      <button type="button" class="page-btn" id="prev-chapter-btn">← PREV CHAPTER</button>
+    <div class="chapter-pager mt-9 pt-4 border-t border-dashed border-border-hairline flex justify-between items-center gap-3 font-mono text-xs font-semibold" id="chapter-pager">
+      <button type="button" class="page-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-lg border border-border-hairline bg-canvas text-ink-body cursor-pointer" id="prev-chapter-btn">← PREV CHAPTER</button>
       <span id="chapter-pager-status">VIEW MODE: ALL 5 ACTS (SCROLLABLE) · CLICK TOP TABS FOR PAGINATED CHAPTER VIEW</span>
-      <button type="button" class="page-btn" id="next-chapter-btn">NEXT CHAPTER →</button>
+      <button type="button" class="page-btn font-mono font-semibold text-xs py-1.5 px-3 rounded-lg border border-border-hairline bg-canvas text-ink-body cursor-pointer" id="next-chapter-btn">NEXT CHAPTER →</button>
     </div>
 
-    <footer class="editorial-footer">
+    <footer class="editorial-footer mt-16 pt-7 border-t border-border-strong flex justify-between items-center flex-wrap gap-3 font-mono text-xs text-ink-muted">
       <span>FX-SKILL-KIT // INKFX × OLEDFX · 32 DETERMINISTIC PROCEDURAL EFFECTS</span>
       <span>PURE ESM · ZERO NPM DEPENDENCIES · NODE.JS 20+ / BROWSER CANVAS 2D / ESP32 C11</span>
     </footer>
@@ -2004,12 +1107,18 @@
     const STOP_LABELS = ['清', '淡', '重', '濃', '焦', '點綴'];
 
     function updateRampSwatches() {
-      const hexes = mineralRamps[labMineral] || mineralRamps.zhusha;
+      const hexes = Object.hasOwn(mineralRamps, labMineral) ? mineralRamps[labMineral] : mineralRamps.zhusha;
       const container = $('lab-ramp-stops');
-      container.innerHTML = hexes.map((hex, idx) => {
+      container.replaceChildren();
+      hexes.forEach((hex, idx) => {
         const darkText = idx <= 1;
-        return `<div class="ramp-stop" style="background:${hex};color:${darkText ? '#1c1a17' : '#faf6ee'}">${STOP_LABELS[idx]} ${hex}</div>`;
-      }).join('');
+        const div = document.createElement('div');
+        div.className = 'ramp-stop';
+        div.style.background = hex;
+        div.style.color = darkText ? '#1c1a17' : '#faf6ee';
+        div.textContent = `${STOP_LABELS[idx]} ${hex}`;
+        container.append(div);
+      });
     }
     updateRampSwatches();
 
@@ -2428,10 +1537,20 @@
       const titleRow = document.createElement('div');
       titleRow.className = 'wall-title-row';
       const badgeText = oled ? '1-BIT OLED' : (sub.act ? 'WUXIA ACT' : (sub.meta.loop ? 'LOOP' : 'INKFX'));
-      titleRow.innerHTML = `<span class="wall-zh">${ZH_NAMES[id] || id}</span><span class="wall-tag">${badgeText}</span>`;
+      const zhSpan = document.createElement('span');
+      zhSpan.className = 'wall-zh';
+      zhSpan.textContent = Object.hasOwn(ZH_NAMES, id) ? ZH_NAMES[id] : id;
+      const tagSpan = document.createElement('span');
+      tagSpan.className = 'wall-tag';
+      tagSpan.textContent = badgeText;
+      titleRow.append(zhSpan, tagSpan);
       const metaRow = document.createElement('div');
       metaRow.className = 'wall-meta';
-      metaRow.innerHTML = `<span>${id}</span><span>${sub.meta.w}×${sub.meta.h}</span>`;
+      const idSpan = document.createElement('span');
+      idSpan.textContent = id;
+      const dimSpan = document.createElement('span');
+      dimSpan.textContent = `${sub.meta.w}×${sub.meta.h}`;
+      metaRow.append(idSpan, dimSpan);
       card.append(thumb, titleRow, metaRow);
       card.addEventListener('click', () => {
         $('effect').value = id;
@@ -2522,7 +1641,7 @@
       $('wall-page-info').textContent = `SHOWING ${fromStr}–${toStr} OF ${String(matched.length).padStart(2, '0')} EFFECTS · PAGE ${currentPage} / ${totalPages}`;
 
       const btnWrap = $('wall-page-buttons');
-      btnWrap.innerHTML = '';
+      btnWrap.replaceChildren();
       const prevBtn = document.createElement('button');
       prevBtn.type = 'button';
       prevBtn.className = 'page-btn';
