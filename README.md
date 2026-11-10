@@ -114,3 +114,8 @@ Start the stdio MCP server with `npm run mcp` (or configure your agent client to
 ![Curious Blink contact sheet](records/eyes/curious-blink/contact.png)
 
 See [AUTHORING.md](docs/AUTHORING.md) for the metadata, RGBA buffer, seed, and check contracts. Coding agents can follow [the FX authoring skill](skills/fx-authoring/SKILL.md) to keep visual inspection in the loop.
+
+---
+
+<!-- malilion-ecosystem-footer -->
+<p align="center"><sub>🦁 Part of the <a href="https://github.com/malilion">MaliLion</a> ecosystem · <a href="https://malilion.com">malilion.com</a> · <a href="https://github.com/malilion?tab=repositories">More projects</a></sub></p>

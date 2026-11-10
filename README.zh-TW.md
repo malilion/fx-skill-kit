@@ -114,3 +114,8 @@ npm run act -- ui/my-pulse --seed 42
 ![好奇眨眼分格圖](records/eyes/curious-blink/contact.png)
 
 中繼資料、緩衝區、種子與檢查契約見 [AUTHORING.md](docs/AUTHORING.md)。AI Agent 請遵循 [FX 撰寫技能](skills/fx-authoring/SKILL.md) 執行視覺自檢閉環。
+
+---
+
+<!-- malilion-ecosystem-footer -->
+<p align="center"><sub>🦁 碼力獅 <a href="https://github.com/malilion">MaliLion</a> 生態系的一員 · <a href="https://malilion.com">malilion.com</a> · <a href="https://github.com/malilion?tab=repositories">更多作品</a></sub></p>
