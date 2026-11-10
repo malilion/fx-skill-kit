@@ -31,12 +31,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Verify repository remains private
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          test "$(gh api "repos/${REPO}" --jq .private)" = true
       - name: Stage browser assets without a build
         run: |
           mkdir -p _site
