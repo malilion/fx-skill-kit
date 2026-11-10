@@ -3,12 +3,11 @@
 <p align="center"><img src="docs/brand/icon-512.png" alt="fx-skill-kit 標誌 — 分格圖與代理迴圈" width="160" height="160"></p>
 
 <p align="center">
-  <a href="README.md">🇬🇧 English</a> ·
-  <strong>🇹🇼 繁體中文</strong> ·
-  <a href="https://malilion.github.io/fx-skill-kit/gallery/">🌐 GitHub Pages 線上展示館</a> ·
-  <a href="docs/IMPLEMENTATION.md">📐 完整實作報告</a> ·
-  <a href="docs/AUTHORING.md">✍️ 特效撰寫契約</a> ·
-  <a href="docs/MCP.md">🔌 MCP 伺服器協定</a>
+  <a href="README.md" title="English"><img alt="English" src="https://img.shields.io/badge/English-2b6cb0?style=for-the-badge&logo=googletranslate&logoColor=white"></a>
+  <a href="README.zh-TW.md" title="繁體中文"><img alt="繁體中文" src="https://img.shields.io/badge/繁體中文-c53030?style=for-the-badge&logo=googletranslate&logoColor=white"></a>
+  <a href="https://malilion.github.io/fx-skill-kit/gallery/" title="GitHub Pages 線上展示館"><img alt="GitHub Pages 線上展示館" src="https://img.shields.io/badge/展示館-2d3748?style=for-the-badge&logo=githubpages&logoColor=white"></a>
+  <a href="docs/AUTHORING.md" title="特效撰寫契約"><img alt="特效撰寫契約" src="https://img.shields.io/badge/撰寫契約-2f855a?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="docs/MCP.md" title="MCP 伺服器協定"><img alt="MCP 伺服器協定" src="https://img.shields.io/badge/MCP-6b46c1?style=for-the-badge&logo=modelcontextprotocol&logoColor=white"></a>
 </p>
 
 ---

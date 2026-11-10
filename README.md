@@ -3,12 +3,11 @@
 <p align="center"><img src="docs/brand/icon-512.png" alt="fx-skill-kit mark — contact sheet + agent loop" width="160" height="160"></p>
 
 <p align="center">
-  <strong>🇬🇧 English</strong> ·
-  <a href="README.zh-TW.md">🇹🇼 繁體中文</a> ·
-  <a href="https://malilion.github.io/fx-skill-kit/gallery/">🌐 Live GitHub Pages Gallery</a> ·
-  <a href="docs/IMPLEMENTATION.md">📐 Implementation Report</a> ·
-  <a href="docs/AUTHORING.md">✍️ Authoring Contract</a> ·
-  <a href="docs/MCP.md">🔌 MCP Protocol</a>
+  <a href="README.md" title="English"><img alt="English" src="https://img.shields.io/badge/English-2b6cb0?style=for-the-badge&logo=googletranslate&logoColor=white"></a>
+  <a href="README.zh-TW.md" title="繁體中文"><img alt="繁體中文" src="https://img.shields.io/badge/繁體中文-c53030?style=for-the-badge&logo=googletranslate&logoColor=white"></a>
+  <a href="https://malilion.github.io/fx-skill-kit/gallery/" title="Live GitHub Pages Gallery"><img alt="Live GitHub Pages Gallery" src="https://img.shields.io/badge/Gallery-2d3748?style=for-the-badge&logo=githubpages&logoColor=white"></a>
+  <a href="docs/AUTHORING.md" title="Authoring Contract"><img alt="Authoring Contract" src="https://img.shields.io/badge/Authoring-2f855a?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="docs/MCP.md" title="MCP Protocol"><img alt="MCP Protocol" src="https://img.shields.io/badge/MCP-6b46c1?style=for-the-badge&logo=modelcontextprotocol&logoColor=white"></a>
 </p>
 
 ---
